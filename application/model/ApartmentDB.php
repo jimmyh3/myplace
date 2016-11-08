@@ -57,7 +57,7 @@ class ApartmentDB{
      * the values referenced by the given arrays of search parameters.
      * @param indexed array $query
      * @param associative array $filters
-     * @return  $apartments - an array of Apartment records from the database.
+     * @return array $apartments - an array of Apartment records from the database.
      */
     public function search(array $query, array $filters){
 

@@ -11,6 +11,11 @@ class Controller
      * @var null Model
      */
     public $model = null;
+    
+    /**
+     * @var null ApartmentDB
+     */
+    public $apartmentDB = null;
 
     /**
      * Whenever controller is created, open a database connection too and load "the model".
@@ -44,7 +49,9 @@ class Controller
     public function loadModel()
     {
         require APP . 'model/model.php';
+        require APP . 'model/ApartmentDB.php';
         // create new "model" (and pass the database connection)
-        $this->model = new Model($this->db);
+        $this->model        = new Model($this->db);
+        $this->apartmentDB  = new ApartmentDB($this->db);
     }
 }
