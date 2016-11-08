@@ -12,5 +12,36 @@
  * @author Jimmy
  */
 class Apartment {
-    //put your code here
+    
+    /** @var int */
+    public $apartment_id;
+    /** @var int */
+    public $areaCode;
+    /** @var double */
+    public $priceRange;
+    /** @var String */
+    public $rentalTerm;
+    /** @var String */
+    public $image;
+    /** @var boolean */
+    public $parking;
+    /** @var boolean */
+    public $petFriendly;
+    /** @var String */
+    public $description;
+    /** @var String */
+    public $thumbnail;
+    /** @var int */
+    public $bedroom;
+    /** @var String[] */
+    public $tags;
+    
+    /**
+     * 
+     * @param int $zip_code - used for Google Maps
+     */
+    public function createMap($zip_code)
+    {
+        //TODO: implement this.
+    }
 }
