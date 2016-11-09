@@ -29,20 +29,6 @@
 
     <script src="<?php echo URL; ?>js/bootstrap.js"></script>
     
- 
-    <script src="<?php echo URL; ?>js/lightslider.js"></script>
-
-    
-
-<script type="text/javascript">
-    $(document).ready(function() {
-        $('#lightSlider').lightSlider({
-        minSlide:1,
-        maxSlide:10,
-        mode:'fade'
-        });  
-    });
-</script>
     
     <!-- our JavaScript -->
     <script src="<?php echo URL; ?>js/application.js"></script>

@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>MINI</title>
+        <title>myPlace</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -33,7 +33,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">myplace</a>
+                    <a class="navbar-brand" href="#">myPlace</a>
                 </div>
                 <div class="navbar-collapse collapse" id="searchbar">
 
