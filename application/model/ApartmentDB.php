@@ -65,15 +65,16 @@ class ApartmentDB{
         $sql_select     = "SELECT * FROM apartment ";
         $sql_where      = "WHERE ";
         $sql_tagsLike   = "tags LIKE "; //'tags' == apartment table 'tags' column.
-        $sql_percent    = "%";      //NOTICE: there is no space after '%'
-        $sql_or         = "OR ";
-        $sql_and        = "AND ";
+        $sql_openPrcnt  = "'%";         //IMPORTANT: there is no space after "'%".
+        $sql_closePrcnt = "%'";
+        $sql_or         = " OR ";
+        $sql_and        = " AND ";
         $sql_openPrn    = "( ";
         $sql_closePrn   = ") ";
-        $sql_equal      = "= ";
-        
+        $sql_equal      = " = ";
+
         $sql = $sql . $sql_select;      //SELECT * FROM apartment
-        
+
         if (!empty($query) || !empty($filters))
         {
             $sql = $sql . $sql_where;   //SELECT * FROM apartment WHERE
@@ -82,56 +83,58 @@ class ApartmentDB{
                                                 //SELECT * FROM apartment WHERE
                 $sql = $sql . $sql_openPrn;     //Append "( "
                 $sql = $sql . $sql_tagsLike;    //Append "tags LIKE "
-                $sql = $sql . $sql_percent;     //Append "%"
+                $sql = $sql . $sql_openPrcnt;   //Append "%"
                 $sql = $sql . $query[0];        //Append "$query[0] "
-                $sql = $sql . $sql_percent;     //Append "%"
-                
+                $sql = $sql . $sql_closePrcnt;  //Append "%"
+
+                $i = 0;
                 $arraylen = count($query);
                 for ($i = 1; $i < $arraylen; $i++)
                 {
                     $sql = $sql . $sql_or;      //Append OR
                     $sql = $sql . $sql_tagsLike;//Append "tags LIKE "
-                    $sql = $sql . $sql_percent; //Append "%"
+                    $sql = $sql . $sql_openPrcnt; //Append "%"
                     $sql = $sql . $query[$i];   //Append "$query[$i] "
-                    $sql = $sql . $sql_percent; //Append "%"
+                    $sql = $sql . $sql_closePrcnt; //Append "%"
                 }
-                
+
                 $sql = $sql . $sql_closePrn;    //Append ") "
-                
+
                 /*
                  * Resulting $sql =
                  * "SELECT *
                  *  FROM apartment
                  *  WHERE ( tags LIKE $query[$i] <OR <repeat tags LIKE >> ) "
                  */
-                
+
             }
-            
+
             if (!empty($filters) && !empty($filters))
             {
                 $sql = $sql . $sql_and; //Append AND
             }
-            
+
             if (!empty($filters))
             {
                 $filterKeys = array_keys($filters);
-                
+
                 $sql = $sql . $sql_openPrn;     //Append "( "
                 $sql = $sql . $filterKeys[0];   //Append first key.
                 $sql = $sql . $sql_equal;       //Append "= "
                 $sql = $sql . $filters[$filterKeys[0]]; //Append first value.
-                
+
+                $i = 0;
                 $arraylen   = count($filters);
-                for ($i = 1; i < $arraylen; $i++)
+                for ($i = 1; $i < $arraylen; $i++)
                 {
                     $sql = $sql . $sql_and;     //Append "AND ";
                     $sql = $sql . $filterKeys[$i];   //Append first key.
                     $sql = $sql . $sql_equal;        //Append "= "
                     $sql = $sql . $filters[$filterKeys[$i]]; //Append first value.
                 }
-                
+
                 $sql = $sql . $sql_closePrn;    //Append ") "
-                
+
                 /*
                  * Resulting $sql =
                  * "SELECT *
@@ -154,7 +157,7 @@ class ApartmentDB{
         $statement = $this->db->prepare($sql);
         $statement->execute();
         
-        return $statement->fetchAll();
+        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     
     /**
