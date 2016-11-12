@@ -36,6 +36,10 @@ class Apartment {
     /** @var String[] */
     public $tags;
     
+    public function __construct() {
+        
+    }
+    
     /**
      * 
      * @param int $zip_code - used for Google Maps

@@ -73,6 +73,7 @@ class ApartmentDB{
         $sql_closePrn   = ") ";
         $sql_equal      = " = ";
 
+        /* These are the apartment table columns $query will 'LIKE %' against. */
         $aprtQueryCols  = array("rental_term",
                                 "description",
                                 "tags"        );
@@ -82,6 +83,7 @@ class ApartmentDB{
 
         $sql = $sql . $sql_select;      //SELECT * FROM apartment
 
+        /* This entire IF is for creating the SQL Query */
         if ($queryKeys || $filterKeys)
         {
             $sql = $sql . $sql_where;       //Append WHERE
@@ -119,7 +121,7 @@ class ApartmentDB{
 
             if ($queryKeys && $filterKeys)
             {
-                $sql = $sql . $sql_and; //Append AND
+                $sql = $sql . $sql_and;         //Append AND
             }
 
             if ($filterKeys)
@@ -157,10 +159,31 @@ class ApartmentDB{
 
         }
         
-        $statement = $this->db->prepare($sql);
-        $statement->execute();
+        /* Execute the Query */
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        /* Get all applicable apartments */
+        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        /* Create and return an array of Apartments */
+        $apartmentArray = array();
+        foreach ($apartmentRecords as $apartmentRecord)
+        {
+            $aprt = new Apartment();
+            $aprt->apartment_id = $apartmentRecord['id'];
+            $aprt->areaCode     = $apartmentRecord['area_code'];          
+            $aprt->rentalTerm   = $apartmentRecord['rental_term'];
+            $aprt->parking      = $apartmentRecord['parking'];
+            $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
+            $aprt->description  = $apartmentRecord['description'];
+            $aprt->bedroom      = $apartmentRecord['bedroom'];
+            $aprt->image        = $apartmentRecord['thumbnail'];
+            array_push($apartmentArray, $aprt);
+        }
+
+        return $apartmentArray;
         
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
     
     /**
