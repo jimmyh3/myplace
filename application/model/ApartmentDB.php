@@ -64,7 +64,7 @@ class ApartmentDB{
         $sql            = "";
         $sql_select     = "SELECT * FROM apartment ";
         $sql_where      = "WHERE ";
-        $sql_tagsLike   = "tags LIKE "; //'tags' == apartment table 'tags' column.
+        $sql_like       = " LIKE ";
         $sql_openPrcnt  = "'%";         //IMPORTANT: there is no space after "'%".
         $sql_closePrcnt = "%'";
         $sql_or         = " OR ";
@@ -73,29 +73,37 @@ class ApartmentDB{
         $sql_closePrn   = ") ";
         $sql_equal      = " = ";
 
+        $aprtQueryCols  = array("rental_term",
+                                "description",
+                                "tags"        );
+
+        $queryKeys      = array_keys($query);
+        $filterKeys     = array_keys($filters);
+
         $sql = $sql . $sql_select;      //SELECT * FROM apartment
 
-        if (!empty($query) || !empty($filters))
+        if ($queryKeys || $filterKeys)
         {
-            $sql = $sql . $sql_where;   //SELECT * FROM apartment WHERE
-            if (!empty($query))
-            {
-                                                //SELECT * FROM apartment WHERE
-                $sql = $sql . $sql_openPrn;     //Append "( "
-                $sql = $sql . $sql_tagsLike;    //Append "tags LIKE "
-                $sql = $sql . $sql_openPrcnt;   //Append "%"
-                $sql = $sql . $query[0];        //Append "$query[0] "
-                $sql = $sql . $sql_closePrcnt;  //Append "%"
+            $sql = $sql . $sql_where;       //Append WHERE
 
-                $i = 0;
-                $arraylen = count($query);
-                for ($i = 1; $i < $arraylen; $i++)
+            if ($queryKeys)
+            {
+                $sql = $sql . $sql_openPrn; //Append "( "
+
+                $queryKeysLen       = count($queryKeys);
+                $aprtQueryColsLen   = count($aprtQueryCols);
+                for ($i = 0; $i < $queryKeysLen; $i++)
                 {
-                    $sql = $sql . $sql_or;      //Append OR
-                    $sql = $sql . $sql_tagsLike;//Append "tags LIKE "
-                    $sql = $sql . $sql_openPrcnt; //Append "%"
-                    $sql = $sql . $query[$i];   //Append "$query[$i] "
-                    $sql = $sql . $sql_closePrcnt; //Append "%"
+                    for ($j = 0; $j < $aprtQueryColsLen; $j++)
+                    {
+                        $sql = $sql . $aprtQueryCols[$j];    //Append 'rental_term' || 'description' || 'tags'
+                        $sql = $sql . $sql_like;             //Append LIKE
+                        $sql = $sql . $sql_openPrcnt;        //Append "%"
+                        $sql = $sql . $query[$queryKeys[$i]];//Append "value"
+                        $sql = $sql . $sql_closePrcnt;       //Append "% "
+                        if (($j + 1) < $aprtQueryColsLen) { $sql = $sql . $sql_or; }
+                    }
+                    if (($i + 1) < $queryKeysLen) { $sql = $sql . $sql_or; }
                 }
 
                 $sql = $sql . $sql_closePrn;    //Append ") "
@@ -109,28 +117,22 @@ class ApartmentDB{
 
             }
 
-            if (!empty($filters) && !empty($filters))
+            if ($queryKeys && $filterKeys)
             {
                 $sql = $sql . $sql_and; //Append AND
             }
 
-            if (!empty($filters))
+            if ($filterKeys)
             {
-                $filterKeys = array_keys($filters);
-
                 $sql = $sql . $sql_openPrn;     //Append "( "
-                $sql = $sql . $filterKeys[0];   //Append first key.
-                $sql = $sql . $sql_equal;       //Append "= "
-                $sql = $sql . $filters[$filterKeys[0]]; //Append first value.
 
-                $i = 0;
-                $arraylen   = count($filters);
-                for ($i = 1; $i < $arraylen; $i++)
+                $filterKeysLen   = count($filters);
+                for ($i = 0; $i < $filterKeysLen; $i++)
                 {
-                    $sql = $sql . $sql_and;     //Append "AND ";
-                    $sql = $sql . $filterKeys[$i];   //Append first key.
-                    $sql = $sql . $sql_equal;        //Append "= "
+                    $sql = $sql . $filterKeys[$i];           //Append first key.
+                    $sql = $sql . $sql_equal;                //Append "= "
                     $sql = $sql . $filters[$filterKeys[$i]]; //Append first value.
+                    if (($i + 1) < $filterKeysLen) { $sql = $sql . $sql_and; }
                 }
 
                 $sql = $sql . $sql_closePrn;    //Append ") "
@@ -152,6 +154,7 @@ class ApartmentDB{
                  * 
                  */
             }
+
         }
         
         $statement = $this->db->prepare($sql);
