@@ -1,4 +1,3 @@
-
 <div class="container">
     <div class="row">
 
@@ -14,7 +13,7 @@
                 <div class="form-group">
                     <label for="bedroom_sel">Bedrooms:</label>
                     <select name="filter['bedroom']" class="form-control" id="bedroom_sel">
-                        <option>Any</option>
+                        <option value="-1">Any</option>
                         <option value="1">1</option>
                         <option value="2">2</option>                        
                         <option value="3">3+</option>
@@ -38,10 +37,10 @@
 
                 <div class="form-group">
                     <label for="price_sel">Price:</label>
-                    <input name="filter['min_price']" type="text" class="form-control" id="area_code" placeholder="Any">
+                    <input name="filter['min_price']" type="text" class="form-control" id="area_code" placeholder="Minimum Price">
                 </div>                   
                 <div class="form-group">
-                    <input name="filter['max_price']" type="text" class="form-control" id="area_code" placeholder="Any">
+                    <input name="filter['max_price']" type="text" class="form-control" id="area_code" placeholder="Maximum Price">
                 </div>
                 
 
@@ -69,19 +68,19 @@
                 <label>Availability Term:</label>
                 <div class="input-group">
                     <select name="filter['begin_term']" class="form-control" id="start_term_sel">
-                        <option>Any</option>
-                        <option>January</option>
-                        <option>February</option>
-                        <option>March</option>
-                        <option>April</option>
-                        <option>May</option>
-                        <option>June</option>
-                        <option>July</option>
-                        <option>August</option>
-                        <option>September</option>
-                        <option>October</option>
-                        <option>November</option>
-                        <option>December</option>
+                        <option value="-1">Any</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
                     </select>
 
 
@@ -89,19 +88,19 @@
 
                     <span class="input-group-addon">-</span>
                     <select name="filter['end_term']" class="form-control" id="end_term_sel">
-                        <option>Any</option>
-                        <option>January</option>
-                        <option>February</option>
-                        <option>March</option>
-                        <option>April</option>
-                        <option>May</option>
-                        <option>June</option>
-                        <option>July</option>
-                        <option>August</option>
-                        <option>September</option>
-                        <option>October</option>
-                        <option>November</option>
-                        <option>December</option>
+                        <option value="-1">Any</option>
+                        <option value="January">January</option>
+                        <option value="February">February</option>
+                        <option value="March">March</option>
+                        <option value="April">April</option>
+                        <option value="May">May</option>
+                        <option value="June">June</option>
+                        <option value="July">July</option>
+                        <option value="August">August</option>
+                        <option value="September">September</option>
+                        <option value="October">October</option>
+                        <option value="November">November</option>
+                        <option value="December">December</option>
                     </select>
                 </div>
 
