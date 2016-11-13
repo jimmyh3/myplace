@@ -4957,6 +4957,7 @@ a.badge:focus {
   margin-left: 3px;
 }
 .jumbotron {
+  height: 100%;
   padding-top: 30px;
   padding-bottom: 30px;
   margin-bottom: 30px;
@@ -6910,3 +6911,6 @@ button.close {
 }
 
 /*# sourceMappingURL=bootstrap.css.map */
+.selected img {
+	opacity:0.5;
+}

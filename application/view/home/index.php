@@ -1,5 +1,6 @@
-<div class="container">
 
+<div class="container">
+     
     <div class="row">
 
         <div class="col-md-3">
@@ -113,7 +114,7 @@
         <div class="col-md-9">
 
             <!-- Carousel at the top of the page -->
-            <div class="row carousel-holder">
+           <!-- <div class="row carousel-holder">
 
                 <div class="col-md-12">
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -142,7 +143,7 @@
                     </div>
                 </div>
 
-            </div>               
+            </div>               -->
 
             <div class="row">
 
