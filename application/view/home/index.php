@@ -172,53 +172,168 @@
                                         <div class="modal-body">
                                             <div class="row">
 
-                                                <div class="col-sm-6" style="background-color:lavender;">
-                                                    <div class="row carousel-holder">
+                                                <div class="row">
+                                                    <div class="row-height">
+                                                        <div class="col-sm-6 col-height">
 
-                                                        <div class="col-md-12">
-                                                            <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                                                                <ol class="carousel-indicators">
-                                                                    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                                                    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                                                    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                                                                </ol>
-                                                                <div class="carousel-inner">
-                                                                    <div class="item active">
-                                                                        <img class="slide-image" src="http://placehold.it/800x300" alt="">
+
+
+
+
+                                                            <!--http://www.bootply.com/XiWUwjbGtB -->
+
+                                                            <!-- main slider carousel -->
+                                                            <div class="row">
+                                                                <div class="col-md-12" id="slider">
+
+                                                                    <div class="col-md-12" id="carousel-bounding-box">
+                                                                        <div id="myCarousel" class="carousel slide">
+                                                                            <!-- main slider carousel items -->
+                                                                            <div class="carousel-inner">
+                                                                                <div class="active item" data-slide-number="0">
+                                                                                    <img src="http://placehold.it/1200x480&amp;text=one" class="img-responsive">
+                                                                                </div>
+                                                                                <div class="item" data-slide-number="1">
+                                                                                    <img src="http://placehold.it/1200x480&amp;text=two" class="img-responsive">
+                                                                                </div>
+                                                                                <div class="item" data-slide-number="2">
+                                                                                    <img src="http://placehold.it/1200x480&amp;text=three" class="img-responsive">
+                                                                                </div>
+                                                                                <div class="item" data-slide-number="3">
+                                                                                    <img src="http://placehold.it/1200x480&amp;text=four" class="img-responsive">
+                                                                                </div>
+                                                                                <div class="item" data-slide-number="4">
+                                                                                    <img src="http://placehold.it/1200x480&amp;text=five" class="img-responsive">
+                                                                                </div>
+                                                                                <div class="item" data-slide-number="5">
+                                                                                    <img src="http://placehold.it/1200x480&amp;text=six" class="img-responsive">
+                                                                                </div>
+                                                                                <div class="item" data-slide-number="6">
+                                                                                    <img src="http://placehold.it/1200x480&amp;text=seven" class="img-responsive">
+                                                                                </div>
+                                                                                <div class="item" data-slide-number="7">
+                                                                                    <img src="http://placehold.it/1200x480&amp;text=eight" class="img-responsive">
+                                                                                </div>
+                                                                            </div>
+                                                                            <!-- main slider carousel nav controls --> <a class="carousel-control left" href="#myCarousel" data-slide="prev">‹</a>
+
+                                                                            <a class="carousel-control right" href="#myCarousel" data-slide="next">›</a>
+                                                                        </div>
                                                                     </div>
-                                                                    <div class="item">
-                                                                        <img class="slide-image" src="http://placehold.it/800x300" alt="">
-                                                                    </div>
-                                                                    <div class="item">
-                                                                        <img class="slide-image" src="http://placehold.it/800x300" alt="">
-                                                                    </div>
+
                                                                 </div>
-                                                                <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                                                                    <span class="glyphicon glyphicon-chevron-left"></span>
-                                                                </a>
-                                                                <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                                                                    <span class="glyphicon glyphicon-chevron-right"></span>
-                                                                </a>
                                                             </div>
+                                                            <!--/main slider carousel-->
+
+                                                            <br>
+
+                                                            <!-- thumb navigation carousel -->
+                                                            <div class="col-md-12 hidden-sm hidden-xs" id="slider-thumbs">
+
+                                                                <!-- thumb navigation carousel items -->
+                                                                <ul class="list-inline">
+                                                                    <li> <a id="carousel-selector-0" class="selected">
+                                                                            <img src="http://placehold.it/80x60&amp;text=one" class="img-responsive">
+                                                                        </a></li>
+                                                                    <li> <a id="carousel-selector-1">
+                                                                            <img src="http://placehold.it/80x60&amp;text=two" class="img-responsive">
+                                                                        </a></li>
+                                                                    <li> <a id="carousel-selector-2">
+                                                                            <img src="http://placehold.it/80x60&amp;text=three" class="img-responsive">
+                                                                        </a></li>
+                                                                    <li> <a id="carousel-selector-3">
+                                                                            <img src="http://placehold.it/80x60&amp;text=four" class="img-responsive">
+                                                                        </a></li>
+                                                                    <li> <a id="carousel-selector-4">
+                                                                            <img src="http://placehold.it/80x60&amp;text=five" class="img-responsive">
+                                                                        </a></li>
+                                                                    <li> <a id="carousel-selector-5">
+                                                                            <img src="http://placehold.it/80x60&amp;text=six" class="img-responsive">
+                                                                        </a></li>
+                                                                    <li> <a id="carousel-selector-6">
+                                                                            <img src="http://placehold.it/80x60&amp;text=seven" class="img-responsive">
+                                                                        </a></li>
+                                                                    <li> <a id="carousel-selector-7">
+                                                                            <img src="http://placehold.it/80x60&amp;text=eight" class="img-responsive">
+                                                                        </a></li>
+                                                                </ul>
+
+                                                            </div>
+
+
                                                         </div>
 
+                                                        <div class="col-sm-6 col-height col-top">
+
+
+                                                            <h1> Description </h1>
+                                                            <p>
+                                                                Description will go here...<br>
+                                                            </p>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-6 col-height">
+
+                                                    <h1> Map </h1>
+
+                                                    <div id="map" style="width:400px;height:400px;background:yellow"></div>
+
+                                                    <script>
+                                                        function myMap() {
+                                                            var mapCanvas = document.getElementById("map");
+                                                            var mapOptions = {
+                                                                center: new google.maps.LatLng(51.5, -0.2), zoom: 10
+                                                            };
+                                                            var map = new google.maps.Map(mapCanvas, mapOptions);
+                                                        }
+                                                    </script>
+
+                                                    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+
+                                                </div>
+
+                                                <div class="col-sm-6 col-height">
+
+                                                    <h1> Amenities/Filtered </h1>
+                                                    <p>
+                                                        Blah blah blah...<br>
+                                                        Maybe tags at the bottom <br>
+                                                        Contact button<br>
+
+                                                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#contactLandlord">Contact Landlord</button>
+
+                                                    <div id="contactLandlord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                                                    <h3 id="myModalLabel">Contact form</h3>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form class="form-horizontal col-sm-12">
+                                                                        <div class="form-group"><label>Name</label><input class="form-control required" placeholder="Your name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters." type="text"></div>
+                                                                        <div class="form-group"><label>E-Mail</label><input class="form-control email" placeholder="email@you.com (so that we can contact you)" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" type="text"></div>
+                                                                        <div class="form-group"><label>Message</label><textarea class="form-control" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
+                                                                        <div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
+                                                                    </form>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
 
-                                                </div>
 
-                                                <div class="col-sm-6" style="background-color:lavenderblush;">.col-sm-6
-
-                                                </div>
-
-                                                <div class="col-sm-6" style="background-color:lavender;">.col-sm-3
+                                                    </p>
 
 
                                                 </div>
 
-                                                <div class="col-sm-6" style="background-color:lavenderblush;">.col-sm-6
-
-
-                                                </div>
 
                                             </div>
                                             <p>This is a small modal.</p>

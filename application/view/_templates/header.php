@@ -11,6 +11,7 @@
         <!-- See more here: http://stackoverflow.com/q/2105327/1114320 -->
 
         <!-- CSS -->  
+
         <link href="<?php echo URL; ?>css/shop-homepage.css" rel="stylesheet">
         <link href="<?php echo URL; ?>css/bootstrap.css" rel="stylesheet">
 
@@ -164,7 +165,7 @@
                                         <br>
                                         <div class="control-group">
                                             <label class="control-label" for="humancheck">Register as a:</label>
-                                            <div class="controls">
+                                            <div class="controls" style="padding-left: 20px;">
                                                 <label class="radio inline" for="humancheck-0">
                                                     <input type="radio" name="humancheck" id="humancheck-0" value="robot" required>SFSU Student</label>
                                                 <label class="radio inline" for="humancheck-1">
@@ -175,7 +176,7 @@
                                         <br>
                                         <div class="control-group">
                                             <label class="control-label" for="rememberme">Terms and Conditions:</label>
-                                            <div class="controls">
+                                            <div class="controls" style="padding-left: 20px;">
                                                 <label class="checkbox inline " for="rememberme-0">
                                                     <input  required="true" type="checkbox" name="rememberme" id="rememberme-0" value="Remember me">
                                                     I have read the privacy agreement and accept the terms
