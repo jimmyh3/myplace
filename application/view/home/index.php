@@ -16,14 +16,14 @@
                     <select name="filter['bedroom']" class="form-control" id="bedroom_sel">
                         <option>Any</option>
                         <option value="1">1</option>
-                        <option value="2">2</option>
+                        <option value="2">2</option>                        
                         <option value="3">3+</option>
                     </select>
                 </div>
 
 
 
-                <div class="form-group">
+<!--                <div class="form-group">
                     <label for="price_sel">Price:</label>
                     <select class="form-control" id="price_sel">
                         <option>Any</option>
@@ -34,11 +34,20 @@
                         <option>Between $1000 and $1499</option>
                         <option>$1500+</option>
                     </select>
-                </div>
-
-
+                </div>-->
 
                 <div class="form-group">
+                    <label for="price_sel">Price:</label>
+                    <input name="filter['min_price']" type="text" class="form-control" id="area_code" placeholder="Any">
+                </div>                   
+                <div class="form-group">
+                    <input name="filter['max_price']" type="text" class="form-control" id="area_code" placeholder="Any">
+                </div>
+                
+
+
+
+                <div class="input-group">
                     <label for="distance_sel">Distance:</label>
                     <select class="form-control" id="distance_sel">
                         <option>Any</option>
@@ -103,7 +112,7 @@
                 </div>
 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="filter['[parking']"value="1">Parking available</label>
+                    <label> <input type="checkbox" name="filter['[parking']"value="">Parking available</label>
                 </div>
 
 
