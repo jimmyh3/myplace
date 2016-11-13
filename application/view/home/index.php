@@ -46,7 +46,7 @@
 
 
 
-                <div class="input-group">
+<!--                <div class="input-group">
                     <label for="distance_sel">Distance:</label>
                     <select class="form-control" id="distance_sel">
                         <option>Any</option>
@@ -55,12 +55,12 @@
                         <option>Between 1.0 and 1.4 miles</option>
                         <option>1.5+ miles</option>
                     </select>
-                </div>
+                </div>-->
 
 
                 <div class="form-group">
-                    <label for="area_code">Area code:</label>
-                    <input name="filter['area_code']" type="text" class="form-control" id="area_code" placeholder="Any">
+                    <label for="area_code">Zip code:</label>
+                    <input name="filter['zip_code']" type="text" class="form-control" id="area_code" placeholder="Any">
                 </div>
 
 
@@ -111,10 +111,8 @@
                 </div>
 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="filter['[parking']"value="">Parking available</label>
+                    <label> <input type="checkbox" name="filter['[parking']"value="1">Parking available</label>
                 </div>
-
-
 
 
                 <input type="submit" class="btn btn-info" value="Refine">
