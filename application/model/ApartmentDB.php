@@ -30,6 +30,7 @@ class ApartmentDB{
     
     /**
      * Delete the targeted database apartment record with the given id.
+     * 
      * @param int $apt_id - unique apartment ID to target.
      * @throws Exception if the query failed.
      * @return boolean false for failure, true for success.
@@ -60,6 +61,7 @@ class ApartmentDB{
     
     /**
      * Update an apartment database record.
+     * 
      * @throws Exception if query somehow failed.
      * @param Apartment $apt
      * @return boolean - 0 for failure, 1 for success.
@@ -122,8 +124,9 @@ class ApartmentDB{
     /**
      * Search the database and return apartments that contains at least some of 
      * the values referenced by the given arrays of search parameters.
-     * @param array $query
-     * @param array $filters
+     * 
+     * @param jndexed array $query - values to look through 'rental_term' & 'description' & 'tags'
+     * @param associative array $filters - values to look through specific columns.
      * @return array $apartments - an array of Apartments from the database.
      */
     public function search(array $query, array $filters){
