@@ -107,11 +107,17 @@
 
 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="filter['pet_friendly']" value="1">Pet Friendly</label>
+                    <label> 
+                        <input type="hidden" name="filter[pet_friendly]" value="0" />
+                        <input type="checkbox" name="filter['pet_friendly']" value="1">Pet Friendly
+                    </label>
                 </div>
 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="filter['[parking']"value="1">Parking available</label>
+                    <label>
+                        <input type="hidden" name="filter[parking]" value="0" />
+                        <input type="checkbox" name="filter['[parking']"value="1">Parking available
+                    </label>
                 </div>
 
 
