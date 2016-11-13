@@ -1,11 +1,5 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  * Description of ApartmentDB
  *
@@ -35,22 +29,44 @@ class ApartmentDB{
     }
     
     /**
-     * 
-     * @param int $apt_id
+     * Delete the targeted database apartment record with the given id.
+     * @param int $apt_id - unique apartment ID to target.
+     * @throws Exception if the query failed.
+     * @return boolean false for failure, true for success.
      */
     public function deleteApartment($apt_id)
     {
+        //TODO: does the Database automatically drop 'image' as well?
         
+        if ($apt_id === NULL) return false;
+        
+        $sql  = "DELETE FROM apartment WHERE id = :id";
+        
+        /* Create and execute the DELETE query */
+        $stmt = $this->db->prepare($sql);
+        if ($stmt === false)
+        {
+            throw new Exception('Could not prepare apartment delete query');
+        }
+        
+        $result = $stmt->execute(array("id" => $apt_id));
+        if ($result === false)
+        {
+            throw new Exception('Could not run post update query');
+        }
+        
+        return true;
     }
     
     /**
      * Update an apartment database record.
+     * @throws Exception if query somehow failed.
      * @param Apartment $apt
-     * @return int - 0 for failure, 1 for success.
+     * @return boolean - 0 for failure, 1 for success.
      */
     public function editApartment(Apartment $apt)
     {
-        if ($apt->apartment_id === NULL) return 0;  //Need apartment_id to UPDATE
+        if ($apt->apartment_id === NULL) return false;  //Need apartment_id to UPDATE
         
         //TODO: implement! 'image' refers to a table and 'tags' refer a LONGTEXT string.
         
@@ -60,34 +76,54 @@ class ApartmentDB{
                                 "parking"       => $apt->parking,
                                 "pet_friendly"  => $apt->petFriendly,
                                 "actual_price"  => $apt->price,
-                                "rental_term"   => "'" . $apt->rentalTerm . "'", //"tags"          => $apt->tags,      //IS ARRAY
+                                "rental_term"   => "'" . $apt->rentalTerm . "'", 
                                 "thumbnail"     => "'" . $apt->thumbnail . "'");
         
-        /* Create UPDATE statement */
-        $sql = "UPDATE apartment SET ";
+        /* Column values to be changed */
+        $sql_set_values = "";
         
-        /* Append all apartment table columns with their values */
+        /* Append all apartment table columns with their values for SET */
         $colKeys = array_keys($aptColsArray);
         for ($i = 0; $i < count($colKeys); $i++)
         {
-            $sql = $sql . $colKeys[$i] . " = " . $aptColsArray[$colKeys[$i]];
-            if (($i + 1) < count($colKeys)) $sql = $sql . " , ";    
+            $sql_set_values = $sql_set_values . $colKeys[$i] . " = " . $aptColsArray[$colKeys[$i]];
+            
+            if (($i + 1) < count($colKeys))
+            {
+                $sql_set_values = $sql_set_values . " , "; //Append comma for next
+            }
         }
         
+        /* Create initial piece of UPDATE query */
+        $sql = "UPDATE apartment SET ";
+        
+        /* Append SET [col = val ...] */
+        $sql = $sql . $sql_set_values;      
+        
+        /* Append WHERE along with the targeted apartment ID */
         $sql = $sql . " WHERE id = " . $apt->apartment_id; 
 
-        /* Execute the UPDATE Statement */
+        /* Prepare and Execute the UPDATE Statement */
         $stmt = $this->db->prepare($sql);
-        $stmt->execute();
+        if ($stmt === false)
+        {
+            throw new Exception('Could not prepare apartment update query');
+        }
         
-        return $stmt;
+        $result = $stmt->execute();
+        if ($result === false)
+        {
+            throw new Exception('Could not run apartment update query');
+        }
+        
+        return true;
     }
     
     /**
      * Search the database and return apartments that contains at least some of 
      * the values referenced by the given arrays of search parameters.
-     * @param indexed array $query
-     * @param associative array $filters
+     * @param array $query
+     * @param array $filters
      * @return array $apartments - an array of Apartments from the database.
      */
     public function search(array $query, array $filters){
@@ -245,10 +281,7 @@ class ApartmentDB{
     {
         $aprt = new Apartment();
         
-        //TODO: implement! 'image' refers to a table and 'tags' refer a LONGTEXT string.
-        //$aprt->image        = $apartmentRecord['image_id'];
-        //$aprt->tags         = $apartmentRecord['tags'];
-        
+        //TODO: implement! 'image' - it refers to a table and 'tags' - refer a LONGTEXT string.
         
         $aprt->apartment_id = $apartmentRecord['id'];
         $aprt->areaCode     = $apartmentRecord['area_code'];
@@ -266,9 +299,6 @@ class ApartmentDB{
     private function apartmentToDBRecord(Apartment $aprt)
     {
         //TODO: implement! 'image' refers to a table and 'tags' refer a LONGTEXT string.
-        //$aprt->image        = $apartmentRecord['image_id'];
-        //$aprt->tags         = $apartmentRecord['tags'];
-        
         
     }
 }
