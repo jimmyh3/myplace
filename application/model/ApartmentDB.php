@@ -44,12 +44,43 @@ class ApartmentDB{
     }
     
     /**
-     * 
+     * Update an apartment database record.
      * @param Apartment $apt
+     * @return int - 0 for failure, 1 for success.
      */
     public function editApartment(Apartment $apt)
     {
+        if ($apt->apartment_id === NULL) return 0;  //Need apartment_id to UPDATE
         
+        //TODO: implement! 'image' refers to a table and 'tags' refer a LONGTEXT string.
+        
+        $aptColsArray = array(  "area_code"     => $apt->areaCode,
+                                "bedroom"       => $apt->bedroom,
+                                "description"   => "'" . $apt->description . "'",
+                                "parking"       => $apt->parking,
+                                "pet_friendly"  => $apt->petFriendly,
+                                "actual_price"  => $apt->price,
+                                "rental_term"   => "'" . $apt->rentalTerm . "'", //"tags"          => $apt->tags,      //IS ARRAY
+                                "thumbnail"     => "'" . $apt->thumbnail . "'");
+        
+        /* Create UPDATE statement */
+        $sql = "UPDATE apartment SET ";
+        
+        /* Append all apartment table columns with their values */
+        $colKeys = array_keys($aptColsArray);
+        for ($i = 0; $i < count($colKeys); $i++)
+        {
+            $sql = $sql . $colKeys[$i] . " = " . $aptColsArray[$colKeys[$i]];
+            if (($i + 1) < count($colKeys)) $sql = $sql . " , ";    
+        }
+        
+        $sql = $sql . " WHERE id = " . $apt->apartment_id; 
+
+        /* Execute the UPDATE Statement */
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        
+        return $stmt;
     }
     
     /**
@@ -57,7 +88,7 @@ class ApartmentDB{
      * the values referenced by the given arrays of search parameters.
      * @param indexed array $query
      * @param associative array $filters
-     * @return array $apartments - an array of Apartment records from the database.
+     * @return array $apartments - an array of Apartments from the database.
      */
     public function search(array $query, array $filters){
 
@@ -170,15 +201,7 @@ class ApartmentDB{
         $apartmentArray = array();
         foreach ($apartmentRecords as $apartmentRecord)
         {
-            $aprt = new Apartment();
-            $aprt->apartment_id = $apartmentRecord['id'];
-            $aprt->areaCode     = $apartmentRecord['area_code'];          
-            $aprt->rentalTerm   = $apartmentRecord['rental_term'];
-            $aprt->parking      = $apartmentRecord['parking'];
-            $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
-            $aprt->description  = $apartmentRecord['description'];
-            $aprt->bedroom      = $apartmentRecord['bedroom'];
-            $aprt->image        = $apartmentRecord['thumbnail'];
+            $aprt = $this->dbRecordToApartment($apartmentRecord);
             array_push($apartmentArray, $aprt);
         }
 
@@ -187,11 +210,65 @@ class ApartmentDB{
     }
     
     /**
-     * 
-     * @param int $user_id
+     * Retrieve all Apartments belonging to a landlord of the specified ID.
+     * @param int $user_id - user landlord ID.
      */
     public function getLandLordApartments($user_id)
     {
+        $sql  = "SELECT * FROM apartment WHERE user_id = :user_id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(
+            array('user_id' => $user_id)
+        );
+        
+        /* Get all applicable apartments */
+        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $apartmentArray = array();
+        foreach ($apartmentRecords as $apartmentRecord)
+        {
+            $aprt = $this->dbRecordToApartment($apartmentRecord);
+            array_push($apartmentArray, $aprt);
+        }
+        
+        return $apartmentArray;
+    }
+    
+    /**
+     * Helper method to convert a database apartment record into an Apartment
+     * object.
+     * @param array $apartmentRecord - a single database apartment record.
+     * @return Apartment
+     */
+    private function dbRecordToApartment($apartmentRecord)
+    {
+        $aprt = new Apartment();
+        
+        //TODO: implement! 'image' refers to a table and 'tags' refer a LONGTEXT string.
+        //$aprt->image        = $apartmentRecord['image_id'];
+        //$aprt->tags         = $apartmentRecord['tags'];
+        
+        
+        $aprt->apartment_id = $apartmentRecord['id'];
+        $aprt->areaCode     = $apartmentRecord['area_code'];
+        $aprt->price        = $apartmentRecord['actual_price'];
+        $aprt->rentalTerm   = $apartmentRecord['rental_term'];
+        $aprt->parking      = $apartmentRecord['parking'];
+        $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
+        $aprt->description  = $apartmentRecord['description'];
+        $aprt->bedroom      = $apartmentRecord['bedroom'];
+        $aprt->thumbnail    = $apartmentRecord['thumbnail'];
+        
+        return $aprt;
+    }
+    
+    private function apartmentToDBRecord(Apartment $aprt)
+    {
+        //TODO: implement! 'image' refers to a table and 'tags' refer a LONGTEXT string.
+        //$aprt->image        = $apartmentRecord['image_id'];
+        //$aprt->tags         = $apartmentRecord['tags'];
+        
         
     }
 }

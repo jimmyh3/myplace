@@ -14,27 +14,38 @@
 class Apartment {
     
     /** @var int */
-    public $apartment_id;
+    public $apartment_id = NULL; //must be initialized.
+    
     /** @var int */
-    public $areaCode;
+    public $areaCode = 0;
+    
     /** @var double */
-    public $priceRange;
+    public $price = 0.0;
+    
     /** @var String */
-    public $rentalTerm;
-    /** @var String */
-    public $image;
-    /** @var boolean */
-    public $parking;
-    /** @var boolean */
-    public $petFriendly;
-    /** @var String */
-    public $description;
-    /** @var String */
-    public $thumbnail;
-    /** @var int */
-    public $bedroom;
+    public $rentalTerm = "''";
+    
     /** @var String[] */
-    public $tags;
+    public $image = array();
+    
+    /** @var boolean */
+    public $parking = 0;        //0 == MySQL FALSE
+    
+    /** @var boolean */
+    public $petFriendly = 0;    //0 == MySQL FALSE
+    
+    /** @var String */
+    public $description = "''";
+    
+    /** @var String */
+    public $thumbnail = "''";
+    
+    /** @var int */
+    public $bedroom = 0;
+    
+    /** @var String[] */
+    public $tags = array();
+    
     
     public function __construct() {
         
