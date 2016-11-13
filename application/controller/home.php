@@ -47,4 +47,12 @@ class Home extends Controller
         require APP . 'view/home/example_two.php';
         require APP . 'view/_templates/footer.php';
     }
+    
+    public function printArray()
+    {
+        if (isset($_POST['filter'])) 
+        {
+            print_r($_POST['filter']); 
+        }   
+    }
 }

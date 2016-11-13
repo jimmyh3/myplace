@@ -1,9 +1,11 @@
 
 <div class="container">
-     
     <div class="row">
 
         <div class="col-md-3">
+
+        <form method='POST' action="<?php echo URL; ?>home/printArray">
+
             <p class="lead">Refine your search</p>
             <div class="panel panel-footer">
 
@@ -11,11 +13,11 @@
 
                 <div class="form-group">
                     <label for="bedroom_sel">Bedrooms:</label>
-                    <select class="form-control" id="bedroom_sel">
+                    <select name="filter['bedroom']" class="form-control" id="bedroom_sel">
                         <option>Any</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3+</option>
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3+</option>
                     </select>
                 </div>
 
@@ -50,14 +52,14 @@
 
                 <div class="form-group">
                     <label for="area_code">Area code:</label>
-                    <input type="text" class="form-control" id="area_code" placeholder="Any">
+                    <input name="filter['area_code']" type="text" class="form-control" id="area_code" placeholder="Any">
                 </div>
 
 
 
                 <label>Availability Term:</label>
                 <div class="input-group">
-                    <select class="form-control" id="start_term_sel">
+                    <select name="filter['begin_term']" class="form-control" id="start_term_sel">
                         <option>Any</option>
                         <option>January</option>
                         <option>February</option>
@@ -77,7 +79,7 @@
 
 
                     <span class="input-group-addon">-</span>
-                    <select class="form-control" id="end_term_sel">
+                    <select name="filter['end_term']" class="form-control" id="end_term_sel">
                         <option>Any</option>
                         <option>January</option>
                         <option>February</option>
@@ -97,11 +99,11 @@
 
 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" value="">Pet Friendly</label>
+                    <label> <input type="checkbox" name="filter['pet_friendly']" value="1">Pet Friendly</label>
                 </div>
 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" value="">Parking available</label>
+                    <label> <input type="checkbox" name="filter['[parking']"value="1">Parking available</label>
                 </div>
 
 
@@ -109,6 +111,8 @@
 
                 <input type="submit" class="btn btn-info" value="Refine">
             </div>
+            </form>
+            
         </div>
 
         <div class="col-md-9">
@@ -453,5 +457,4 @@
         </div>
 
     </div>
-
 </div>
