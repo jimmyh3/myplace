@@ -33,7 +33,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">myplace</a>
+                    <a class="navbar-brand" href="<?php echo URL; ?>test">myplace</a>
                 </div>
                 <div class="navbar-collapse collapse" id="searchbar">
 
