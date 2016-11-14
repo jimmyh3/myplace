@@ -52,9 +52,23 @@ define('URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
  * Configuration for: Database
  * This is the place where you define your database credentials, database type etc.
  */
+//define('DB_TYPE', 'mysql');
+//define('DB_HOST', '127.0.0.1');
+//define('DB_NAME', 'mini');
+//define('DB_USER', 'mini');
+//define('DB_PASS', 'mini');
+//define('DB_CHARSET', 'utf8');
+
 define('DB_TYPE', 'mysql');
 define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'mini');
-define('DB_USER', 'mini');
-define('DB_PASS', 'mini');
+define('DB_NAME', 'f16g14');
+define('DB_USER', 'f16g14');
+define('DB_PASS', 'sfsuf16swe');
 define('DB_CHARSET', 'utf8');
+
+//define('DB_TYPE', 'mysql');
+//define('DB_HOST', 'sfsuswe.com');
+//define('DB_NAME', 'student_jimmyh3');
+//define('DB_USER', 'jimmyh3');
+//define('DB_PASS', 'jimmyh3mysql');
+//define('DB_CHARSET', 'utf8');
