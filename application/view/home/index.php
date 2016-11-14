@@ -1,5 +1,4 @@
-
-<div class="container">
+    <div class="container">
      
     <div class="row">
 
@@ -49,8 +48,8 @@
 
 
                 <div class="form-group">
-                    <label for="area_code">Area code:</label>
-                    <input type="text" class="form-control" id="area_code" placeholder="Any">
+                    <label for="area_code">Zip code:</label>
+                    <input type="text" class="form-control" id="zip_code" placeholder="Any">
                 </div>
 
 
@@ -157,18 +156,18 @@
                             <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
                         <div class="ratings">
-                            <button type="button" class="btn btn-primary btn-sm pull-right">Rent now</button>
+                            <button type="button" class="btn btn-success btn-sm pull-right">Rent now</button>
 
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal">See more details</button>
 
 
 
-                            <div class="modal fade" id="aptModal" role="dialog">
+                            <div class="modal fade" id="aptModal" role="dialog" style="color: #000">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Modal Header</h4>
+                                            <h4 class="modal-title">Details on Apartment</h4>
                                         </div>
                                         <div class="modal-body">
                                             <div class="row">
@@ -268,10 +267,17 @@
 
 
                                                             <h1> Description </h1>
-                                                            <p>
-                                                                Description will go here...<br>
+                                                            <p align ="justify" style="padding-right: 20px">
+                                                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean ut ullamcorper orci. Maecenas non dapibus
+                                                                lectus. Maecenas et venenatis orci, eget cursus ante. Ut eu sem eget dolor consequat porttitor quis in nisl.
+                                                                Pellentesque vitae convallis lacus. Maecenas ultrices sit amet elit cursus faucibus. Donec leo ex, porttitor
+                                                                a ipsum nec, cursus congue nunc. Vestibulum in dolor neque. Vivamus commodo in eros vel commodo. Fusce 
+                                                                fringilla justo eget neque efficitur volutpat. Nam semper aliquam odio, vitae suscipit nisi consequat sed.
+                                                                Proin ante magna, facilisis quis egestas a, volutpat eu risus. Nullam quis malesuada ante. Nunc auctor porta
+                                                                risus et scelerisque
                                                             </p>
-
+                                                            
+                                                           
 
                                                         </div>
                                                     </div>
@@ -300,11 +306,25 @@
                                                 <div class="col-sm-6 col-height">
 
                                                     <h1> Amenities/Filtered </h1>
-                                                    <p>
-                                                        Blah blah blah...<br>
-                                                        Maybe tags at the bottom <br>
-                                                        Contact button<br>
+                                                    <ul style="font-size: 16px">
+                                                        <li> <strong>Price: </strong> $1600</li>
+                                                        <li> <strong>Bedrooms: </strong> 3</li>
+                                                        <li> <strong>Zip code: </strong>94132</li>
+                                                        <li> <strong>Distance: </strong>1.2 miles</li>
+                                                        <li> <strong>Availability term: </strong>Jan-March</li>
+                                                        <li> <strong>Pet friendly: </strong>Yes</li>
+                                                        <li> <strong>Parking available: </strong>Yes</li>
+                                                        <li> <strong>Tags: </strong>Spacious, comfy, inviting</li>
+                                                    </ul>
 
+                                                        <button type="button" class="btn btn-success btn-lg">Rent now</button>
+
+                                                        <p>
+                                                            <br>
+                                                            Or need more information before renting apartment? Contact landlord below.
+                                                            <br>
+                                                        </p>
+                                                        
                                                         <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#contactLandlord">Contact Landlord</button>
 
                                                     <div id="contactLandlord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
@@ -337,7 +357,6 @@
 
 
                                             </div>
-                                            <p>This is a small modal.</p>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
