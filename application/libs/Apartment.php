@@ -14,16 +14,25 @@
 class Apartment {
     
     /** @var int */
-    public $apartment_id = NULL; //must be initialized.
+    public $apartment_id = NULL; //must be set.
+    
+    /** @var int */
+    public $user_id = NULL; //must be set.
     
     /** @var int */
     public $areaCode = 0;
     
     /** @var double */
-    public $price = 0.0;
+    public $actualPrice = 0.0;
+    
+     /** @var date */
+    public $beginTerm = "";
+    
+     /** @var date */
+    public $endTerm = "";
     
     /** @var String */
-    public $rentalTerm = "''";
+    public $rentalTerm = "";
     
     /** @var String[] */
     public $image = array();
@@ -35,10 +44,10 @@ class Apartment {
     public $petFriendly = 0;    //0 == MySQL FALSE
     
     /** @var String */
-    public $description = "''";
+    public $description = "";
     
     /** @var String */
-    public $thumbnail = "''";
+    public $thumbnail = NULL;
     
     /** @var int */
     public $bedroom = 0;
