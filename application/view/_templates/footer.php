@@ -7,9 +7,21 @@
     <!-- Footer -->
     <footer>
         <div class="row">
-            <div class="col-lg-12">
-                <p>Copyright &copy; Your Website 2014</p>
+            <div class="col-md-3">
+                <p> <a href="#">About us</a></p>
             </div>
+            
+            <div class="col-md-3">
+                <p><a href="#">Terms and Condition</a></p>
+            </div>
+            
+            <div class="col-md-3">
+                <p><a href="#">Privacy Policy</a></p>
+            </div>
+            
+            <div class="col-md-3">
+                <p> Copyright &copy; 2016 </p>
+            
         </div>
     </footer>
 

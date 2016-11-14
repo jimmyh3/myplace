@@ -1,5 +1,23 @@
-    <div class="container">
+<div id="headerwrap">
+		<div class="container">
+			<div class="row">
+				<h1>myPlace</h1>
+				<br>
+				<h3>Apartments for SFSU students</h3>
+				<br>
+				<br>
+				<div class="col-lg-6 col-lg-offset-3">
+				</div>
+			</div>
+		</div><!-- /container -->
+	</div><!-- /headerwrap -->   
+
+<div class="container" style="padding-top: 30px;" id="mainPage">
      
+        <div class="pull-right">
+            Total apartments: 50
+            </div>
+        
     <div class="row">
 
         <div class="col-md-3">

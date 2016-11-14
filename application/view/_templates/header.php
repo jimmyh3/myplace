@@ -205,3 +205,8 @@
                 </div>
             </div>
         </div>
+        
+
+        <!-- Disclaimer at top of every page -->
+        <h2 style="text-align: center; vertical-align: middle;">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only.</h2>
+        
