@@ -148,10 +148,10 @@
 
                 <div class="col-sm-4 col-lg-4 col-md-4">
                     <div class="thumbnail"> 
-                        <img src="http://placehold.it/320x150" alt="">
+                        <img src="http://placehold.it/320x150" alt="" style="cursor: pointer;" data-toggle="modal" data-target="#aptModal"> 
                         <div class="caption">
                             <h4 class="pull-right">$24.99</h4>
-                            <h4><a href="#">First Product</a>
+                            <h4>Title
                             </h4>
                             <p>This is a short description. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                         </div>
