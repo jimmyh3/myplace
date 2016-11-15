@@ -66,6 +66,14 @@ $('#myCarousel').on('slid', function (e) {
 </script>
 
 
+<!-- tooltip -->
+
+<script>
+    $(document).ready(function(){
+        $('[data-toggle="tooltip"]').tooltip();   
+    });
+</script>
+
 
 
 

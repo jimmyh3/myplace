@@ -34,23 +34,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">myPlace</a>
+                    <a class="navbar-brand" href="<?php echo URL; ?>home/index">myPlace</a>
                 </div>
                 <div class="navbar-collapse collapse" id="searchbar">
 
                     <ul class="nav navbar-nav navbar-right">
-                        <!-- <li><a href="about.html">About</a></li>-->
-                        <!--<li id="userPage">
-                          <a href="#@userpage"><i class="icon-user"></i> My Page</a>
-                        </li>-->
-                        <li><a href="#post"><span class="glyphicon glyphicon-home"></span> Post</a></li>
-                        <li><a href="#post"><span class="glyphicon glyphicon-star"></span> Favs</a></li>
-
+                        <li><a href="<?php echo URL; ?>post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a></li>
+                        <li><a href="<?php echo URL; ?>msg" data-toggle="tooltip" data-placement="bottom" title="Student Messages"><span class="glyphicon glyphicon-inbox"></span> myMsg</a></li>
+                        
                         <li><a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-inglyphicon glyphicon-log-in"></span> Log in/Sign up</a></li>
                     </ul>
-                    <!-- <ul class="nav navbar-nav navbar-right">
-                       <li><a href="#" title="Start a new search">Clear</a></li>
-                     </ul>-->
 
 
 
