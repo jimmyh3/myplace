@@ -11,6 +11,11 @@ class Controller
      * @var null Model
      */
     public $model = null;
+    
+    /**
+     * @var null ApartmentDB
+     */
+    public $apartmentDB = null;
 
     /**
      * Whenever controller is created, open a database connection too and load "the model".
@@ -37,14 +42,16 @@ class Controller
         $this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
     }
 
-    /**
+    /** 
      * Loads the "model".
      * @return object model
      */
     public function loadModel()
     {
         require APP . 'model/model.php';
+        require APP . 'model/ApartmentDB.php';
         // create new "model" (and pass the database connection)
-        $this->model = new Model($this->db);
+        $this->model        = new Model($this->db);
+        $this->apartmentDB  = new ApartmentDB($this->db);
     }
 }
