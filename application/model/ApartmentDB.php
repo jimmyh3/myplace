@@ -220,16 +220,16 @@ class ApartmentDB{
         $queryKeys      = array_keys($query);
         $filterKeys     = array_keys($filters);
 
-        $sql = $sql . $sql_select;      //SELECT * FROM Apartments
+        $sql .= $sql_select;      //SELECT * FROM Apartments
 
         /* This entire IF is for creating the SQL Query */
         if ($queryKeys || $filterKeys)
         {
-            $sql = $sql . $sql_where;       //Append WHERE
+            $sql .= $sql_where;       //Append WHERE
 
             if ($queryKeys)
             {
-                $sql = $sql . $sql_openPrn; //Append "( "
+                $sql .= $sql_openPrn; //Append "( "
 
                 $queryKeysLen       = count($queryKeys);
                 $aprtQueryColsLen   = count($aprtQueryCols);
@@ -304,9 +304,8 @@ class ApartmentDB{
         $stmt->execute();
 
         /* Get all applicable apartments */
-        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $stmt->fetchAll();
 
-        return $apartmentRecords;
         
         /* Create and return an array of Apartments */
 //        $apartmentArray = array();

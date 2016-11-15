@@ -24,24 +24,38 @@ class Home extends Controller
     }
 
     public function search( ) {
-        $query = "default";
-        $filters = "default";
+        $query = "";
+        $filters = "";
         if( isset( $_POST['query']))    
             $query = $_POST['query'];
         if( isset($_POST['filters']))
             $filters = $_POST['filters'];
         
         $query_array = explode(" ", $query);
-         
-        $apartments = $this->model->getApartmentDB( $query_array, $filters);
+        
+        $apartments;
+        if( $filters == '') {
+            $apartments = $this->model->search( $query_array, array()); 
+        } else {
+            $result = array();
+            $filters = explode('&', $filters);
+            foreach( $filters as $filter) {
+                $key_value = explode( '=', $filter);
+                if( $key_value[ 1] !== '') $result[ $key_value[ 0]] = $key_value[ 1];
+            }
+            
+            $apartments = $this->model->search( $query_array, $result);
+        }
+        
         $results = "";
         if( !$apartments) {
             $results = "No Results!";
         } else {
-            $results .= $this->displayApartments( $apartments);   
+            $results .=  $this->displayApartments( $apartments);   
         }
 
         echo $results;
+        
     }
        
     public function displayApartments( $apartments)
@@ -53,7 +67,7 @@ class Home extends Controller
                 if( isset($apartment->thumbnail)) $results .= '<img src="data:image/jpeg;base64,'.base64_encode($apartment->thumbnail).'">';    
                 if( isset($apartment->actual_price)) $results .= '<div class="caption"><h4 class="pull-right">'.htmlspecialchars($apartment->actual_price, ENT_QUOTES, 'UTF-8').'</h4>';
                 if( isset($apartment->id)) $results .= '<h4><a href="#">'.htmlspecialchars($apartment->id, ENT_QUOTES, 'UTF-8').'</a></h4>';
-                if( isset($apartment->description)) $results .= htmlspecialchars($apartment->description, ENT_QUOTES, 'UTF-8');
+                if( isset($apartment->description)) $results .= htmlspecialchars($apartment->description, ENT_QUOTES, 'UTF-8');;
                 $results .='</div><div class="ratings"><button type="button" class="btn btn-primary btn-sm pull-right">Rent now</button>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal">See more details</button>
                             <div class="modal fade" id="aptModal" role="dialog">
@@ -143,11 +157,9 @@ class Home extends Controller
                                                         </div>
 
                                                         <div class="col-sm-6 col-height col-top">
-
-
-                                                            <h1> Description </h1>';
+                                                           <h1> Description </h1>';
                                                             
-                if( isset($apartment->description)) $results .= htmlspecialchars($apartment->description, ENT_QUOTES, 'UTF-8');
+                if( isset($apartment->description)) $results .= htmlspecialchars($apartment->description, ENT_QUOTES, 'UTF-8');;
                 $results .= '</div></div></div>
                                                 <div class="col-sm-6 col-height">
                                                     // map goes here
@@ -204,14 +216,21 @@ class Home extends Controller
     
     public function getFilters() {
         if( isset($_POST['filters'])) {
-            $result = array();
-            $filters = explode('&',$_POST['filters']);
-            foreach( $filters as $filter) {
-                $key_value = explode( '=', $filter);
-                if( $key_value[ 1] !== '') $result[ $key_value[ 0]] = $key_value[ 1];
-            }
-            echo $result;
+            echo $_POST['filters'];
         } else 
             echo "Filters not found";
     }
 }
+
+//SELECT * FROM Apartments 
+//    WHERE ( 
+//            rental_term LIKE '%%' 
+//            OR description LIKE '%%' 
+//            OR tags LIKE '%%') 
+//AND ( 0 = bedroom= AND 1 = min_price= 
+//            AND 2 = max_price= 
+//            AND 3 = zip_code= 
+//            AND 4 = begin_term= 
+//            AND 5 = end_term= 
+//            AND 6 = pet_friendly= 
+//            AND 7 = parking=)
