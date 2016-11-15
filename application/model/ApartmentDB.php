@@ -256,7 +256,8 @@ class ApartmentDB{
                  * "SELECT *
                  *  FROM Apartments
                  *  WHERE ( filterKey = value <AND <repeat >> ) "
-                 * 
+                 *   
+                 * ^^^vice versa if $filters was empty but $query was not^^^
                  */
             }
 
@@ -269,15 +270,17 @@ class ApartmentDB{
         /* Get all applicable apartments */
         $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+        return $apartmentRecords;
+        
         /* Create and return an array of Apartments */
-        $apartmentArray = array();
-        foreach ($apartmentRecords as $apartmentRecord)
-        {
-            $aprt = $this->dbRecordToApartment($apartmentRecord);
-            array_push($apartmentArray, $aprt);
-        }
-
-        return $apartmentArray;
+//        $apartmentArray = array();
+//        foreach ($apartmentRecords as $apartmentRecord)
+//        {
+//            $aprt = $this->dbRecordToApartment($apartmentRecord);
+//            array_push($apartmentArray, $aprt);
+//        }
+//
+//        return $apartmentArray;
         
     }
     
@@ -298,14 +301,16 @@ class ApartmentDB{
         /* Get all applicable apartments */
         $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        $apartmentArray = array();
-        foreach ($apartmentRecords as $apartmentRecord)
-        {
-            $aprt = $this->dbRecordToApartment($apartmentRecord);
-            array_push($apartmentArray, $aprt);
-        }
+        return $apartmentRecords;
         
-        return $apartmentArray;
+//        $apartmentArray = array();
+//        foreach ($apartmentRecords as $apartmentRecord)
+//        {
+//            $aprt = $this->dbRecordToApartment($apartmentRecord);
+//            array_push($apartmentArray, $aprt);
+//        }
+//        
+//        return $apartmentArray;
     }
     
     
