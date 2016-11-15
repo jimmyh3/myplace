@@ -3,7 +3,7 @@
 require APP . 'libs/Apartment.php';
 
 /**
- * Description of ApartmentDB
+ * ApartmentDB class is used to handle Apartments records from the database.
  *
  * @author Jimmy
  */
@@ -28,46 +28,55 @@ class ApartmentDB{
      */
     public function addApartment(Apartment $apt)
     {
+        $sql = "";  //SQL query to execute.
+        $sql_insert     = "INSERT INTO Apartments ";
+        $sql_values     = " VALUES ";
+        $sql_openPrn    = " ( ";
+        $sql_closePrn   = " ) ";
+        
         /* Get mapping of Apartments column names to Apartment object value */
         $aptColsValsArray  = $this->apartmentToDBRecord($apt);
         
-        $sql_apt_columns = "";  //stores: ( col1, col2, col3 ...)
-        $sql_apt_values  = "";  //stores: ( val1, val2, val3 ...)
+        $sqlAptColumns = "";  //stores: ( col1, col2, col3 ...)
+        $sqlAptValues  = "";  //stores: ( val1, val2, val3 ...)
         
         $colNames = array_keys($aptColsValsArray);
         /* Create Column and Value SQL string for INSERT */
         for ($i = 0; $i < count($aptColsValsArray); $i++)
         {
             /* Append column names together. */
-            $sql_apt_columns = $sql_apt_columns . $colNames[$i];
+            $sqlAptColumns = $sqlAptColumns . $colNames[$i];
             /* Append values of specific columns respectively. */
-            $sql_apt_values  = $sql_apt_values  . $aptColsValsArray[$colNames[$i]];
+            $sqlAptValues  = $sqlAptValues  . $aptColsValsArray[$colNames[$i]];
             
             /* Append comma for the next value */
             if (($i+1) < count($aptColsValsArray)){
-                $sql_apt_columns = $sql_apt_columns . " , ";
-                $sql_apt_values  = $sql_apt_values  . " , ";
+                $sqlAptColumns = $sqlAptColumns . " , ";
+                $sqlAptValues  = $sqlAptValues  . " , ";
             }
         }
         
+        //----------------------------------------------------------------------
         /* Create INSERT query with the column and value strings */
-        $sql = "INSERT INTO Apartments ( " . $sql_apt_columns . " ) " .
-               " VALUES ( " . $sql_apt_values . " ) ";
         
+        //e.g INSERT INTO Apartments ( <column names> ) VALUES ( <values> )
+        $sql = $sql_insert . $sql_openPrn . $sqlAptColumns . $sql_closePrn .
+               $sql_values . $sql_openPrn . $sqlAptValues  . $sql_closePrn ;
+         
         /* Execute the assembled INSERT query */
         $stmt = $this->db->prepare($sql);
         if ($stmt === false)
         {
-            throw new Exception('Could not prepare apartment delete query');
+            throw new Exception('Could not prepare apartment INSERT query');
         }
         
         $result = $stmt->execute();
         if ($result === false)
         {
-            throw new Exception('Could not run post update query');
+            throw new Exception('Could not execute apartment INSERT query');
         }
         
-        return 1 ;
+        return true ;
     }
     
     
@@ -75,28 +84,47 @@ class ApartmentDB{
      * Delete the targeted database apartment record with the given id.
      * 
      * @param int $apt_id - unique apartment ID to target.
-     * @throws Exception if the query failed.
-     * @return boolean false for failure, true for success.
+     * @throws Exception - if the query failed.
+     * @return boolean - true for success.
      */
     public function deleteApartment($apt_id)
     {
-        //WARNING: does the Database automatically drop 'image' as well? <<-----------------------------
+        if ($apt_id === NULL) return false; //Need id to target Apartments record
         
-        if ($apt_id === NULL) return false;
+        /*
+         * 'Image' record is set to delete if 'Apartments' record is delete, so
+         * this Image deletion block might not be needed but is kept just in case.
+         */
+//        $sqlImage  = "DELETE FROM Image WHERE apartment_id = :apartment_id";
+//        
+//        /* Create and execute the DELETE Image query */
+//        $stmtImage = $this->db->prepare($sqlImage);
+//        if ($stmtImage === false)
+//        {
+//            throw new Exception('Could not prepare apartment DELETE query');
+//        }
+//        
+//        $resultImage = $stmtImage->execute(array("id" => $apt_id));
+//        if ($resultImage === false)
+//        {
+//            throw new Exception('Could not execute apartment DELETE query');
+//        }
+//        
         
+        //----------------------------------------------------------------------
         $sql  = "DELETE FROM Apartments WHERE id = :id";
         
-        /* Create and execute the DELETE query */
+        /* Create and execute the DELETE Apartment query */
         $stmt = $this->db->prepare($sql);
         if ($stmt === false)
         {
-            throw new Exception('Could not prepare apartment delete query');
+            throw new Exception('Could not prepare apartment DELETE query');
         }
         
         $result = $stmt->execute(array("id" => $apt_id));
         if ($result === false)
         {
-            throw new Exception('Could not run post update query');
+            throw new Exception('Could not execute apartment DELETE query');
         }
         
         return true;
@@ -104,7 +132,7 @@ class ApartmentDB{
     
     
     /**
-     * Update an apartment database record.
+     * Update the apartment database record based on the given Apartment object.
      * 
      * @throws Exception if query somehow failed.
      * @param Apartment $apt
@@ -114,40 +142,48 @@ class ApartmentDB{
     {
         if ($apt->apartment_id === NULL) return false;  //Need apartment_id to UPDATE
         
+        $sql = "";  //SQL query to execute;
+        $sql_update_set = "UPDATE Apartments SET ";
+        $sql_where      = " WHERE ";
+        
+        /* Get array mapping of column names to the Apartment object values */
         $aptColsArray = $this->apartmentToDBRecord($apt);
         
         /* This is for SET-ting values of this apartment */
-        $sql_set_values = "";
+        $sqlSETValues = "";
+        
         /* Append all apartment table columns with their values for SET */
         $colKeys = array_keys($aptColsArray);
         for ($i = 0; $i < count($colKeys); $i++)
         {
-            $sql_set_values = $sql_set_values . $colKeys[$i] . " = " . $aptColsArray[$colKeys[$i]];
+            $sqlSETValues = $sqlSETValues . 
+                            $colKeys[$i]  . " = " . $aptColsArray[$colKeys[$i]];
             
             if (($i + 1) < count($colKeys))
             {
-                $sql_set_values = $sql_set_values . " , "; //Append comma for set value
+                $sqlSETValues = $sqlSETValues . " , "; //Append comma for set value
             }
         }
         
-        /* Create initial piece of UPDATE query */
-        $sql = "UPDATE Apartments SET ";
-        /* Append SET [col = val ...] */
-        $sql = $sql . $sql_set_values;
-        /* Append WHERE along with the targeted apartment ID */
-        $sql = $sql . " WHERE id = :id"; 
+        //---------------------------------------------------------------------
+        
+        /* Create UPDATE query */
+        $sql = $sql . $sql_update_set;  /* UPDATE Apartments SET */
+        $sql = $sql . $sqlSETValues;    /* Append SET [col = val ...] */
+        $sql = $sql . $sql_where;       /* Append WHERE */
+        $sql = $sql . " id = :id ";     /* Append 'id' as target with parameter */
 
         /* Prepare and Execute the UPDATE Statement */
         $stmt = $this->db->prepare($sql);
         if ($stmt === false)
         {
-            throw new Exception('Could not prepare apartment update query');
+            throw new Exception('Could not prepare apartment UPDATE query');
         }
         
         $result = $stmt->execute(array("id" => $apt->apartment_id));
         if ($result === false)
         {
-            throw new Exception('Could not execute apartment update query');
+            throw new Exception('Could not execute apartment UPDATE query');
         }
         
         return true;
@@ -376,17 +412,6 @@ class ApartmentDB{
      */
     private function apartmentToDBRecord(Apartment $apt)
     {
-        $tagStr = "";
-        /* Convert tags array to String */
-        for ($i = 0; $i < count($apt->tags); $i++)
-        {
-            $tagStr = $tagStr . $apt->tags[$i];
-            
-            if (($i + 1) < count($apt->tags)) { //Append comma for next tag.
-                $tagStr = $tagStr . ",";
-            }
-        }
-        
         /*
          * TODO: Apartment->thumbnail and Apartment->image  need implementing.
          * Blob values which are string seems to be causing issues. I assume it
@@ -406,8 +431,22 @@ class ApartmentDB{
                                 "description"   => "'" . $apt->description . "'",
                                 "bedroom"       => $apt->bedroom,
                                 //"thumbnail"     => "'" . $apt->thumbnail   . "'",
-                                "tags"          => "'" . $tagStr . "'");
+                                );
         
+        /* Convert Apartment->tags array to a single string with comma separation */  
+        $tagStr = "";
+        
+        for ($i = 0; $i < count($apt->tags); $i++)
+        {
+            $tagStr = $tagStr . $apt->tags[$i];
+            
+            if (($i + 1) < count($apt->tags)) { //Append comma for next tag.
+                $tagStr = $tagStr . ",";
+            }
+        }
+        
+        /* Add the newly converted tag string to the array */
+        $aptColsArray['tags'] = "'" . $tagStr . "'";
         
         return $aptColsArray;
     }
