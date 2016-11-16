@@ -94,11 +94,6 @@ input[type=text]:focus {
 
 
     <body>
-
-
-
-
-
         <!--http://www.bootply.com/t7O3HSGlbc-->         
 
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -123,10 +118,12 @@ input[type=text]:focus {
 
 
                     <form class="navbar-form">
-                        
-                    	<form id="tfnewsearch" method="get" action="http://www.google.com">
-                        <input type="text" class="tftextinput" name="q" size="21" maxlength="120"><input type="submit" value="search" class="tfbutton">
-                        
+                        <div class="form-group" style="display:inline;">
+                            <div class="input-group" style="display:table;">
+                                <input class="form-control" id="search_bar" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
+                                <span class="input-group-addon" id="ajax_search" style="width:1%;cursor:pointer;cursor:hand;"><span class="glyphicon glyphicon-search"></span></span>
+                            </div>
+                        </div>
                     </form>
 
                 </div><!--/.nav-collapse -->
