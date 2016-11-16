@@ -55,13 +55,12 @@ footer {
 
 
 #headerwrap {
-	background: url(https://blueandgoldfleet.files.wordpress.com/2012/05/golden-gate-bridge-long1.jpg) no-repeat center top;
+	background: url('../img/ggbridge2.jpg') no-repeat center top;
         padding-bottom: 30px;
 	text-align:center;
 	background-attachment: relative;
 	background-position: center center;
-	min-height: 700px;
-	width: 100%;
+        background-size: 100% 50%;
 	
     -webkit-background-size: 100%;
     -moz-background-size: 100%;

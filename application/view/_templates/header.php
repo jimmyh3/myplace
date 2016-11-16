@@ -15,7 +15,7 @@
         <link href="<?php echo URL; ?>css/shop-homepage.css" rel="stylesheet">
         <link href="<?php echo URL; ?>css/bootstrap.css" rel="stylesheet">
 
-        
+            
         
         
     </head>
