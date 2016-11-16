@@ -15,9 +15,9 @@
         <link href="<?php echo URL; ?>css/shop-homepage.css" rel="stylesheet">
         <link href="<?php echo URL; ?>css/bootstrap.css" rel="stylesheet">
 
-            
-        
-        
+
+
+
     </head>
 
 
@@ -44,18 +44,23 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="<?php echo URL; ?>post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a></li>
                         <li><a href="<?php echo URL; ?>msg" data-toggle="tooltip" data-placement="bottom" title="Messages"><span class="glyphicon glyphicon-inbox"></span> myMsg</a></li>
-                        
+
                         <li><a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-inglyphicon glyphicon-log-in"></span> Log in/Sign up</a></li>
                     </ul>
 
 
 
                     <form class="navbar-form">
-                        
-                    	<form id="tfnewsearch" method="get" action="http://www.google.com">
-                        <input type="text" class="tftextinput" name="q" size="21" maxlength="120"><input type="submit" value="search" class="tfbutton">
-                        
+                        <div class="form-group" style="display:inline;">
+                            <div class="input-group" style="display:table;">
+                                <input class="form-control" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
+                                <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
+                            </div>
+                        </div>
                     </form>
+                    
+                    <!-- Disclaimer at bottom of nav bar -->
+                    <p class="disclaimer">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only</p>
 
                 </div><!--/.nav-collapse -->
             </div>
@@ -198,8 +203,3 @@
                 </div>
             </div>
         </div>
-        
-
-        <!-- Disclaimer at top of every page -->
-        <h2 style="text-align: center; vertical-align: middle;">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only.</h2>
-        
