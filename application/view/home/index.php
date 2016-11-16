@@ -287,7 +287,7 @@
 
                                                     <h1> Map </h1>
 
-                                                    <div id="map" style="width:400px;height:400px;background:yellow"></div>
+                                                    <div id="map" style="width:400px;height:400px;background:gray"></div>
 
                                                     <script>
                                                         function myMap() {
@@ -299,7 +299,7 @@
                                                         }
                                                     </script>
 
-                                                    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+                                                    <script src="https://maps.googleapis.com/maps/api/?callback=myMap"></script>
 
                                                 </div>
 

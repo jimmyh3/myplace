@@ -1,5 +1,7 @@
 <div class="container">
   <h2>myPosts</h2>
+<a class="btn btn-success pull-right" data-toggle="modal" data-target="#aptModal">Add Apartment</a>
+
   <p>Insert Page Results</p>
 <div class="row">
 
@@ -127,12 +129,41 @@ function test_input($data) {
   <input type="radio" name="pet" <?php if (isset($pet) && $pet=="yes") echo "checked";?> value="yes">Yes
   <input type="radio" name="pet" <?php if (isset($pet) && $pet=="no") echo "checked";?> value="no">No
   <br><br>
-  Upload Images: <input type="text" name="title" value="<?php echo $title;?>">
+  <!--Upload Images: <input type="text" name="title" value="<?php echo $title;?>">
   <span class="error"><?php echo $websiteErr;?></span>
   <br><br>
   <br><br>
-  <input type="submit" name="submit" value="Post Apartment">  
+  <input type="submit" name="submit" value="Post Apartment">  -->
+  
+      <div class="panel panel-default">
+        <div class="panel-heading"><strong>Upload Files</strong></div>
+        <div class="panel-body">
+
+          <!-- Standar Form -->
+          <h4>Select files from your computer</h4>
+          <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+            <div class="form-inline">
+              <div class="form-group">
+                <input type="file" name="files[]" id="js-upload-files" multiple>
+              </div>
+              <button type="submit" class="btn btn-sm btn-primary">Upload files</button>
+            </div>
+          </form>
+
+         
+         
+        </div>
+      </div>
+ 
+  
+  
 </form>
+
+
+
+
+
+
                                           <p>Adds Apartment to myPost</p>
                                         </div>
                                         <div class="modal-footer">
