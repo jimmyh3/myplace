@@ -37,7 +37,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo URL; ?>home/index">myPlace</a>
+                    <a class="navbar-brand" href="<?php echo URL; ?>home/index">myPlace &nbsp; &nbsp; &nbsp; &nbsp;</a>
                 </div>
                 <div class="navbar-collapse collapse" id="searchbar">
 
@@ -53,7 +53,7 @@
                     <form class="navbar-form">
                         <div class="form-group" style="display:inline;">
                             <div class="input-group" style="display:table;">
-                                <input class="form-control" name="search" placeholder="Search Here" autocomplete="off" autofocus="autofocus" type="text">
+                                <input class="form-control" name="search" placeholder="Enter zip code" autocomplete="off" autofocus="autofocus" type="text">
                                 <span class="input-group-addon" style="width:1%;"><span class="glyphicon glyphicon-search"></span></span>
                             </div>
                         </div>

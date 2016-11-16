@@ -158,7 +158,7 @@
                         <div class="ratings">
                             <button type="button" class="btn btn-success btn-sm pull-right">Rent now</button>
 
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal">See more details</button>
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal">Details</button>
 
 
 
