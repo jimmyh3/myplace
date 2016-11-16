@@ -69,8 +69,11 @@
         <!-- Modal  http://bootsnipp.com/snippets/featured/sign-in-sign-up-dual-modal -->
         <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
+                
                 <div class="modal-content">
-                    <br>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
                     <div class="bs-example bs-example-tabs">
                         <ul id="myTab" class="nav nav-tabs">
                             <li class="active"><a href="#signin" data-toggle="tab">Sign In</a></li>
@@ -113,7 +116,7 @@
                                         <!-- Button -->
                                         <div class="control-group">
                                             <label class="control-label" for="signin"></label>
-                                            <div class="controls">
+                                            <div class="controls text-right">
                                                 <button id="signin" name="signin" class="btn btn-success">Sign In</button>
                                             </div>
                                         </div>
@@ -186,7 +189,7 @@
                                         <!-- Button -->
                                         <div class="control-group">
                                             <label class="control-label" for="confirmsignup"></label>
-                                            <div class="controls">
+                                            <div class="controls text-right">
                                                 <button id="confirmsignup" name="confirmsignup" class="btn btn-success">Sign Up</button>
                                             </div>
                                         </div>
@@ -194,11 +197,6 @@
                                 </form>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <center>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        </center>
                     </div>
                 </div>
             </div>
