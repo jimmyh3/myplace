@@ -124,7 +124,6 @@
             <div class="row" id="results">
                 <?php echo $this->search(); ?>
             </div>
-
         </div>
 
     </div>
