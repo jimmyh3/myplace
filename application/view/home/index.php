@@ -12,7 +12,7 @@
 		</div><!-- /container -->
 	</div><!-- /headerwrap -->   
 
-<div class="container" style="padding-top: 30px;" id="mainPage">
+<div class="container" style="padding-top: 30px;">
      
         <div class="pull-right">
             Total apartments: 50
