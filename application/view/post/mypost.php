@@ -17,7 +17,7 @@
                 <div class="ratings">
                     <div style="width:100%;text-align: center;">
                         <button style="display: inline-block;" type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#aptModal">Edit Post</button>
-                        <button style="display: inline-block;" type="button" class="btn btn-primary btn-sm">View Messages</button>
+                        <a href="<?php echo URL; ?>msg" <button style="display: inline-block;" type="button" class="btn btn-primary btn-sm">View Messages</button></a>
                         <button style="display: inline-block;" type="button" class="btn btn-danger btn-sm pull-right">Delete Post</button>
 
                     </div>
@@ -88,9 +88,8 @@
                                     }
                                     ?>
 
-                                    <h2 class="lead"> Fill/Edit Apartment Description Form</h2>
-                                    <p><span class="error">* required field.</span></p>
-                                    <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
+                                    <p class="text-right"><span class="error">* required field.</span></p>
+                                   <!-- <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
                                         Contact Name: <input type="text" name="name" value="<?php echo $name; ?>">
                                         <span class="error">* <?php echo $nameErr; ?></span>
                                         <br><br>
@@ -124,7 +123,7 @@
                                         Parking Available:
                                         <input type="radio" name="parking" <?php if (isset($parking) && $parking == "yes") echo "checked"; ?> value="yes">Yes
                                         <input type="radio" name="parking" <?php if (isset($parking) && $parking == "no") echo "checked"; ?> value="no">No
-                                        <!-- <span class="error">* <?php echo $parkingErr; ?></span> -->
+                                        <!-- <span class="error">* <?php echo $parkingErr; ?></span> --
                                         <br><br>
                                         Pet Friendly:
                                         <input type="radio" name="pet" <?php if (isset($pet) && $pet == "yes") echo "checked"; ?> value="yes">Yes
@@ -136,25 +135,142 @@
                                         <br><br>
                                         <input type="submit" name="submit" value="Post Apartment">  -->
 
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading"><strong>Upload Files</strong></div>
-                                            <div class="panel-body">
 
-                                                <!-- Standar Form -->
-                                                <h4>Select files from your computer</h4>
-                                                <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
-                                                    <div class="form-inline">
-                                                        <div class="form-group">
-                                                            <input type="file" name="files[]" id="js-upload-files" multiple>
-                                                        </div>
-                                                        <button type="submit" class="btn btn-sm btn-primary">Upload files</button>
-                                                    </div>
-                                                </form>
-
-
-
+                                    <form class="form-horizontal">
+                                        <fieldset>
+                                            <!-- Text input-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="name">*Contact name:</label>
+                                                <div class="controls">
+                                                    <input id="name" name="name" class="form-control" type="text" placeholder="Bob" class="input-large" required="true">
+                                                </div>
                                             </div>
+
+                                            <!-- Text input-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="email">*Contact email:</label>
+                                                <div class="controls">
+                                                    <input id="email" name="email" class="form-control" type="text" placeholder="bob@mail.sfsu.edu" class="input-large" required="true">
+                                                </div>
+                                            </div>
+
+                                            <!-- Text input-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="number">*Contact number:</label>
+                                                <div class="controls">
+                                                    <input id="number" name="number" class="form-control" type="text" placeholder="(123) 456-7890" class="input-large" required="true">
+                                                </div>
+                                            </div>
+
+                                            <!-- Bedrooms input-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="bedroom_sel">*Bedrooms:</label>
+                                                <select class="form-control" id="bedroom_sel" required="true">
+                                                    <option>Any</option>
+                                                    <option>1</option>
+                                                    <option>2</option>
+                                                    <option>3+</option>
+                                                </select>
+                                            </div>
+
+
+                                            <!-- Price input-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="price">*Price:</label>
+                                                <div class="controls">
+                                                    <input id="number" name="price" class="form-control" type="text" placeholder="1000" class="input-lg" required="true">
+                                                </div>
+                                            </div>
+
+                                            <label class="control-label" for="term">*Availability Term:</label>
+
+                                            <div class="input-group">
+
+                                                <select class="form-control" id="start_term_sel" required="true">
+                                                    <option>Any</option>
+                                                    <option>January</option>
+                                                    <option>February</option>
+                                                    <option>March</option>
+                                                    <option>April</option>
+                                                    <option>May</option>
+                                                    <option>June</option>
+                                                    <option>July</option>
+                                                    <option>August</option>
+                                                    <option>September</option>
+                                                    <option>October</option>
+                                                    <option>November</option>
+                                                    <option>December</option>
+                                                </select>
+
+
+
+
+                                                <span class="input-group-addon">-</span>
+                                                <select class="form-control" id="end_term_sel" required="true">
+                                                    <option>Any</option>
+                                                    <option>January</option>
+                                                    <option>February</option>
+                                                    <option>March</option>
+                                                    <option>April</option>
+                                                    <option>May</option>
+                                                    <option>June</option>
+                                                    <option>July</option>
+                                                    <option>August</option>
+                                                    <option>September</option>
+                                                    <option>October</option>
+                                                    <option>November</option>
+                                                    <option>December</option>
+                                                </select>
+                                            </div>
+
+                                            <!-- Text input-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="zipcode">*Zip Code:</label>
+                                                <div class="controls">
+                                                    <input id="zipcode" name="zipcode" class="form-control" type="text" placeholder="94132" class="input-large" required="true">
+                                                </div>
+                                            </div>
+
+                                            <div class="control-group">
+
+                                                <label  class="control-label" for="desc">Description:</label>
+                                                <div class="controls">
+                                                    <textarea class="form-control" class="input-large" rows="5" id="desc"></textarea>
+                                                </div> 
+                                            </div>
+
+                                            <div class="checkbox" class="list-group-item">
+                                                <label> <input type="checkbox" value="">Pet Friendly</label>
+                                            </div>
+
+                                            <div class="checkbox" class="list-group-item">
+                                                <label> <input type="checkbox" value="">Parking Available</label>
+                                            </div>
+
+
+
+                                        </fieldset>
+                                    </form>
+
+                                    <!--<div class="panel panel-default">
+                                        <div class="panel-heading"><strong>Upload Files</strong></div>
+                                        <div class="panel-body">
+
+                                    <!-- Standar Form --
+                                    <h4>Select files from your computer</h4>
+                                    <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
+                                        <div class="form-inline">
+                                            <div class="form-group">
+                                                <input type="file" name="files[]" id="js-upload-files" multiple>
+                                            </div>
+                                            <button type="submit" class="btn btn-sm btn-primary">Upload files</button>
                                         </div>
+                                    </form>
+
+
+
+                                </div>
+                            </div>-->
 
 
 
@@ -165,7 +281,7 @@
 
 
 
-                                    <p>Adds Apartment to myPost</p>
+                                    <p><strong>IMAGE UPLOAD FUNCTION HERE </strong></p>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
