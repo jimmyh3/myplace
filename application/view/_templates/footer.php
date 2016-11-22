@@ -74,7 +74,13 @@ $('#myCarousel').on('slid', function (e) {
     });
 </script>
 
-
+<script>
+$(document).ready(function(){
+    $("#contactLandlordButton").click(function(){
+        $("#landlordInfo").toggle("slow");
+    });
+});
+</script>
 
 
 

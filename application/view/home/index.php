@@ -1,23 +1,23 @@
 <div id="headerwrap">
-		<div class="container">
-			<div class="row">
-				<h1>myPlace</h1>
-				<br>
-				<h3>Apartments for SFSU students</h3>
-				<br>
-				<br>
-				<div class="col-lg-6 col-lg-offset-3">
-				</div>
-			</div>
-		</div><!-- /container -->
-	</div><!-- /headerwrap -->   
+    <div class="container">
+        <div class="row">
+            <h1>myPlace</h1>
+            <br>
+            <h3>Apartments for SFSU students</h3>
+            <br>
+            <br>
+            <div class="col-lg-6 col-lg-offset-3">
+            </div>
+        </div>
+    </div><!-- /container -->
+</div><!-- /headerwrap -->   
 
 <div class="container" style="padding-top: 30px;">
-     
-        <div class="pull-right">
-            Total apartments: 50
-            </div>
-        
+
+    <div class="pull-right">
+        Total apartments: 50
+    </div>
+
     <div class="row">
 
         <div class="col-md-3">
@@ -147,12 +147,12 @@
                         <div class="caption">
                             <h4 class="pull-right">$Price</h4>
                             <h4><a href="" data-toggle="modal" data-target="#aptModal">Title</a></h4>
-                             <ul class="columns" data-columns="2">
+                            <ul class="columns" data-columns="2">
                                 <li>Rent Term:</li>
                                 <li>Num of Bedrooms:</li>
                                 <li>Area Code:</li>
                                 <li>Tags:</li>
-                                
+
                             </ul>
                         </div>
                         <div class="ratings">
@@ -276,8 +276,8 @@
                                                                 Proin ante magna, facilisis quis egestas a, volutpat eu risus. Nullam quis malesuada ante. Nunc auctor porta
                                                                 risus et scelerisque
                                                             </p>
-                                                            
-                                                           
+
+
 
                                                         </div>
                                                     </div>
@@ -317,16 +317,21 @@
                                                         <li> <strong>Tags: </strong>Spacious, comfy, inviting</li>
                                                     </ul>
 
-                                                        <button type="button" class="btn btn-success btn-lg">Rent now</button>
+                                                    <button type="button" class="btn btn-success btn-lg">Rent now</button>
 
-                                                        <p>
-                                                            <br>
-                                                            Or need more information before renting apartment? Contact landlord below.
-                                                            <br>
-                                                        </p>
-                                                        
-                                                        <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#contactLandlord">Contact Landlord</button>
+                                                    <p>
+                                                        <br>
+                                                        Or need more information before renting apartment? Contact landlord below.
+                                                        <br>
+                                                    </p>
 
+                                                    <button id ="contactLandlordButton" type="button" class="btn btn-info btn-sm">Contact Landlord</button>
+                                                    <p style ="display: none;" id="landlordInfo">
+                                                        <br>
+                                                        Name: <br>
+                                                        Email: <br>
+                                                        Phone number: <br>
+                                                    </p>
                                                     <div id="contactLandlord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
                                                         <div class="modal-dialog">
                                                             <div class="modal-content">
@@ -342,25 +347,13 @@
                                                                         <div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
                                                                     </form>
                                                                 </div>
-                                                                <div class="modal-footer">
-                                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-
-
-                                                    </p>
-
-
                                                 </div>
-
-
                                             </div>
                                         </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
