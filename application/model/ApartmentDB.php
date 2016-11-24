@@ -204,7 +204,7 @@ class ApartmentDB{
         $sql_select     = "SELECT * FROM Apartments ";
         $sql_where      = "WHERE ";
         $sql_like       = " LIKE ";
-        $sql_openPrcnt  = "'%";         //IMPORTANT: there is no space after "'%".
+        $sql_openPrcnt  = "'%";    //IMPORTANT: no space after "'%" to isolate value.
         $sql_closePrcnt = "%'";
         $sql_or         = " OR ";
         $sql_and        = " AND ";
@@ -213,8 +213,15 @@ class ApartmentDB{
         $sql_equal      = " = ";
 
         /* These are the apartment table columns $query will 'LIKE %' against. */
-        $aprtQueryCols  = array("rental_term",
+        $aprtQueryCols  = array("area_code",
+                                "actual_price",
+                                "begin_term",
+                                "end_term",
+                                "rental_term",
+                                //"parking",      //is 1 or 0, too vague to match.
+                                //"pet_friendly", //is 1 or 0, too vague to match.
                                 "description",
+                                "bedroom",
                                 "tags"        );
 
         $queryKeys      = array_keys($query);
