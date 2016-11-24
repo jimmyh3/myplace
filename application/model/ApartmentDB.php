@@ -300,11 +300,11 @@ class ApartmentDB{
         }
         
         /* Execute the Query */
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute();
+       // $stmt = $this->db->prepare($sql);
+       // $stmt->execute();
 
         /* Get all applicable apartments */
-        return $stmt->fetchAll();
+       // return $stmt->fetchAll();
 
         
         /* Create and return an array of Apartments */
