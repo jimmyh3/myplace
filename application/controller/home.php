@@ -30,22 +30,23 @@ class Home extends Controller
             $query = $_POST['query'];
         if( isset($_POST['filters']))
             $filters = $_POST['filters'];
-        
+       
         $query_array = explode(" ", $query);
         
-        $apartments;
-        if( $filters == '') {
-            $apartments = $this->model->search( $query_array, array()); 
-        } else {
-            $result = array();
-            $filters = explode('&', $filters);
-            foreach( $filters as $filter) {
-                $key_value = explode( '=', $filter);
-                if( $key_value[ 1] !== '') $result[ $key_value[ 0]] = $key_value[ 1];
+        $filters_array = array();
+        /* Converts any "%##" (unsafe characters) to its actual value */
+        /* Creates an array of key value pairs based on a URL argument string */
+        parse_str(rawurldecode($filters), $filters_array);
+        
+        foreach (array_keys($filters_array) as $value)
+        {
+            /* Remove empty value elements in array */
+            if ($filters_array[$value] === ''){
+                unset($filters_array[$value]);
             }
-            
-            $apartments = $this->model->search( $query_array, $result);
         }
+        
+        $apartments = $this->model->search( $query_array, $filters_array);
         
         $results = "";
         if( !$apartments) {
@@ -55,6 +56,33 @@ class Home extends Controller
         }
 
         echo $results;
+        
+//        ---------------PREVIOUS VERSION-------------------
+//        
+//        $query_array = explode(" ", $query);
+//        
+//        $apartments;
+//        if( $filters == '') {
+//            $apartments = $this->model->search( $query_array, array()); 
+//        } else {
+//            $result = array();
+//            $filters = explode('&', $filters);
+//            foreach( $filters as $filter) {
+//                $key_value = explode( '=', $filter);
+//                if( $key_value[ 1] !== '') $result[ $key_value[ 0]] = $key_value[ 1];
+//            }
+//            
+//            $apartments = $this->model->search( $query_array, $result);
+//        }
+//        
+//        $results = "";
+//        if( !$apartments) {
+//            $results = "No Results!";
+//        } else {
+//            $results .=  $this->displayApartments( $apartments);   
+//        }
+//
+//        echo $results;
         
     }
       
