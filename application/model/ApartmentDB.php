@@ -363,7 +363,7 @@ class ApartmentDB{
     private function search_query(array $query)
     {
         
-        $sql            = "";
+        $sql            = "";   //The SQL query to execute
         $sql_select     = "SELECT * FROM Apartments ";
         $sql_where      = " WHERE ";
         $sql_like       = " LIKE ";
@@ -392,10 +392,10 @@ class ApartmentDB{
         $sql .= ($queryCount > 0) ? $sql_where : ""; //Append WHERE
         
         $i = 0; //index for $query
-        foreach (array_key($query) as $query_val)
+        foreach ($query as $query_val)
         {
             $j = 0; //index for aprt_cols
-            foreach (array_keys($aprt_cols) as $aprt_col)
+            foreach ($aprt_cols as $aprt_col)
             {
                 $sql .= $aprt_col;          //Append apartent_column_name
                 $sql .= $sql_like;          //Append LIKE
@@ -410,6 +410,8 @@ class ApartmentDB{
             $i++;
         }
         
+        return $sql;
+        
         /*
          * Resulting $sql =
          * "SELECT *
@@ -421,6 +423,37 @@ class ApartmentDB{
     
     private function search_filters(array $filters)
     {
+        $sql            = "";   //The SQL query to execute
+        $sql_select     = "SELECT * FROM Apartments ";
+        $sql_where      = " WHERE ";
+        $sql_and        = " AND ";
+        $sql_equal      = " = ";
+        
+        $filtersCount     = count($filters);
+        
+        /* Begin SQL query creation */
+        $sql .= $sql_select;                           //"SELECT * FROM Apartments
+        $sql .= ($filtersCount > 0) ? $sql_where : ""; //Append WHERE
+        
+        $i = 0;
+        foreach ($filters as $f_key=>$f_val)
+        {
+            $sql .= $f_key;         //Append filter_key
+            $sql .= $sql_equal;     //Append " = "
+            $sql .= $f_val;         //Append filter_value
+            $sql .= (($i + 1) < $filtersCount) ? $sql_and : "";
+            
+            $i++;
+        }
+        
+        return $sql;
+        
+        /*
+         * Resulting $sql =
+         * "SELECT *
+         *  FROM Apartments
+         *  WHERE ( tags LIKE $query[$i] <OR <repeat tags LIKE >> ) "
+         */
         
     }
     
