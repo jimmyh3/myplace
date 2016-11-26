@@ -24,116 +24,118 @@
             <p class="lead">Refine your search</p>
             <div class="panel panel-footer clearfix">
 
-                <div class="form-group">
-                    <label for="sort_by_sel">Sort By:</label>
-                    <select class="form-control" id="sort_by_sel">
-                        <option>Any</option>
-                        <option>Price: Low to High</option>
-                        <option>Price: High to Low</option>
-                        <option>Distance: Closest to SFSU</option>
-                    </select>
-                </div>
+                <form>
+                    <div class="form-group">
+                        <label for="sort_by_sel">Sort By:</label>
+                        <select class="form-control" id="sort_by_sel">
+                            <option>Any</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                            <option>Distance: Closest to SFSU</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label for="bedroom_sel">Bedrooms:</label>
-                    <select class="form-control" id="bedroom_sel">
-                        <option>Any</option>
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3+</option>
-                    </select>
-                </div>
-
-
-
-                <div class="form-group">
-                    <label for="price_sel">Price:</label>
-                    <select class="form-control" id="price_sel">
-                        <option>Any</option>
-                        <option>Lowest to highest</option>
-                        <option>Highest to lowest</option>
-                        <option>Less than $500</option>
-                        <option>Between $500 and $999</option>
-                        <option>Between $1000 and $1499</option>
-                        <option>$1500+</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label for="bedroom_sel">Bedrooms:</label>
+                        <select class="form-control" id="bedroom_sel">
+                            <option>Any</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3+</option>
+                        </select>
+                    </div>
 
 
 
-                <div class="form-group">
-                    <label for="distance_sel">Distance:</label>
-                    <select class="form-control" id="distance_sel">
-                        <option>Any</option>
-                        <option>Less than 0.5 miles</option>
-                        <option>Between 0.5 and 0.9 miles</option>
-                        <option>Between 1.0 and 1.4 miles</option>
-                        <option>1.5+ miles</option>
-                    </select>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="area_code">Zip code:</label>
-                    <input type="text" class="form-control" id="zip_code" placeholder="Any">
-                </div>
+                    <div class="form-group">
+                        <label for="price_sel">Price:</label>
+                        <select class="form-control" id="price_sel">
+                            <option>Any</option>
+                            <option>Lowest to highest</option>
+                            <option>Highest to lowest</option>
+                            <option>Less than $500</option>
+                            <option>Between $500 and $999</option>
+                            <option>Between $1000 and $1499</option>
+                            <option>$1500+</option>
+                        </select>
+                    </div>
 
 
 
-                <label>Availability Term:</label>
-                <div class="input-group">
-                    <select class="form-control" id="start_term_sel">
-                        <option>Any</option>
-                        <option>January</option>
-                        <option>February</option>
-                        <option>March</option>
-                        <option>April</option>
-                        <option>May</option>
-                        <option>June</option>
-                        <option>July</option>
-                        <option>August</option>
-                        <option>September</option>
-                        <option>October</option>
-                        <option>November</option>
-                        <option>December</option>
-                    </select>
+                    <div class="form-group">
+                        <label for="distance_sel">Distance:</label>
+                        <select class="form-control" id="distance_sel">
+                            <option>Any</option>
+                            <option>Less than 0.5 miles</option>
+                            <option>Between 0.5 and 0.9 miles</option>
+                            <option>Between 1.0 and 1.4 miles</option>
+                            <option>1.5+ miles</option>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="area_code">Zip code:</label>
+                        <input type="text" class="form-control" id="zip_code" placeholder="Any">
+                    </div>
+
+
+
+                    <label>Availability Term:</label>
+                    <div class="input-group">
+                        <select class="form-control" id="start_term_sel">
+                            <option>Any</option>
+                            <option>January</option>
+                            <option>February</option>
+                            <option>March</option>
+                            <option>April</option>
+                            <option>May</option>
+                            <option>June</option>
+                            <option>July</option>
+                            <option>August</option>
+                            <option>September</option>
+                            <option>October</option>
+                            <option>November</option>
+                            <option>December</option>
+                        </select>
 
 
 
 
-                    <span class="input-group-addon">-</span>
-                    <select class="form-control" id="end_term_sel">
-                        <option>Any</option>
-                        <option>January</option>
-                        <option>February</option>
-                        <option>March</option>
-                        <option>April</option>
-                        <option>May</option>
-                        <option>June</option>
-                        <option>July</option>
-                        <option>August</option>
-                        <option>September</option>
-                        <option>October</option>
-                        <option>November</option>
-                        <option>December</option>
-                    </select>
-                </div>
+                        <span class="input-group-addon">-</span>
+                        <select class="form-control" id="end_term_sel">
+                            <option>Any</option>
+                            <option>January</option>
+                            <option>February</option>
+                            <option>March</option>
+                            <option>April</option>
+                            <option>May</option>
+                            <option>June</option>
+                            <option>July</option>
+                            <option>August</option>
+                            <option>September</option>
+                            <option>October</option>
+                            <option>November</option>
+                            <option>December</option>
+                        </select>
+                    </div>
 
 
 
-                <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" value="">Pet Friendly</label>
-                </div>
+                    <div class="checkbox" class="list-group-item">
+                        <label> <input type="checkbox" value="">Pet Friendly</label>
+                    </div>
 
-                <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" value="">Parking Available</label>
-                </div>
+                    <div class="checkbox" class="list-group-item">
+                        <label> <input type="checkbox" value="">Parking Available</label>
+                    </div>
 
 
 
-                <input type="submit" class="btn btn-danger" value="Clear">
+                    <input type="reset" class="btn btn-danger" value="Clear">
 
-                <input type="submit" class="btn btn-info pull-right" value="Refine">
+                    <input type="submit" class="btn btn-info pull-right" value="Refine">
+                </form>
             </div>
         </div>
 
