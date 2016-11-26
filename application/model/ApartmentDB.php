@@ -277,9 +277,17 @@ class ApartmentDB{
                 $filterKeysLen   = count($filters);
                 for ($i = 0; $i < $filterKeysLen; $i++)
                 {
-                    $sql = $sql . $filterKeys[$i];           //Append first key.
-                    $sql = $sql . $sql_equal;                //Append "= "
-                    $sql = $sql . $filters[$filterKeys[$i]]; //Append first value.
+                    $filterValue = $filters[$filterKeys[$i]];
+                    if (is_array($filterValue))
+                    {
+                        $sql = $sql . searchRange($filterKeys[$i], $filterValue);
+                    }
+                    else
+                    {
+                        $sql = $sql . $filterKeys[$i];           //Append key.
+                        $sql = $sql . $sql_equal;                //Append "= "
+                        $sql = $sql . $filters[$filterKeys[$i]]; //Append value.
+                    }
                     if (($i + 1) < $filterKeysLen) { $sql = $sql . $sql_and; }
                 }
 
@@ -357,6 +365,55 @@ class ApartmentDB{
     
     
     //--------------------PRIVATE HELPER FUNCTIONS------------------------------
+    
+    /**
+     * Helper method to generate a SQL BETWEEN query piece for the search() function.
+     * <p>Example: "( colname BETWEEN min AND max )"  </p>
+     * 
+     * @see search($query, $filters) - the calling method.
+     * @param String $colName - column to apply the SQL BETWEEN query against.
+     * @param array $min_max - array of at least 2 values, being minumum and maximum.
+     * @return string - a parentheses SQL BETWEEN query to append to parent query.
+     * @throws Exception - if given array is not at least size 2.
+     */
+    private function search_range($colName, array $min_max)
+    {
+        $sql = "";  //SQL query to execute.
+        $sql_between    = " BETWEEN ";
+        $sql_and        = " AND ";
+        $sql_openPrn    = " ( ";
+        $sql_closePrn   = " ) ";
+        $sql_maxInt     = "~0";     //largest BigINT ...for MySQL only I believe.
+        $sql_minInt     = "-(~0)";  //largest BigINT multipled by negative.
+
+        $min_max_keys   = array_keys($min_max);
+        
+        /* empty array return empty string. */
+        $min_max_size   = count($min_max);
+        
+        if ($min_max_size >= 2)
+        {
+            $temp_min = $min_max[$min_max_keys[0]];
+            $temp_max = $min_max[$min_max_keys[1]];
+            
+            $min = (is_numeric($temp_min)) ? $temp_min : $sql_minInt;
+            $max = (is_numeric($temp_max)) ? $temp_max : $sql_maxInt;
+            
+            /* Create SQL query for using BETWEEN sytax */
+            $sql = $sql . $sql_openPrn;     // (
+            $sql = $sql . $colName;         // ( colname
+            $sql = $sql . $sql_between;     // ( colname BETWEEN
+            $sql = $sql . $min;             // ( colname BETWEEN min
+            $sql = $sql . $sql_and;         // ( colname BETWEEN min AND
+            $sql = $sql . $max;             // ( colname BETWEEN min AND max
+            $sql = $sql . $sql_closePrn;    // ( colname BETWEEN min AND max )  
+        }else{
+            throw Exception("ApartmentDB->searchRange() requires an array of at least size 2!");
+        }
+        
+        return $sql;
+    }
+    
     
     /**
      * Helper method to convert a database apartment record into an Apartment
