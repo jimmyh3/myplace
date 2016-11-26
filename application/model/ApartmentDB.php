@@ -366,6 +366,16 @@ class ApartmentDB{
     
     //--------------------PRIVATE HELPER FUNCTIONS------------------------------
     
+    private function search_query(array $query)
+    {
+        
+    }
+    
+    private function search_filters(array $filters)
+    {
+        
+    }
+    
     /**
      * Helper method to generate a SQL BETWEEN query piece for the search() function.
      * <p>Example: "( colname BETWEEN min AND max )"  </p>
