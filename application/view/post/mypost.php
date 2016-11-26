@@ -274,14 +274,23 @@
 
 
 
+                                    
+                                    
+                                    <form>
+                                        <div class="form-group multiple-form-group" data-max=10>
+				<label>Upload Images (max 10):</label>
+
+				<div class="form-group input-group">
+					<input type="file" accept="image/png" name="images[]" class="form-control">
+						<span class="input-group-btn">
+                                                    <button type="button" class="btn btn-success btn-add">+</button>
+                                                </span>
+				</div>
+			</div>
                                     </form>
-
-
-
-
-
-
-                                    <p><strong>IMAGE UPLOAD FUNCTION HERE </strong></p>
+                                    
+                                    
+                                    
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
