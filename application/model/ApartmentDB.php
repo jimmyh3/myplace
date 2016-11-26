@@ -91,27 +91,6 @@ class ApartmentDB{
     {
         if ($apt_id === NULL) return false; //Need id to target Apartments record
         
-        /*
-         * 'Image' record is set to delete if 'Apartments' record is delete, so
-         * this Image deletion block might not be needed but is kept just in case.
-         */
-//        $sqlImage  = "DELETE FROM Image WHERE apartment_id = :apartment_id";
-//        
-//        /* Create and execute the DELETE Image query */
-//        $stmtImage = $this->db->prepare($sqlImage);
-//        if ($stmtImage === false)
-//        {
-//            throw new Exception('Could not prepare apartment DELETE query');
-//        }
-//        
-//        $resultImage = $stmtImage->execute(array("id" => $apt_id));
-//        if ($resultImage === false)
-//        {
-//            throw new Exception('Could not execute apartment DELETE query');
-//        }
-//        
-        
-        //----------------------------------------------------------------------
         $sql  = "DELETE FROM Apartments WHERE id = :id";
         
         /* Create and execute the DELETE Apartment query */
@@ -189,7 +168,6 @@ class ApartmentDB{
         return true;
     }
     
-    
     /**
      * Search the database and return apartments that contains at least some of 
      * the values referenced by the given arrays of search parameters.
@@ -198,114 +176,39 @@ class ApartmentDB{
      * @param associative array $filters - values to look through specific columns.
      * @return array $apartments - an array of Apartments from the database.
      */
-    public function search(array $query, array $filters){
-
-        $sql            = "";
-        $sql_select     = "SELECT * FROM Apartments ";
-        $sql_where      = "WHERE ";
-        $sql_like       = " LIKE ";
-        $sql_openPrcnt  = "'%";    //IMPORTANT: no space after "'%" to isolate value.
-        $sql_closePrcnt = "%'";
-        $sql_or         = " OR ";
-        $sql_and        = " AND ";
-        $sql_openPrn    = "( ";
-        $sql_closePrn   = ") ";
-        $sql_equal      = " = ";
-
-        /* These are the apartment table columns $query will 'LIKE %' against. */
-        $aprtQueryCols  = array("area_code",
-                                "actual_price",
-                                "begin_term",
-                                "end_term",
-                                "rental_term",
-                                //"parking",      //is 1 or 0, too vague to match.
-                                //"pet_friendly", //is 1 or 0, too vague to match.
-                                "description",
-                                "bedroom",
-                                "tags"        );
-
-        $queryKeys      = array_keys($query);
-        $filterKeys     = array_keys($filters);
-
-        $sql .= $sql_select;      //SELECT * FROM Apartments
-
-        /* This entire IF is for creating the SQL Query */
-        if ($queryKeys || $filterKeys)
+    public function search(array $query, array $filters)
+    {
+        /* Default - get all Apartments */
+        $sql = "SELECT * FROM Apartments ";
+        
+        if (!empty($query) || !empty($filters))
         {
-            $sql .= $sql_where;       //Append WHERE
+            /* SQL statement for formatting */
+            $sql_stmt = "SELECT 
+                            %s.* 
+                        FROM 
+                            (%s) AS %s
+                        INNER JOIN
+                            (%s) AS %s
+                        ON 
+                            %s.id = %s.id
+                        UNION 
+                            (%s)";
 
-            if ($queryKeys)
-            {
-                $sql .= $sql_openPrn; //Append "( "
+            $sql_queryID    = "x1"; //SQL Alias
+            $sql_filtersID  = "x2"; //SQL Alias
 
-                $queryKeysLen       = count($queryKeys);
-                $aprtQueryColsLen   = count($aprtQueryCols);
-                for ($i = 0; $i < $queryKeysLen; $i++)
-                {
-                    for ($j = 0; $j < $aprtQueryColsLen; $j++)
-                    {
-                        $sql = $sql . $aprtQueryCols[$j];    //Append 'rental_term' || 'description' || 'tags'
-                        $sql = $sql . $sql_like;             //Append LIKE
-                        $sql = $sql . $sql_openPrcnt;        //Append "%"
-                        $sql = $sql . $query[$queryKeys[$i]];//Append "value"
-                        $sql = $sql . $sql_closePrcnt;       //Append "% "
-                        if (($j + 1) < $aprtQueryColsLen) { $sql = $sql . $sql_or; }
-                    }
-                    if (($i + 1) < $queryKeysLen) { $sql = $sql . $sql_or; }
-                }
+            $sql_query      = $this->search_query($query);
+            $sql_filters    = $this->search_filters($filters);
 
-                $sql = $sql . $sql_closePrn;    //Append ") "
-
-                /*
-                 * Resulting $sql =
-                 * "SELECT *
-                 *  FROM Apartments
-                 *  WHERE ( tags LIKE $query[$i] <OR <repeat tags LIKE >> ) "
-                 */
-
-            }
-
-            if ($queryKeys && $filterKeys)
-            {
-                $sql = $sql . $sql_and;         //Append AND
-            }
-
-            if ($filterKeys)
-            {
-                $sql = $sql . $sql_openPrn;     //Append "( "
-
-                $filterKeysLen   = count($filters);
-                for ($i = 0; $i < $filterKeysLen; $i++)
-                {
-                    $filterValue = $filters[$filterKeys[$i]];
-                    $sql = $sql . $filterKeys[$i];           //Append key.
-                    $sql = $sql . $sql_equal;                //Append "= "
-                    $sql = $sql . $filters[$filterKeys[$i]]; //Append value.
-                    
-                    if (($i + 1) < $filterKeysLen) { $sql = $sql . $sql_and; }
-                }
-
-                $sql = $sql . $sql_closePrn;    //Append ") "
-
-                /*
-                 * Resulting $sql =
-                 * "SELECT *
-                 *  FROM Apartments
-                 *  WHERE ( tags LIKE $query[$i] <OR <repeat tags LIKE >> )  
-                 *  AND ( filterKey = value <AND <repeat >> ) "
-                 * 
-                 * IF $query was passed in as empty but $filter wasn't then this
-                 * is the actual result:
-                 * 
-                 * Resulting $sql =
-                 * "SELECT *
-                 *  FROM Apartments
-                 *  WHERE ( filterKey = value <AND <repeat >> ) "
-                 *   
-                 * ^^^vice versa if $filters was empty but $query was not^^^
-                 */
-            }
-
+            /* Replace parameterized SQL statement string with values */
+            $sql = sprintf( $sql_stmt, 
+                            $sql_filtersID,
+                            $sql_query,   $sql_queryID,
+                            $sql_filters, $sql_filtersID,
+                            $sql_queryID, $sql_filtersID,
+                            $sql_filters);
+            
         }
         
         /* Execute the Query */
@@ -314,20 +217,31 @@ class ApartmentDB{
 
         /* Get all applicable apartments */
         return $stmt->fetchAll();
-
         
-        /* Create and return an array of Apartments */
-//        $apartmentArray = array();
-//        foreach ($apartmentRecords as $apartmentRecord)
-//        {
-//            $aprt = $this->dbRecordToApartment($apartmentRecord);
-//            array_push($apartmentArray, $aprt);
-//        }
-//
-//        return $apartmentArray;
+        /*
+         * Resulting SQL example =
+         * "
+         * SELECT x2.* FROM 
+         * (
+         *         SELECT * FROM f16g14.apartments
+         *         WHERE (tags LIKE '%value%' <repeat)
+         * ) AS x1
+         * INNER JOIN
+         * (
+         *         SELECT * FROM f16g14.apartments
+         *         WHERE (area_code = 94116, (actual_price BETWEEN min AND max))
+         * ) AS x2
+         * ON
+         * (x1.id = x2.id)
+         * UNION
+         * (
+         *         SELECT * FROM f16g14.apartments
+         *         WHERE (area_code = 94116, (actual_price BETWEEN min AND max))
+         * )
+         * "
+         */     
         
     }
-    
     
     /**
      * Retrieve all Apartments belonging to a landlord of the specified ID.
@@ -346,20 +260,20 @@ class ApartmentDB{
         $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
         return $apartmentRecords;
-        
-//        $apartmentArray = array();
-//        foreach ($apartmentRecords as $apartmentRecord)
-//        {
-//            $aprt = $this->dbRecordToApartment($apartmentRecord);
-//            array_push($apartmentArray, $aprt);
-//        }
-//        
-//        return $apartmentArray;
     }
     
     
-    //--------------------PRIVATE HELPER FUNCTIONS------------------------------
+    /*
+     * --------------------PRIVATE HELPER FUNCTIONS-----------------------------
+     */
     
+    /**
+     * Helper method for search($query, $filters) to handle the $query argument.
+     * 
+     * @see search($query, $filters) 
+     * @param array $query - list of values to look for in Apartment records.
+     * @return String $sql - an SQL query to execute to get specific Apartment records.
+     */
     private function search_query(array $query)
     {
         
@@ -382,7 +296,6 @@ class ApartmentDB{
                             "description",
                             "bedroom",
                             "tags"        );
-        
         
         $queryCount     = count($query);
         $aprt_colsCount = count($aprt_cols);
@@ -413,14 +326,23 @@ class ApartmentDB{
         return $sql;
         
         /*
-         * Resulting $sql =
+         * Resulting $sql example =
          * "SELECT *
          *  FROM Apartments
-         *  WHERE ( tags LIKE $query[$i] <OR <repeat tags LIKE >> ) "
+         *  WHERE ( tags LIKE '%$query[$i]%' <OR <repeat tags LIKE >> ) "
+         * 
+         * or returns "SELECT * FROM Apartments" if $query size is zero
          */
         
     }
     
+    /**
+     * Helper method for search($query, $filters) to handle the $filters argument.
+     * 
+     * @see search($query, $filters) 
+     * @param array $filters - list of key-values
+     * @return String $sql - an SQL query to execute to get specific Apartment records.
+     */
     private function search_filters(array $filters)
     {
         $sql            = "";   //The SQL query to execute
@@ -449,10 +371,12 @@ class ApartmentDB{
         return $sql;
         
         /*
-         * Resulting $sql =
+         * Resulting $sql example =
          * "SELECT *
          *  FROM Apartments
-         *  WHERE ( tags LIKE $query[$i] <OR <repeat tags LIKE >> ) "
+         *  WHERE ( col_name = value <AND <repeat>> ) "
+         * 
+         * or returns "SELECT * FROM Apartments" if $query size is zero
          */
         
     }
@@ -491,13 +415,13 @@ class ApartmentDB{
             $max = (is_numeric($temp_max)) ? $temp_max : $sql_maxInt;
             
             /* Create SQL query for using BETWEEN sytax */
-            $sql = $sql . $sql_openPrn;     // (
-            $sql = $sql . $colName;         // ( colname
-            $sql = $sql . $sql_between;     // ( colname BETWEEN
-            $sql = $sql . $min;             // ( colname BETWEEN min
-            $sql = $sql . $sql_and;         // ( colname BETWEEN min AND
-            $sql = $sql . $max;             // ( colname BETWEEN min AND max
-            $sql = $sql . $sql_closePrn;    // ( colname BETWEEN min AND max )  
+            $sql .= $sql_openPrn;     // (
+            $sql .= $colName;         // ( colname
+            $sql .= $sql_between;     // ( colname BETWEEN
+            $sql .= $min;             // ( colname BETWEEN min
+            $sql .= $sql_and;         // ( colname BETWEEN min AND
+            $sql .= $max;             // ( colname BETWEEN min AND max
+            $sql .= $sql_closePrn;    // ( colname BETWEEN min AND max )  
         }else{
             throw Exception("ApartmentDB->search_range() requires an array of at least size 2!");
         }
@@ -573,7 +497,6 @@ class ApartmentDB{
          * apostrophes which may cause SQL to believe they're new arguments.
          */
         
-       
         $aptColsArray = array(  "user_id"       => $apt->user_id,
                                 "area_code"     => $apt->areaCode,
                                 "actual_price"  => $apt->actualPrice,
