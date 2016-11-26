@@ -278,16 +278,10 @@ class ApartmentDB{
                 for ($i = 0; $i < $filterKeysLen; $i++)
                 {
                     $filterValue = $filters[$filterKeys[$i]];
-                    if (is_array($filterValue))
-                    {
-                        $sql = $sql . searchRange($filterKeys[$i], $filterValue);
-                    }
-                    else
-                    {
-                        $sql = $sql . $filterKeys[$i];           //Append key.
-                        $sql = $sql . $sql_equal;                //Append "= "
-                        $sql = $sql . $filters[$filterKeys[$i]]; //Append value.
-                    }
+                    $sql = $sql . $filterKeys[$i];           //Append key.
+                    $sql = $sql . $sql_equal;                //Append "= "
+                    $sql = $sql . $filters[$filterKeys[$i]]; //Append value.
+                    
                     if (($i + 1) < $filterKeysLen) { $sql = $sql . $sql_and; }
                 }
 
@@ -369,6 +363,60 @@ class ApartmentDB{
     private function search_query(array $query)
     {
         
+        $sql            = "";
+        $sql_select     = "SELECT * FROM Apartments ";
+        $sql_where      = " WHERE ";
+        $sql_like       = " LIKE ";
+        $sql_openPrcnt  = "'%";    //IMPORTANT: no space after "'%" to isolate value.
+        $sql_closePrcnt = "%'";
+        $sql_or         = " OR ";
+        
+        /* These are the apartment table columns $query will 'LIKE %' against. */
+        $aprt_cols  = array("area_code",
+                            "actual_price",
+                            "begin_term",
+                            "end_term",
+                            "rental_term",
+                            //"parking",      //is 1 or 0, too vague to match.
+                            //"pet_friendly", //is 1 or 0, too vague to match.
+                            "description",
+                            "bedroom",
+                            "tags"        );
+        
+        
+        $queryCount     = count($query);
+        $aprt_colsCount = count($aprt_cols);
+        
+        /* Begin SQL query creation */
+        $sql .= $sql_select;                         //"SELECT * FROM Apartments
+        $sql .= ($queryCount > 0) ? $sql_where : ""; //Append WHERE
+        
+        $i = 0; //index for $query
+        foreach (array_key($query) as $query_val)
+        {
+            $j = 0; //index for aprt_cols
+            foreach (array_keys($aprt_cols) as $aprt_col)
+            {
+                $sql .= $aprt_col;          //Append apartent_column_name
+                $sql .= $sql_like;          //Append LIKE
+                $sql .= $sql_openPrcnt;     //Append '%
+                $sql .= $query_val;         //Append query_search_value
+                $sql .= $sql_closePrcnt;    //Append %'
+                $sql .= (($j + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR
+                
+                $j++;
+            }
+            $sql .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
+            $i++;
+        }
+        
+        /*
+         * Resulting $sql =
+         * "SELECT *
+         *  FROM Apartments
+         *  WHERE ( tags LIKE $query[$i] <OR <repeat tags LIKE >> ) "
+         */
+        
     }
     
     private function search_filters(array $filters)
@@ -418,7 +466,7 @@ class ApartmentDB{
             $sql = $sql . $max;             // ( colname BETWEEN min AND max
             $sql = $sql . $sql_closePrn;    // ( colname BETWEEN min AND max )  
         }else{
-            throw Exception("ApartmentDB->searchRange() requires an array of at least size 2!");
+            throw Exception("ApartmentDB->search_range() requires an array of at least size 2!");
         }
         
         return $sql;
