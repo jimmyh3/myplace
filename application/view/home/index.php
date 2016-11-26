@@ -22,7 +22,7 @@
 
         <div class="col-md-3">
             <p class="lead">Refine your search</p>
-            <div class="panel panel-footer">
+            <div class="panel panel-footer clearfix">
 
                 <div class="form-group">
                     <label for="sort_by_sel">Sort By:</label>
@@ -131,8 +131,9 @@
 
 
 
+                <input type="submit" class="btn btn-danger" value="Clear">
 
-                <input type="submit" class="btn btn-info" value="Refine">
+                <input type="submit" class="btn btn-info pull-right" value="Refine">
             </div>
         </div>
 
@@ -156,7 +157,7 @@
                             </ul>
                         </div>
                         <div class="ratings">
-                            <button type="button" class="btn btn-success btn-sm pull-right">Rent now</button>
+                            <button type="button" class="btn btn-success btn-sm pull-right"   data-toggle="modal" data-target="#contactLandlord">Rent now</button>
 
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal">Details</button>
 
@@ -215,7 +216,8 @@
                                                                                     <img src="http://placehold.it/1200x480&amp;text=eight" class="img-responsive">
                                                                                 </div>
                                                                             </div>
-                                                                            <!-- main slider carousel nav controls --> <a class="carousel-control left" href="#myCarousel" data-slide="prev">‹</a>
+                                                                            <!-- main slider carousel nav controls --> 
+                                                                            <a class="carousel-control left" href="#myCarousel" data-slide="prev">‹</a>
 
                                                                             <a class="carousel-control right" href="#myCarousel" data-slide="next">›</a>
                                                                         </div>
@@ -317,7 +319,7 @@
                                                         <li> <strong>Tags: </strong>Spacious, comfy, inviting</li>
                                                     </ul>
 
-                                                    <button type="button" class="btn btn-success btn-lg">Rent now</button>
+                                                    <button type="button" class="btn btn-success btn-lg"  data-toggle="modal" data-target="#contactLandlord">Rent now</button>
 
                                                     <p>
                                                         <br>
@@ -325,35 +327,25 @@
                                                         <br>
                                                     </p>
 
-                                                    <button id ="contactLandlordButton" type="button" class="btn btn-info btn-sm">Contact Landlord</button>
-                                                    <p style ="display: none;" id="landlordInfo">
+                                                    <button id="contactLandlordButton" type="button" class="btn btn-info btn-sm">Contact Landlord</button>
+
+                                                    <p style="display: none;" id="landlordInfo">
                                                         <br>
                                                         Name: <br>
                                                         Email: <br>
-                                                        Phone number: <br>
+                                                        Phone: <br>
                                                     </p>
-                                                    <div id="contactLandlord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                    <h3 id="myModalLabel">Contact form</h3>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form class="form-horizontal col-sm-12">
-                                                                        <div class="form-group"><label>Name</label><input class="form-control required" placeholder="Your name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters." type="text"></div>
-                                                                        <div class="form-group"><label>E-Mail</label><input class="form-control email" placeholder="email@you.com (so that we can contact you)" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" type="text"></div>
-                                                                        <div class="form-group"><label>Message</label><textarea class="form-control" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
-                                                                        <div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
-                                                                    </form>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+
+
+
                                                 </div>
+
+
                                             </div>
                                         </div>
-
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -362,6 +354,28 @@
                         </div>
 
 
+                    </div>
+
+                </div>
+                <div id="contactLandlord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                <h3 id="myModalLabel">Contact form</h3>
+                            </div>
+                            <div class="modal-body">
+                                <form class="form-horizontal col-sm-12">
+                                    <div class="form-group"><label>Name</label><input class="form-control required" placeholder="Your name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters." type="text"></div>
+                                    <div class="form-group"><label>E-Mail</label><input class="form-control email" placeholder="email@you.com (so that we can contact you)" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" type="text"></div>
+                                    <div class="form-group"><label>Message</label><textarea class="form-control" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
+                                    <div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -464,4 +478,7 @@
 
     </div>
 
+
+
 </div>
+
