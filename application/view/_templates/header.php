@@ -107,7 +107,7 @@
                                             </div>
                                         </div>
 
-
+                                        <br>
                                         <div id="signinForm_errorloc"></div>
 
 
@@ -124,22 +124,22 @@
 
                             <!-- Register tab -->    
                             <div class="tab-pane fade" id="signup">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" name="registerForm" id="registerForm">
                                     <fieldset>
                                         <!-- Sign Up Form -->
                                         <!-- Text input-->
                                         <div class="control-group">
                                             <label class="control-label" for="Email">Email:</label>
                                             <div class="controls">
-                                                <input id="Email" name="Email" class="form-control" type="email" placeholder="bob@mail.sfsu.edu" class="input-large" required="true">
+                                                <input id="Email" name="Email" class="form-control" type="text" placeholder="bob@mail.sfsu.edu" class="input-large">
                                             </div>
                                         </div>
 
                                         <!-- Text input-->
                                         <div class="control-group">
-                                            <label class="control-label" for="userid">Username:</label>
+                                            <label class="control-label" for="Username">Username:</label>
                                             <div class="controls">
-                                                <input id="userid" name="userid" class="form-control" type="text" placeholder="bob" class="input-large" required="true">
+                                                <input id="Username" name="Username" class="form-control" type="text" placeholder="bob" class="input-large">
                                             </div>
                                         </div>
 
@@ -147,8 +147,8 @@
                                         <div class="control-group">
                                             <label class="control-label" for="password">Password:</label>
                                             <div class="controls">
-                                                <input id="password" name="password" class="form-control" type="password" placeholder="********" class="input-large" required="true">
-                                                <em>1-8 Characters</em>
+                                                <input id="Password" name="Password" class="form-control" type="password" placeholder="********" class="input-large">
+                                                <em>6-20 Characters</em>
                                             </div>
                                         </div>
 
@@ -156,7 +156,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="reenterpassword">Re-Enter Password:</label>
                                             <div class="controls">
-                                                <input id="reenterpassword" class="form-control" name="reenterpassword" type="password" placeholder="********" class="input-large" required="true">
+                                                <input id="Reenterpassword" class="form-control" name="Reenterpassword" type="password" placeholder="********" class="input-large">
                                             </div>
                                         </div>
 
@@ -165,25 +165,29 @@
                                         <div class="control-group">
                                             <label class="control-label" for="humancheck">Register as a:</label>
                                             <div class="controls" style="padding-left: 20px;">
-                                                <label class="radio inline" for="humancheck-0">
-                                                    <input type="radio" name="humancheck" id="humancheck-0" value="robot" required>SFSU Student</label>
-                                                <label class="radio inline" for="humancheck-1">
-                                                    <input type="radio" name="humancheck" id="humancheck-1" value="human" required>Landlord</label>
+                                                <label class="radio inline" for="student">
+                                                    <input type="radio" name="registerAs" id="registerAs" value="student">SFSU Student</label>
+                                                <label class="radio inline" for="landlord">
+                                                    <input type="radio" name="registerAs" id="registerAs" value="landlord">Landlord</label>
                                             </div>
                                         </div>
 
                                         <br>
                                         <div class="control-group">
-                                            <label class="control-label" for="rememberme">Terms and Conditions:</label>
+                                            <label class="control-label">Terms and Conditions:</label>
                                             <div class="controls" style="padding-left: 20px;">
-                                                <label class="checkbox inline " for="rememberme-0">
-                                                    <input  required="true" type="checkbox" name="rememberme" id="rememberme-0" value="Remember me">
+                                                <label class="checkbox inline " for="privacyAgt">
+                                                    <input type="checkbox" name="privacyAgt" id="privacyAgt" value="acceot">
                                                     I have read the privacy agreement and accept the terms
                                                 </label>
                                             </div>
                                         </div>  
 
 
+                                        <br>
+                                        <div id="registerForm_errorloc"></div>
+
+                                        
                                         <!-- Button -->
                                         <div class="control-group">
                                             <label class="control-label" for="confirmsignup"></label>
