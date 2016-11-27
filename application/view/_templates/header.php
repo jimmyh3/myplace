@@ -93,7 +93,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="userid">Email:</label>
                                             <div class="controls">
-                                                <input required="true" id="userid" name="userid" type="text" class="form-control" placeholder="bob@mail.sfsu.edu" class="input-medium" required="">
+                                                <input id="userid" name="userid" type="email" class="form-control" placeholder="bob@mail.sfsu.edu" class="input-medium" required>
                                             </div>
 
 
@@ -103,7 +103,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="passwordinput">Password:</label>
                                             <div class="controls">
-                                                <input required="true" id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium">
+                                                <input id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium" required>
                                             </div>
                                         </div>
 
@@ -131,7 +131,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="Email">Email:</label>
                                             <div class="controls">
-                                                <input id="Email" name="Email" class="form-control" type="text" placeholder="bob@mail.sfsu.edu" class="input-large" required="true">
+                                                <input id="Email" name="Email" class="form-control" type="email" placeholder="bob@mail.sfsu.edu" class="input-large" required="true">
                                             </div>
                                         </div>
 

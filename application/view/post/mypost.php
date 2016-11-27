@@ -30,7 +30,7 @@
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                                     <h4 class="modal-title">Post/Edit Apartment</h4>
                                 </div>
-                                <div class="modal-body">
+                                <div class="modal-body clearfix">
                                     <?php
 // define variables and set to empty values
                                     $nameErr = $emailErr = $genderErr = $websiteErr = "";
@@ -166,7 +166,7 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="bedroom_sel">*Bedrooms:</label>
                                                 <select class="form-control" id="bedroom_sel" required="true">
-                                                    <option>Any</option>
+                                                    <option value="">Any</option>
                                                     <option>1</option>
                                                     <option>2</option>
                                                     <option>3+</option>
@@ -187,7 +187,7 @@
                                             <div class="input-group">
 
                                                 <select class="form-control" id="start_term_sel" required="true">
-                                                    <option>Any</option>
+                                                    <option value="">Any</option>
                                                     <option>January</option>
                                                     <option>February</option>
                                                     <option>March</option>
@@ -207,7 +207,7 @@
 
                                                 <span class="input-group-addon">-</span>
                                                 <select class="form-control" id="end_term_sel" required="true">
-                                                    <option>Any</option>
+                                                    <option value="">Any</option>
                                                     <option>January</option>
                                                     <option>February</option>
                                                     <option>March</option>
@@ -247,54 +247,25 @@
                                                 <label> <input type="checkbox" value="">Parking Available</label>
                                             </div>
 
+                                
+                                        <div class="control-group multiple-form-group" data-max=10>
+                                            <label>Upload Images (max 10):</label>
 
-
-                                        </fieldset>
-                                    </form>
-
-                                    <!--<div class="panel panel-default">
-                                        <div class="panel-heading"><strong>Upload Files</strong></div>
-                                        <div class="panel-body">
-
-                                    <!-- Standar Form --
-                                    <h4>Select files from your computer</h4>
-                                    <form action="" method="post" enctype="multipart/form-data" id="js-upload-form">
-                                        <div class="form-inline">
-                                            <div class="form-group">
-                                                <input type="file" name="files[]" id="js-upload-files" multiple>
-                                            </div>
-                                            <button type="submit" class="btn btn-sm btn-primary">Upload files</button>
-                                        </div>
-                                    </form>
-
-
-
-                                </div>
-                            </div>-->
-
-
-
-                                    
-                                    
-                                    <form>
-                                        <div class="form-group multiple-form-group" data-max=10>
-				<label>Upload Images (max 10):</label>
-
-				<div class="form-group input-group">
-					<input type="file" accept="image/png" name="images[]" class="form-control">
-						<span class="input-group-btn">
+                                            <div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                <input type="file" accept="image/png" name="images[]" class="form-control">
+                                                <span class="input-group-btn">
                                                     <button type="button" class="btn btn-success btn-add">+</button>
                                                 </span>
-				</div>
-			</div>
+                                            </div>
+                                        </div>
+
+
+                                    <button type="submit" class="btn btn-success pull-right">Submit</button>
+                                      </fieldset>
                                     </form>
                                     
-                                    
-                                    
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                </div>
+                                
                             </div>
                         </div>
                     </div>
