@@ -41,6 +41,8 @@
 
 <script src="<?php echo URL; ?>js/bootstrap.js"></script>
 
+<script src="<?php echo URL; ?>js/gen_validatorv4.js" xml:space="preserve"></script>
+
 <script type="text/javascript">
    $('#myCarousel').carousel({
     interval: false
@@ -132,6 +134,21 @@ $(document).ready(function(){
 })(jQuery);
 </script>
 
+
+
+<script language="JavaScript" type="text/javascript" xml:space="preserve">
+ var frmvalidator  = new Validator("signinForm");
+ frmvalidator.EnableOnPageErrorDisplaySingleBox();
+ frmvalidator.EnableMsgsTogether();
+
+    
+  frmvalidator.addValidation("Email","maxlen=50");
+  frmvalidator.addValidation("Email","req");
+  frmvalidator.addValidation("Email","email");
+  
+  frmvalidator.addValidation("Password","req");
+
+</script>
 
 
 <!-- our JavaScript -->

@@ -86,14 +86,14 @@
 
                             </div>
                             <div class="tab-pane fade active in" id="signin">
-                                <form class="form-horizontal">
+                                <form class="form-horizontal" name="signinForm" id="signinForm">
                                     <fieldset>
                                         <!-- Sign In Form -->
                                         <!-- Text input-->
                                         <div class="control-group">
-                                            <label class="control-label" for="userid">Email:</label>
+                                            <label class="control-label" for="Emai;">Email:</label>
                                             <div class="controls">
-                                                <input id="userid" name="userid" type="email" class="form-control" placeholder="bob@mail.sfsu.edu" class="input-medium" required>
+                                                <input id="email" name="Email" type="text" class="form-control" placeholder="bob@mail.sfsu.edu" class="input-medium">
                                             </div>
 
 
@@ -103,12 +103,12 @@
                                         <div class="control-group">
                                             <label class="control-label" for="passwordinput">Password:</label>
                                             <div class="controls">
-                                                <input id="passwordinput" name="passwordinput" class="form-control" type="password" placeholder="********" class="input-medium" required>
+                                                <input id="password" name="Password" class="form-control" type="password" placeholder="********" class="input-medium">
                                             </div>
                                         </div>
 
 
-
+                                        <div id="signinForm_errorloc"></div>
 
 
                                         <!-- Button -->
