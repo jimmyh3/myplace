@@ -137,50 +137,91 @@
 
 
 <script type="text/javascript" xml:space="preserve">
-    var frmvalidator = new Validator("signinForm");
-    frmvalidator.EnableOnPageErrorDisplaySingleBox();
-    frmvalidator.EnableMsgsTogether();
+    var signinValidator = new Validator("signinForm");
+    signinValidator.EnableOnPageErrorDisplaySingleBox();
+    signinValidator.EnableMsgsTogether();
 
 
-    frmvalidator.addValidation("Email", "maxlen=50");
-    frmvalidator.addValidation("Email", "req");
-    frmvalidator.addValidation("Email", "email");
+    signinValidator.addValidation("Email", "maxlen=50");
+    signinValidator.addValidation("Email", "req");
+    signinValidator.addValidation("Email", "email");
 
-    frmvalidator.addValidation("Password", "req");
-    frmvalidator.addValidation("Password", "minlen=6");
-    frmvalidator.addValidation("Password", "maxlen="20);
+    signinValidator.addValidation("Password", "req");
+    signinValidator.addValidation("Password", "maxlen=50");
+
+
+</script>
+
+
+<script type="text/javascript" >
+    var registerValidator = new Validator("registerForm");
+    registerValidator.EnableOnPageErrorDisplaySingleBox();
+    registerValidator.EnableMsgsTogether();
+
+    registerValidator.addValidation("Email", "req");
+    registerValidator.addValidation("Email", "maxlen=50");
+    registerValidator.addValidation("Email", "email");
+
+    registerValidator.addValidation("Username", "req");
+    registerValidator.addValidation("Username", "minlen=3");
+    registerValidator.addValidation("Username", "maxlen=50");
+
+
+    registerValidator.addValidation("Password", "req");
+    registerValidator.addValidation("Password", "minlen=6");
+    registerValidator.addValidation("Password", "maxlen=20");
+
+    //registerValidator.addValidation("Reenterpassword","req", "Please confirm your password");
+    registerValidator.addValidation("Reenterpassword", "eqelmnt=Password", "Passwords do not match");
+
+    registerValidator.addValidation("registerAs", "selone", "Please select to register as a student or landlord");
+
+    registerValidator.addValidation("privacyAgt", "shouldselchk=accept", "You must agree to terms and agreement to register");
 
 
 </script>
 
+<script type="text/javascript" >
 
-<script type="text/javascript" xml:space="preserve">
-    var frmvalidator = new Validator("registerForm");
-    frmvalidator.EnableOnPageErrorDisplaySingleBox();
-    frmvalidator.EnableMsgsTogether();
-
-    frmvalidator.addValidation("Email", "req");
-    frmvalidator.addValidation("Email", "maxlen=50");
-    frmvalidator.addValidation("Email", "email");
-
-    frmvalidator.addValidation("Username", "req");
-    frmvalidator.addValidation("Username", "minlen=3");
-    frmvalidator.addValidation("Username", "maxlen=50");
+    $(function () {
+        if ($('div').is('.postsPage')) {
 
 
-    frmvalidator.addValidation("Password", "req");
-    frmvalidator.addValidation("Password", "minlen=6");
-    frmvalidator.addValidation("Password", "maxlen=20");
+            var aptInfoValidator = new Validator("aptInfoForm");
+            aptInfoValidator.EnableOnPageErrorDisplaySingleBox();
+            aptInfoValidator.EnableMsgsTogether();
 
-    //frmvalidator.addValidation("Reenterpassword","req", "Please confirm your password");
-    frmvalidator.addValidation("Reenterpassword", "eqelmnt=Password", "Passwords do not match");
+            aptInfoValidator.addValidation("Name", "req");
+            aptInfoValidator.addValidation("Name", "minlen=3");
+            aptInfoValidator.addValidation("Name", "maxlen=50");
 
-    frmvalidator.addValidation("registerAs","selone","Please select to register as a student or landlord");
+            aptInfoValidator.addValidation("Email", "req");
+            aptInfoValidator.addValidation("Email", "maxlen=50");
+            aptInfoValidator.addValidation("Email", "email");
 
-    frmvalidator.addValidation("privacyAgt","shouldselchk=accept","You must agree to terms and agreement to register");
+            aptInfoValidator.addValidation("Number", "req");
+            aptInfoValidator.addValidation("Number", "num", "Number: Only numeric values are allowed");
+            aptInfoValidator.addValidation("Number", "minlen=10", "Number: must be 10 digits");
+            aptInfoValidator.addValidation("Number", "maxlen=10", "Number: must be 10 digits");
 
+            aptInfoValidator.addValidation("Bedroom", "dontselect=-1");
+
+            aptInfoValidator.addValidation("Price", "req");
+            aptInfoValidator.addValidation("Price", "num", "Price: Only numeric values are allowed");
+
+            aptInfoValidator.addValidation("StartTerm", "dontselect=-1", "Select a start term");
+            aptInfoValidator.addValidation("EndTerm", "dontselect=-1", "Select an end term");
+
+            aptInfoValidator.addValidation("ZipCode", "req", "Zip code: Required Field");
+            aptInfoValidator.addValidation("ZipCode", "num", "Zip code: Only numeric values are allowed");
+            aptInfoValidator.addValidation("ZipCode", "minlen=5", "Zip code: must be 5 digits");
+            aptInfoValidator.addValidation("ZipCode", "maxlen=5", "Zip code: must be 5 digits");
+
+        }
+    });
 
 </script>
+
 
 
 <!-- our JavaScript -->

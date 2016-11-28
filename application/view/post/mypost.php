@@ -1,8 +1,9 @@
-<div class="container">
+<div class="container postsPage">
     <h2>myPosts</h2>
-    <a class="btn btn-success pull-right" data-toggle="modal" data-target="#aptModal">Add Apartment</a>
 
-    <p>Insert Page Results</p>
+        <div class="container" style="padding-right: 30px; padding-bottom: 15px;">
+    <a class="btn btn-success pull-right" data-toggle="modal" data-target="#aptModal">Add Apartment</a>
+    </div>
     <div class="row">
 
         <div class="col-sm-4 col-lg-4 col-md-4">
@@ -31,203 +32,101 @@
                                     <h4 class="modal-title">Post/Edit Apartment</h4>
                                 </div>
                                 <div class="modal-body clearfix">
-                                    <?php
-// define variables and set to empty values
-                                    $nameErr = $emailErr = $genderErr = $websiteErr = "";
-                                    $name = $name = $email = $number = $title = $bedroom = $price = $term = $zipcode = $desc = $tag = "";
-
-                                    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-                                        if (empty($_POST["name"])) {
-                                            $nameErr = "Name is required";
-                                        } else {
-                                            $name = test_input($_POST["name"]);
-                                            // check if name only contains letters and whitespace
-                                            if (!preg_match("/^[a-zA-Z ]*$/", $name)) {
-                                                $nameErr = "Only letters and white space allowed";
-                                            }
-                                        }
-
-                                        if (empty($_POST["email"])) {
-                                            $emailErr = "Email is required";
-                                        } else {
-                                            $email = test_input($_POST["email"]);
-                                            // check if e-mail address is well-formed
-                                            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                                                $emailErr = "Invalid email format";
-                                            }
-                                        }
-
-                                        if (empty($_POST["website"])) {
-                                            $website = "";
-                                        } else {
-                                            $website = test_input($_POST["website"]);
-                                            // check if URL address syntax is valid (this regular expression also allows dashes in the URL)
-                                            if (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $website)) {
-                                                $websiteErr = "Invalid URL";
-                                            }
-                                        }
-
-                                        if (empty($_POST["comment"])) {
-                                            $comment = "";
-                                        } else {
-                                            $comment = test_input($_POST["comment"]);
-                                        }
-
-                                        if (empty($_POST["gender"])) {
-                                            $genderErr = "Gender is required";
-                                        } else {
-                                            $gender = test_input($_POST["gender"]);
-                                        }
-                                    }
-
-                                    function test_input($data) {
-                                        $data = trim($data);
-                                        $data = stripslashes($data);
-                                        $data = htmlspecialchars($data);
-                                        return $data;
-                                    }
-                                    ?>
-
+                                   
                                     <p class="text-right"><span class="error">* required field.</span></p>
-                                   <!-- <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">  
-                                        Contact Name: <input type="text" name="name" value="<?php echo $name; ?>">
-                                        <span class="error">* <?php echo $nameErr; ?></span>
-                                        <br><br>
-                                        Contact Email: <input type="text" name="email" value="<?php echo $email; ?>">
-                                        <span class="error">* <?php echo $nameErr; ?></span>
-                                        <br><br>
-                                        Contact Number: <input type="text" name="number" value="<?php echo $number; ?>">
-                                        <span class="error">* <?php echo $nameErr; ?></span>
-                                        <br><br>
-                                        Title: <input type="text" name="title" value="<?php echo $title; ?>">
-                                        <span class="error">* <?php echo $emailErr; ?></span>
-                                        <br><br>
-                                        # of Bedrooms: <input type="text" name="bedroom" value="<?php echo $bedroom; ?>">
-                                        <span class="error">* <?php echo $nameErr; ?></span>
-                                        <br><br>
-
-                                        Price: <input type="text" name="price" value="<?php echo $price; ?>">
-                                        <span class="error">* <?php echo $nameErr; ?></span>
-                                        <br><br>
-                                        Rental Term: <input type="text" name="term" value="<?php echo $term; ?>">
-                                        <span class="error">* <?php echo $nameErr; ?></span>
-                                        <br><br>
-                                        Zip Code: <input type="text" name="zipcode" value="<?php echo $zipcode; ?>">
-                                        <span class="error">* <?php echo $nameErr; ?></span>
-                                        <br><br>
-                                        Description: <textarea name="desc" rows="5" cols="40"><?php echo $desc; ?></textarea>
-                                        <br><br>
-                                        Tags: <input type="text" name="tag" value="<?php echo $tag; ?>">
-                                        <span class="error"><?php echo $websiteErr; ?></span>
-                                        <br><br>
-                                        Parking Available:
-                                        <input type="radio" name="parking" <?php if (isset($parking) && $parking == "yes") echo "checked"; ?> value="yes">Yes
-                                        <input type="radio" name="parking" <?php if (isset($parking) && $parking == "no") echo "checked"; ?> value="no">No
-                                        <!-- <span class="error">* <?php echo $parkingErr; ?></span> --
-                                        <br><br>
-                                        Pet Friendly:
-                                        <input type="radio" name="pet" <?php if (isset($pet) && $pet == "yes") echo "checked"; ?> value="yes">Yes
-                                        <input type="radio" name="pet" <?php if (isset($pet) && $pet == "no") echo "checked"; ?> value="no">No
-                                        <br><br>
-                                        <!--Upload Images: <input type="text" name="title" value="<?php echo $title; ?>">
-                                        <span class="error"><?php echo $websiteErr; ?></span>
-                                        <br><br>
-                                        <br><br>
-                                        <input type="submit" name="submit" value="Post Apartment">  -->
-
-
-                                    <form class="form-horizontal">
+                                   
+                                    <form class="form-horizontal" name="aptInfoForm" id="aptInfoForm">
                                         <fieldset>
                                             <!-- Text input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="name">*Contact name:</label>
+                                                <label class="control-label" for="Name">*Contact name:</label>
                                                 <div class="controls">
-                                                    <input id="name" name="name" class="form-control" type="text" placeholder="Bob" class="input-large" required="true">
+                                                    <input id="Name" name="Name" class="form-control" type="text" placeholder="Bob" class="input-large">
                                                 </div>
                                             </div>
 
                                             <!-- Text input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="email">*Contact email:</label>
+                                                <label class="control-label" for="Email">*Contact email:</label>
                                                 <div class="controls">
-                                                    <input id="email" name="email" class="form-control" type="text" placeholder="bob@mail.sfsu.edu" class="input-large" required="true">
+                                                    <input id="Email" name="Email" class="form-control" type="text" placeholder="bob@mail.sfsu.edu" class="input-large">
                                                 </div>
                                             </div>
 
                                             <!-- Text input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="number">*Contact number:</label>
+                                                <label class="control-label" for="Number">*Contact number:</label>
                                                 <div class="controls">
-                                                    <input id="number" name="number" class="form-control" type="text" placeholder="(123) 456-7890" class="input-large" required="true">
+                                                    <input id="Number" name="Number" class="form-control" type="text" placeholder="(123) 456-7890" class="input-large">
                                                 </div>
                                             </div>
 
                                             <!-- Bedrooms input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="bedroom_sel">*Bedrooms:</label>
-                                                <select class="form-control" id="bedroom_sel" required="true">
-                                                    <option value="">Any</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3+</option>
+                                                <label class="control-label" for="Bedroom">*Bedrooms:</label>
+                                                <select class="form-control" id="Bedroom" name="Bedroom">
+                                                    <option value="-1">Any</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3+</option>
                                                 </select>
                                             </div>
 
 
                                             <!-- Price input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="price">*Price:</label>
+                                                <label class="control-label" for="Price">*Price:</label>
                                                 <div class="controls">
-                                                    <input id="number" name="price" class="form-control" type="text" placeholder="1000" class="input-lg" required="true">
+                                                    <input id="Price" name="Price" class="form-control" type="text" placeholder="1000" class="input-lg">
                                                 </div>
                                             </div>
 
-                                            <label class="control-label" for="term">*Availability Term:</label>
+                                            <label class="control-label" for="Term">*Availability Term:</label>
 
                                             <div class="input-group">
 
-                                                <select class="form-control" id="start_term_sel" required="true">
-                                                    <option value="">Any</option>
-                                                    <option>January</option>
-                                                    <option>February</option>
-                                                    <option>March</option>
-                                                    <option>April</option>
-                                                    <option>May</option>
-                                                    <option>June</option>
-                                                    <option>July</option>
-                                                    <option>August</option>
-                                                    <option>September</option>
-                                                    <option>October</option>
-                                                    <option>November</option>
-                                                    <option>December</option>
+                                                <select class="form-control" id="StartTerm" name="StartTerm">
+                                                    <option value="-1">Any</option>
+                                                    <option value="1">January</option>
+                                                    <option value="2">February</option>
+                                                    <option value="3">March</option>
+                                                    <option value="4">April</option>
+                                                    <option value="5">May</option>
+                                                    <option value="6">June</option>
+                                                    <option value="7">July</option>
+                                                    <option value="8">August</option>
+                                                    <option value="9">September</option>
+                                                    <option value="10">October</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">December</option>
                                                 </select>
 
 
 
 
                                                 <span class="input-group-addon">-</span>
-                                                <select class="form-control" id="end_term_sel" required="true">
-                                                    <option value="">Any</option>
-                                                    <option>January</option>
-                                                    <option>February</option>
-                                                    <option>March</option>
-                                                    <option>April</option>
-                                                    <option>May</option>
-                                                    <option>June</option>
-                                                    <option>July</option>
-                                                    <option>August</option>
-                                                    <option>September</option>
-                                                    <option>October</option>
-                                                    <option>November</option>
-                                                    <option>December</option>
+                                                <select class="form-control" id="EndTerm" name="EndTerm">
+                                                    <option value="-1">Any</option>
+                                                    <option value="1">January</option>
+                                                    <option value="2">February</option>
+                                                    <option value="3">March</option>
+                                                    <option value="4">April</option>
+                                                    <option value="5">May</option>
+                                                    <option value="6">June</option>
+                                                    <option value="7">July</option>
+                                                    <option value="8">August</option>
+                                                    <option value="9">September</option>
+                                                    <option value="10">October</option>
+                                                    <option value="11">November</option>
+                                                    <option value="12">December</option>
                                                 </select>
                                             </div>
 
                                             <!-- Text input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="zipcode">*Zip Code:</label>
+                                                <label class="control-label" for="ZipCode">*Zip Code:</label>
                                                 <div class="controls">
-                                                    <input id="zipcode" name="zipcode" class="form-control" type="text" placeholder="94132" class="input-large" required="true">
+                                                    <input id="ZipCode" name="ZipCode" class="form-control" type="text" placeholder="94132" class="input-large">
                                                 </div>
                                             </div>
 
@@ -258,6 +157,11 @@
                                                 </span>
                                             </div>
                                         </div>
+                                            
+                                            
+                                        <br>
+                                        <div id="aptInfoForm_errorloc"></div>
+
 
 
                                     <button type="submit" class="btn btn-success pull-right">Submit</button>

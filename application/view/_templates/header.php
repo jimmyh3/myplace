@@ -91,7 +91,7 @@
                                         <!-- Sign In Form -->
                                         <!-- Text input-->
                                         <div class="control-group">
-                                            <label class="control-label" for="Emai;">Email:</label>
+                                            <label class="control-label" for="Email">Email:</label>
                                             <div class="controls">
                                                 <input id="email" name="Email" type="text" class="form-control" placeholder="bob@mail.sfsu.edu" class="input-medium">
                                             </div>
