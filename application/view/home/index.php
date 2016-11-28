@@ -44,17 +44,17 @@
                 </div>
 
 
-<!--                <div class="form-group">
+                <div class="form-group">
                     <label for="price_sel">Price:</label>
-                    <input name="min_price" type="text" class="form-control" id="min_price" placeholder="Minimum">
+                    <!--<input name="min_price" type="text" class="form-control" id="min_price" placeholder="Minimum">-->
                     <input name="actual_price[]" type="text" class="form-control" id="min_price" placeholder="Minimum">
                 </div>                   
                 
                 
                 <div class="form-group">
-                    <input name="max_price" type="text" class="form-control" id="max_price" placeholder="Maximum">
+                    <!--<input name="max_price" type="text" class="form-control" id="max_price" placeholder="Maximum">-->
                     <input name="actual_price[]" type="text" class="form-control" id="max_price" placeholder="Maximum">
-                </div>-->
+                </div>
                
                
                 <div class="form-group">

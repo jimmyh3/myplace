@@ -165,41 +165,36 @@ class ApartmentDB{
      * @param associative array $filters - values to look through specific columns.
      * @return array $apartments - an array of Apartments from the database.
      */
-    public function search(array $query, array $filters)
+    public function search(array $query, array $filters /*int $order */)
     {
-        /* Default SQL statement - get all Apartments */
-        $sql = "SELECT * FROM Apartments ";
+        //TODO: Delete $order later.
+        $order = 0; //0 = default; will use $query to set ordering of retrieved records.
         
-        /* If search parameters are given */
-        if (!empty($query) || !empty($filters))
-        {
-            /* SQL statement to execute  */
-            $sql_stmt = "SELECT 
-                            %s.* 
-                        FROM 
-                            (%s) AS %s
-                        INNER JOIN
-                            (%s) AS %s
-                        ON 
-                            %s.id = %s.id
-                        UNION 
-                            (%s)";
+        /* Default SQL statement - get all Apartments */
+        $sql                =   " SELECT * FROM Apartments ";
+        $sql_where          =   " WHERE ";
+        $sql_where_query    =   $this->search_create_param_query($query);
+        $sql_and            =   " AND ";    
+        $sql_where_filters  =   $this->search_create_param_filters($filters);
+        $sql_orderby        =   " ORDER BY ";
+        $sql_orderby_args   =   $this->search_create_param_orderby($query, $filters, $order);
+        
+        /*
+         * Compose the rest of the SQL statement for execution.
+         */
+        /* Append WHERE or "" */
+        $sql .= ($sql_where_query ||
+                 $sql_where_filters)    ? $sql_where : "";    
+        /* Append $query search arguments after WHERE */
+        $sql .= ($sql_where_query)      ? "(".$sql_where_query.")" : "";
+        /* Append AND or "" */
+        $sql .= ($sql_where_query && 
+                 $sql_where_filters)    ? $sql_and : "";
+        /* Append $filters search arguments after WHERE */
+        $sql .= ($sql_where_filters)    ? "(".$sql_where_filters.")" : "";  
+        /* Append ORDER BY with its arguments */
+        $sql .= ($sql_orderby_args)     ? $sql_orderby . $sql_orderby_args : "";
 
-            $sql_queryID    = "x1"; //random SQL Alias
-            $sql_filtersID  = "x2"; //random SQL Alias
-
-            $sql_query      = $this->search_create_query_sql($query);
-            $sql_filters    = $this->search_create_filters_sql($filters);
-
-            /* Replace parameterized SQL statement string with values */
-            $sql = sprintf( $sql_stmt, 
-                            $sql_filtersID,
-                            $sql_query,   $sql_queryID,
-                            $sql_filters, $sql_filtersID,
-                            $sql_queryID, $sql_filtersID,
-                            $sql_filters);
-            
-        }
         
         /* Execute the Query */
         $stmt = $this->db->prepare($sql);
@@ -209,27 +204,27 @@ class ApartmentDB{
         return $stmt->fetchAll();
         
         /*
-         * Resulting SQL example =
+         * Resulting $sql EXAMPLE =
          * "
-         * SELECT x2.* FROM 
-         * (
-         *         SELECT * FROM f16g14.apartments
-         *         WHERE (tags LIKE '%value%' <repeat>) ... etc
-         * ) AS x1
-         * INNER JOIN
-         * (
-         *         SELECT * FROM f16g14.apartments
-         *         WHERE (area_code = 94116, (actual_price BETWEEN min AND max)) ... etc
-         * ) AS x2
-         * ON
-         * (x1.id = x2.id)
-         * UNION
-         * (
-         *         SELECT * FROM f16g14.apartments
-         *         WHERE (area_code = 94116, (actual_price BETWEEN min AND max)) ... etc
-         * )
+         * SELECT * FROM Apartments
+         * WHERE 
+         *      ( area_code LIKE '%94116%' OR
+         *      <... other_columns LIKE '%value%' ...> )
+         *      AND
+         *      ( (actual_price BETWEEN 1000 AND 3000) AND
+         *      <... other_columns = 'value' ...> )
+         * ORDER BY 
+         * CASE 
+         *      WHEN 
+         *          area_code = '94116' OR
+         *          <... other_columns = value ...> OR
+         *          tags = '94116'
+         *      THEN 1
+         *      ...
+         *      ELSE 4
+         * END
          * "
-         */     
+         */
         
     }
     
@@ -257,27 +252,21 @@ class ApartmentDB{
      * --------------------PRIVATE HELPER FUNCTIONS-----------------------------
      */
     
+    
     /**
-     * Helper method for search($query, $filters) to handle the $query argument.
+     * Helper method for search($query, $filters) to handle the $query argument
+     * for the <strong>WHERE</strong> clause.
      * 
      * @see search(array, array) 
-     * @param array $query - list of values to look for in Apartment records.
-     * @return String $sql - an SQL query to execute to get specific Apartment records.
+     * @param array $query - list of values to create a search range for.
+     * @return String $sql - possibly empty string : append this after WHERE clause.
      */
-    private function search_create_query_sql(array $query)
+    private function search_create_param_query(array $query)
     {
-        $sql            = " SELECT * FROM Apartments ";
-        $sql_where      = " WHERE
-                                %s";
-        $sql_order_case = " ORDER BY
-                            CASE
-                                WHEN %s THEN 1
-                                WHEN %s THEN 2
-                                WHEN %s THEN 3
-                                ELSE 4
-                            END";
+        /* Return: SQL WHERE clause arguments */
+        $sql_where_query = "";
         
-        /* These are the apartment table columns to search against. */
+        /* These are the apartment columns $query will search against. */
         $aprt_cols  = array("area_code",
                             "actual_price",
                             "begin_term",
@@ -288,18 +277,11 @@ class ApartmentDB{
                             "description",
                             "bedroom",
                             "tags"        );
-
-        /* Argument for WHERE clause in $sql_where */
-        $sql_where_arg       = ""; 
-        /* Arguments for CASE clause $sql_order_case */
-        $sql_order_case_arg1 = "";
-        $sql_order_case_arg2 = "";
-        $sql_order_case_arg3 = "";
+        
         
         /* Values for quick reuse */
         $sql_like       = " LIKE ";
         $sql_or         = " OR ";
-        $sql_equal      = " = ";      
         $queryCount     = count($query);
         $aprt_colsCount = count($aprt_cols);
         
@@ -312,142 +294,175 @@ class ApartmentDB{
             $j = 0;      //index for $aprt_cols
             foreach ($aprt_cols as $aprt_col)
             {
-                $sql_where_arg .= $aprt_col;          //Append apartment_column_name
-                $sql_where_arg .= $sql_like;          //Append LIKE
-                $sql_where_arg .= "'%".$query_val."%'";         //Append '%value%'
-                $sql_where_arg .= (($j + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR
+                $sql_where_query .= $aprt_col;          //Append apartment_column_name
+                $sql_where_query .= $sql_like;          //Append LIKE
+                $sql_where_query .= "'%".$query_val."%'";         //Append '%value%'
+                $sql_where_query .= (($j + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR
                 
                 $j++;
             }
-            $sql_where_arg .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
+            $sql_where_query .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
             $i++;
         }
         
-        /* 
-         * Set ORDER BY CASE arguments here to return results in a certain order.
-         */
-        $k = 0; //index for $query
-        foreach ($query as $query_val)
-        {
-            $l = 0; //index for $aprt_cols
-            foreach ($aprt_cols as $aprt_col)
-            {
-                //col1 = val1 ...
-                $sql_order_case_arg1 .= $aprt_col;   //Append aprt_column_name
-                $sql_order_case_arg1 .= $sql_equal;  //Append ' = '
-                $sql_order_case_arg1 .= (is_numeric($query_val)) ? $query_val : "'".$query_val."'";   //Append value
-                $sql_order_case_arg1 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";                  //Append OR ?
-                
-                //col1 LIKE 'val1%' OR col1 LIKE '%val1' ...   < NOTICE '%' placements >
-                $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
-                $sql_order_case_arg2 .= $sql_like;              //Append LIKE
-                $sql_order_case_arg2 .= "'".$query_val."%'";    //Append 'value%'
-                $sql_order_case_arg2 .= $sql_or;                //Append OR
-                $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
-                $sql_order_case_arg2 .= $sql_like;              //Append LIKE
-                $sql_order_case_arg2 .= "'%".$query_val."'";    //Append '%value'
-                $sql_order_case_arg2 .= (($l + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR ?
-                
-                //col1 LIKE '%val1% ...
-                $sql_order_case_arg3 .= $aprt_col;              //Append aprt_column_name
-                $sql_order_case_arg3 .= $sql_like;              //Append LIKE
-                $sql_order_case_arg3 .= "'%".$query_val."%'";   //Append '%value%'
-                $sql_order_case_arg3 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";    //Append OR ?
-                
-                $l++;
-            }
-            
-            //Append OR    if there are more $query values
-            if (($k + 1) < $queryCount)
-            {
-                $sql_order_case_arg1 .= $sql_or;
-                $sql_order_case_arg2 .= $sql_or;
-                $sql_order_case_arg3 .= $sql_or;
-            }
-            
-            $k++;
-        }
+        return $sql_where_query;
         
         /*
-         *  Finalize the SQL statement if necessary
-         */
-        if ($queryCount > 0)
-        {
-            $sql_where      = sprintf($sql_where, $sql_where_arg);
-            $sql_order_case = sprintf($sql_order_case,  $sql_order_case_arg1,
-                                                        $sql_order_case_arg2,
-                                                        $sql_order_case_arg3);
-            
-            $sql .= $sql_where .$sql_order_case;
-        }
-        
-        return $sql;
-        
-        /*
-         * Resulting $sql example =
-         * "
-         * SELECT * FROM Apartments
-         * WHERE 
-         *      area_code LIKE '%94116%' OR
-         *      <... other_columns LIKE '%value%' ...> OR
-         *      tags LIKE '%94116%'
-         * ORDER BY 
-         * CASE 
-         *      WHEN 
-         *          area_code = '94116' OR
-         *          <... other_columns = value ...> OR
-         *          tags = '94116'
-         *      THEN 1
-         *      ...
-         *      ELSE 4
-         * END
-         * "
+         * Example result:
+         * "col1 LIKE '%val1%' ... <repeat>"
          */
     }
     
     /**
-     * Helper method for search($query, $filters) to handle the $filters argument.
+     * Helper method for search($query, $filters) to handle the $filters argument
+     * for the <strong>WHERE</strong> clause.
      * 
-     * @see search($query, $filters) 
-     * @param array $filters - list of key-values
-     * @return String $sql - an SQL query to execute to get specific Apartment records.
+     * @see search(array, array) 
+     * @param array $filters - list of values to create a search range for.
+     * @return String $sql - possibly empty string : append this after WHERE clause.
      */
-    private function search_create_filters_sql(array $filters)
+    private function search_create_param_filters(array $filters)
     {
-        $sql            = "";   //The SQL query to execute
-        $sql_select     = "SELECT * FROM Apartments ";
-        $sql_where      = " WHERE ";
+        /* Return: SQL WHERE clause arguments */
+        $sql_where_filters = "";
+        
+        /* Values for quick reuse */
         $sql_and        = " AND ";
         $sql_equal      = " = ";
-        
-        $filtersCount     = count($filters);
-        
-        /* Begin SQL query creation */
-        $sql .= $sql_select;                           //"SELECT * FROM Apartments
-        $sql .= ($filtersCount > 0) ? $sql_where : ""; //Append WHERE
+        $filtersCount   = count($filters);
         
         $i = 0;
         foreach ($filters as $f_key=>$f_val)
         {
-            $sql .= $f_key;         //Append filter_key
-            $sql .= $sql_equal;     //Append " = "
-            $sql .= $f_val;         //Append filter_value
-            $sql .= (($i + 1) < $filtersCount) ? $sql_and : "";
+            /* Array - will be a range search */
+            if (!is_array($f_val))
+            {
+                $sql_where_filters .= $f_key;       //Append filter_key
+                $sql_where_filters .= $sql_equal;   //Append " = "
+                $sql_where_filters .= $f_val;       //Append filter_value
+            }else {
+                $sql_where_filters .= $this->search_create_param_range($f_key, $f_val);
+            }
+            $sql_where_filters .= (($i + 1) < $filtersCount) ? $sql_and : "";
             
             $i++;
         }
         
-        return $sql;
+        return $sql_where_filters;
         
         /*
-         * Resulting $sql example =
-         * "SELECT *
-         *  FROM Apartments
-         *  WHERE ( col_name = value <AND <repeat>> ) "
-         * 
-         * or returns "SELECT * FROM Apartments" if $query size is zero
+         * Example result:
+         * "col1 = 'val1' ... <repeat>"
          */
+    }
+    
+    /**
+     * Helper method for search($query, $filters) to handle the ordering of
+     * retrieved records for the <strong>ORDER BY</strong> clause.
+     * 
+     * @param array $query   - used to set the ordering of retrieved records.
+     * @param array $filters - used to set the ordering of retrieved records.
+     * @param int $order default 0 - indicates which way to use $query/$filter to set the ordering.
+     * @return String   - possibly empty string : append this after ORDER BY clause.
+     */
+    private function search_create_param_orderby(array $query, array $filters, $order = 0)
+    {
+        /* Return: SQL ORDER BY clause arguments */
+        $sql_orderby = "";  
         
+        /* These are the apartment columns $query will search against. */
+        $aprt_cols  = array("area_code",
+                            "actual_price",
+                            "begin_term",
+                            "end_term",
+                            "rental_term",
+                            //"parking",      //is 1 or 0, too vague to match.
+                            //"pet_friendly", //is 1 or 0, too vague to match.
+                            "description",
+                            "bedroom",
+                            "tags"        );
+
+        if ($order === 0 && !empty($query))
+        {
+            $sql_orderby_case  =    "   CASE
+                                            WHEN %s THEN 1
+                                            WHEN %s THEN 2
+                                            WHEN %s THEN 3
+                                            ELSE 4
+                                        END";       //default
+
+            /* Arguments for CASE clause $sql_ordebyr_case */
+            $sql_order_case_arg1 = "";
+            $sql_order_case_arg2 = "";
+            $sql_order_case_arg3 = "";
+
+            /* Values for quick reuse */
+            $sql_like       = " LIKE ";
+            $sql_or         = " OR ";
+            $sql_equal      = " = ";      
+            $queryCount     = count($query);
+            $aprt_colsCount = count($aprt_cols);
+
+            /* 
+             * Set ORDER BY CASE arguments here to return results in a certain order.
+             */
+            $k = 0; //index for $query
+            foreach ($query as $query_val)
+            {
+                $l = 0; //index for $aprt_cols
+                foreach ($aprt_cols as $aprt_col)
+                {
+                    //col1 = val1 ...
+                    $sql_order_case_arg1 .= $aprt_col;   //Append aprt_column_name
+                    $sql_order_case_arg1 .= $sql_equal;  //Append ' = '
+                    $sql_order_case_arg1 .= (is_numeric($query_val)) ? $query_val : "'".$query_val."'";   //Append value
+                    $sql_order_case_arg1 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";                  //Append OR ?
+
+                    //col1 LIKE 'val1%' OR col1 LIKE '%val1' ...   < NOTICE '%' placements >
+                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
+                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
+                    $sql_order_case_arg2 .= "'".$query_val."%'";    //Append 'value%'
+                    $sql_order_case_arg2 .= $sql_or;                //Append OR
+                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
+                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
+                    $sql_order_case_arg2 .= "'%".$query_val."'";    //Append '%value'
+                    $sql_order_case_arg2 .= (($l + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR ?
+
+                    //col1 LIKE '%val1% ...
+                    $sql_order_case_arg3 .= $aprt_col;              //Append aprt_column_name
+                    $sql_order_case_arg3 .= $sql_like;              //Append LIKE
+                    $sql_order_case_arg3 .= "'%".$query_val."%'";   //Append '%value%'
+                    $sql_order_case_arg3 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";    //Append OR ?
+
+                    $l++;
+                }
+
+                //Append OR    if there are more $query values
+                if (($k + 1) < $queryCount)
+                {
+                    $sql_order_case_arg1 .= $sql_or;
+                    $sql_order_case_arg2 .= $sql_or;
+                    $sql_order_case_arg3 .= $sql_or;
+                }
+
+                $k++;
+            }
+
+            /*
+             *  Finalize the SQL ORDER BY arguments
+             */
+            if ($queryCount > 0)
+            {
+                //Apply ORDER BY arguments via formatting.
+                $sql_orderby_case = sprintf($sql_orderby_case,  $sql_order_case_arg1,
+                                                                $sql_order_case_arg2,
+                                                                $sql_order_case_arg3);
+
+                $sql_orderby .= $sql_orderby_case;
+            }
+        }
+        
+        return $sql_orderby;       
     }
     
     /**
@@ -455,19 +470,17 @@ class ApartmentDB{
      * <p>Example: "( colname BETWEEN min AND max )"  </p>
      * 
      * @see search($query, $filters) - the calling method.
-     * @param String $colName - column to apply the SQL BETWEEN query against.
-     * @param array $min_max - array of at least 2 values, being minumum and maximum.
-     * @return string - a parentheses SQL BETWEEN query to append to parent query.
      * @throws Exception - if given array is not at least size 2.
+     * @param String    $colName - column to apply the SQL BETWEEN query against.
+     * @param array     $min_max - array of at least 2 values, being minumum and maximum.
+     * @return string - "(column_name BETWEEN min AND MAX)"
      */
-    private function search_range($colName, array $min_max)
+    private function search_create_param_range($colName, array $min_max)
     {
-        $sql = "";  //SQL query to execute.
-        $sql_between    = " BETWEEN ";
-        $sql_and        = " AND ";
-        $sql_openPrn    = " ( ";
-        $sql_closePrn   = " ) ";
-        $sql_maxInt     = "~0";     //largest BigINT ...for MySQL only I believe.
+        //Return: SQL BETWEEN argument
+        $sql_between    = " ( %s BETWEEN %s AND %s ) ";
+        
+        $sql_maxInt     = "~0";     //largest BigINT ...for MySQL.
         $sql_minInt     = "-(~0)";  //largest BigINT multipled by -1. (negative)
 
         $min_max_keys   = array_keys($min_max);
@@ -484,18 +497,13 @@ class ApartmentDB{
             $max = (is_numeric($temp_max)) ? $temp_max : $sql_maxInt;
             
             /* Create SQL query for using BETWEEN sytax */
-            $sql .= $sql_openPrn;     // (
-            $sql .= $colName;         // ( colname
-            $sql .= $sql_between;     // ( colname BETWEEN
-            $sql .= $min;             // ( colname BETWEEN min
-            $sql .= $sql_and;         // ( colname BETWEEN min AND
-            $sql .= $max;             // ( colname BETWEEN min AND max
-            $sql .= $sql_closePrn;    // ( colname BETWEEN min AND max )  
+            $sql_between = sprintf( $sql_between, $colName, $min, $max);
+            
         }else{
             throw Exception("ApartmentDB->search_range() requires an array of at least size 2!");
         }
         
-        return $sql;
+        return $sql_between;
     }
     
     

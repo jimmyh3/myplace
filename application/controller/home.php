@@ -30,19 +30,27 @@ class Home extends Controller
             $query = $_POST['query'];
         if( isset($_POST['filters']))
             $filters = $_POST['filters'];
-       
+      
         $query_array = explode(" ", $query);
         
         $filters_array = array();
-        /* Converts any "%##" (unsafe characters) to its actual value */
-        /* Creates an array of key value pairs based on a URL argument string */
+        
+        /* rawurldecode() converts any "%##" (unsafe chars) to its actual value */
+        /* parse_str() creates array of key/value pairs based on a URL argument string */
         parse_str(rawurldecode($filters), $filters_array);
         
-        foreach (array_keys($filters_array) as $value)
+        /* Minor handling for $filters_array and $query_array */
+        foreach ($filters_array as $f_key=>$f_val)
         {
             /* Remove empty value elements in array */
-            if ($filters_array[$value] === ''){
-                unset($filters_array[$value]);
+            if ($f_val === ''){
+                unset($filters_array[$f_key]);
+            }
+            
+            /* Pass any unique values from $filters to $query */
+            if ((is_numeric($f_val) || is_string($f_val)) &&
+                                     (!in_array ($f_val,$query_array))){
+                array_push($query_array, $f_val);
             }
         }
         
