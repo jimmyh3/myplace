@@ -269,14 +269,14 @@ class ApartmentDB{
         /* These are the apartment columns $query will search against. */
         $aprt_cols  = array("area_code",
                             "actual_price",
-                            "begin_term",
-                            "end_term",
-                            "rental_term",
+                            //"begin_term",
+                            //"end_term",
+                            //"rental_term",
                             //"parking",      //is 1 or 0, too vague to match.
                             //"pet_friendly", //is 1 or 0, too vague to match.
                             "description",
-                            "bedroom",
-                            "tags"        );
+                            "bedroom"
+                            );
         
         
         /* Values for quick reuse */
@@ -373,14 +373,14 @@ class ApartmentDB{
         /* These are the apartment columns $query will search against. */
         $aprt_cols  = array("area_code",
                             "actual_price",
-                            "begin_term",
-                            "end_term",
-                            "rental_term",
+                            //"begin_term",
+                            //"end_term",
+                            //"rental_term",
                             //"parking",      //is 1 or 0, too vague to match.
                             //"pet_friendly", //is 1 or 0, too vague to match.
                             "description",
-                            "bedroom",
-                            "tags"        );
+                            "bedroom"
+                            );
 
         if ($order === 0 && !empty($query))
         {
