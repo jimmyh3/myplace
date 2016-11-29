@@ -1,13 +1,3 @@
-/*!
- * Start Bootstrap - Shop Homepage (http://startbootstrap.com/)
- * Copyright 2013-2016 Start Bootstrap
- * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
- */
-
-body {
-    padding-top: 70px; /* Required padding for .navbar-fixed-top. Remove if using .navbar-static-top. Change if height of navigation changes. */
-}
-
 .slide-image {
     width: 100%;
 }
@@ -55,14 +45,13 @@ footer {
 
 
 #headerwrap {
-	background: url(https://blueandgoldfleet.files.wordpress.com/2012/05/golden-gate-bridge-long1.jpg) no-repeat center top;
-        padding-bottom: 30px;
-	text-align:center;
-	background-attachment: relative;
-	background-position: center center;
-	min-height: 700px;
-	width: 100%;
-	
+    background: url('../img/ggbridge2.jpg') no-repeat center top;
+    padding-bottom: 30px;
+    text-align:center;
+    background-attachment: relative;
+    background-position: center center;
+    background-size: 100% 50%;
+
     -webkit-background-size: 100%;
     -moz-background-size: 100%;
     -o-background-size: 100%;
@@ -75,43 +64,29 @@ footer {
 }
 
 #headerwrap h1 {
-	margin-top: 150px;
-	color: white;
-	font-size: 70px;
-	font-weight: 700;
+    margin-top: 50px;
+    color: white;
+    font-size: 70px;
+    font-weight: 700;
 }
 
 #headerwrap h3 {
-	color: white;
-	font-size: 30px;
-	font-weight: 100;
+    color: white;
+    font-size: 30px;
+    font-weight: 100;
     font-family: 'EB Garamond', serif;
     font-style: oblique;
 }
 
 #headerwrap .logo {
-	text-align: left;
-	margin-left: 20px;
-	margin-top: 15px;
+    text-align: left;
+    margin-left: 20px;
+    margin-top: 15px;
 }
 
 
-/* layout.css Style */
-.upload-drop-zone {
-  height: 200px;
-  border-width: 2px;
-  margin-bottom: 20px;
-}
-
-/* skin.css Style*/
-.upload-drop-zone {
-  color: #ccc;
-  border-style: dashed;
-  border-color: #ccc;
-  line-height: 200px;
-  text-align: center
-}
-.upload-drop-zone.drop {
-  color: #222;
-  border-color: #222;
+.disclaimer {
+    color: white; 
+    text-align: center;
+    font-size: 16px;
 }
