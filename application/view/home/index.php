@@ -146,14 +146,28 @@
                 </div>         
 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="pet_friendly" value="">Pet Friendly</label>
+                    <label> <input type="checkbox" name="pet_friendly" value="1">Pet Friendly</label>
                 </div>
 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="parking" value="">Parking Available</label>
+                    <label> <input type="checkbox" name="parking" value="1">Parking Available</label>
                 </div>
-
-
+                
+                <div class="checkbox" class="list-group-item">
+                    <label> <input type="checkbox" name="smoking" value="1">No Smoking</label>
+                </div>
+                
+                <div class="checkbox" class="list-group-item">
+                    <label> <input type="checkbox" name="laundry" value="1">Laundry</label>
+                </div>
+                
+                <div class="checkbox" class="list-group-item">
+                    <label> <input type="checkbox" name="furnished" value="1">Furnished</label>
+                </div>
+                
+                <div class="checkbox" class="list-group-item">
+                    <label> <input type="checkbox" name="wheelchair" value="1">Wheelchair Access</label>
+                </div>
 
                 <input type="reset" class="btn btn-danger" value="Clear">
                 <input type="submit" class="btn btn-info pull-right" value="Refine">
