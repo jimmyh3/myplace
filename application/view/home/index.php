@@ -162,11 +162,15 @@
                 </div>
                 
                 <div class="checkbox" class="list-group-item">
+                    <label> <input type="checkbox" name="shared_room" value="1">Shared Room</label>
+                </div>
+                
+                <div class="checkbox" class="list-group-item">
                     <label> <input type="checkbox" name="smoking" value="0">No Smoking</label>
                 </div>
                               
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="wheelchair" value="1">Wheelchair Access</label>
+                    <label> <input type="checkbox" name="wheel_chair_access" value="1">Wheelchair Access</label>
                 </div>
 
                 <input type="reset" class="btn btn-danger" value="Clear">
