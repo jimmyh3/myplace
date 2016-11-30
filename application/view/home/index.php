@@ -143,18 +143,10 @@
                         <option value="November">November</option>
                         <option value="December">December</option>
                     </select>
-                </div>         
-
-                <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="pet_friendly" value="1">Pet Friendly</label>
-                </div>
-
-                <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="parking" value="1">Parking Available</label>
-                </div>
+                </div>    
                 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="smoking" value="1">No Smoking</label>
+                    <label> <input type="checkbox" name="furnished" value="1">Furnished</label>
                 </div>
                 
                 <div class="checkbox" class="list-group-item">
@@ -162,9 +154,17 @@
                 </div>
                 
                 <div class="checkbox" class="list-group-item">
-                    <label> <input type="checkbox" name="furnished" value="1">Furnished</label>
+                    <label> <input type="checkbox" name="parking" value="1">Parking Available</label>
                 </div>
                 
+                <div class="checkbox" class="list-group-item">
+                    <label> <input type="checkbox" name="pet_friendly" value="1">Pet Friendly</label>
+                </div>
+                
+                <div class="checkbox" class="list-group-item">
+                    <label> <input type="checkbox" name="smoking" value="0">No Smoking</label>
+                </div>
+                              
                 <div class="checkbox" class="list-group-item">
                     <label> <input type="checkbox" name="wheelchair" value="1">Wheelchair Access</label>
                 </div>
