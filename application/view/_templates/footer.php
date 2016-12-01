@@ -8,11 +8,11 @@
     <footer>
         <div class="row">
             <div class="col-md-3">
-                <p> <a href="#">About us</a></p>
+                <p> <a href="<?php echo URL; ?>about">About us</a></p>
             </div>
 
             <div class="col-md-3">
-                <p><a href="#">Terms and Condition</a></p>
+                <p><a href="<?php echo URL; ?>terms">Terms and Condition</a></p>
             </div>
 
             <div class="col-md-3">

@@ -39,7 +39,7 @@
                                         <fieldset>
                                             <!-- Text input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="Name">*Contact name:</label>
+                                                <label class="control-label" for="Name">Contact name:</label>
                                                 <div class="controls">
                                                     <input id="Name" name="Name" class="form-control" type="text" placeholder="Bob" class="input-large">
                                                 </div>
@@ -47,7 +47,7 @@
 
                                             <!-- Text input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="Email">*Contact email:</label>
+                                                <label class="control-label" for="Email">Contact email:</label>
                                                 <div class="controls">
                                                     <input id="Email" name="Email" class="form-control" type="text" placeholder="bob@mail.sfsu.edu" class="input-large">
                                                 </div>
@@ -55,7 +55,7 @@
 
                                             <!-- Text input-->
                                             <div class="control-group">
-                                                <label class="control-label" for="Number">*Contact number:</label>
+                                                <label class="control-label" for="Number">Contact number:</label>
                                                 <div class="controls">
                                                     <input id="Number" name="Number" class="form-control" type="text" placeholder="(123) 456-7890" class="input-large">
                                                 </div>
