@@ -82,8 +82,8 @@
 
                             </div>
                             <div class="tab-pane fade active in" id="signin">
-                                <form class="form-horizontal" name="signinForm" id="signinForm">
-                                    <fieldset>
+                                <form class="form-horizontal" name="signinForm" id="ajax_signin_form" method="POST">
+                                    <!--<fieldset>-->
                                         <!-- Sign In Form -->
                                         <!-- Text input-->
                                         <div class="control-group">
@@ -106,21 +106,22 @@
                                         <br>
                                         <div id="signinForm_errorloc"></div>
 
-
-                                        <!-- Button -->
+                                        <input type="submit" class="btn btn-success" value="Sign In">
+                                        
+<!--                                         Button 
                                         <div class="control-group">
                                             <label class="control-label" for="signin"></label>
                                             <div class="controls text-right">
-                                                <button id="signin" name="signin" class="btn btn-success">Sign In</button>
+                                                
                                             </div>
-                                        </div>
-                                    </fieldset>
+                                        </div>-->
+                                    <!--</fieldset>-->
                                 </form>
                             </div>
 
                             <!-- Register tab -->    
                             <div class="tab-pane fade" id="signup">
-                                <form class="form-horizontal" name="registerForm" id="registerForm">
+                                <form class="form-horizontal" name="registerForm" id="ajax_signup_form" method="POST">
                                     <fieldset>
                                         <!-- Sign Up Form -->
                                         <!-- Text input-->
@@ -188,7 +189,7 @@
                                         <div class="control-group">
                                             <label class="control-label" for="confirmsignup"></label>
                                             <div class="controls text-right">
-                                                <button id="confirmsignup" name="confirmsignup" class="btn btn-success">Sign Up</button>
+                                                <button id="ajax_signup" name="confirmsignup" class="btn btn-success">Sign Up</button>
                                             </div>
                                         </div>
                                     </fieldset>

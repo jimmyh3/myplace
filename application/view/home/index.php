@@ -144,15 +144,14 @@ End of Corner Ribbon~~!>
                 <div class="panel panel-footer clearfix">
                     <p class="lead">Filters</p>
 
-                    <form>
-                        <div class="form-group">
-                            <label for="sort_by_sel">Sort By:</label>
-                            <select class="form-control" id="sort_by_sel">
-                                <option>Any</option>
-                                <option>Price: Low to High</option>
-                                <option>Price: High to Low</option>
-                            </select>
-                        </div>
+                    <div class="form-group">
+                        <label for="sort_by_sel">Sort By:</label>
+                        <select class="form-control" id="sort_by_sel">
+                            <option>Any</option>
+                            <option>Price: Low to High</option>
+                            <option>Price: High to Low</option>
+                        </select>
+                    </div>
 
                     <div class="form-group">
                         <label for="bedroom_sel">Bedrooms:</label>
@@ -265,7 +264,7 @@ End of Corner Ribbon~~!>
         
         <div class="col-md-9">
             <div class="row" id="results">
-                <?php echo $this->search(); ?>
+                <?php //echo $this->search(); ?>
             </div>
         </div>
     </div>

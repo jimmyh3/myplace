@@ -23,6 +23,13 @@ class Home extends Controller
         
     }
 
+    public function register( ) {
+        $results = "Register default";
+        if( isset( $_POST['userinfo']))
+            $results = $_POST['userinfo'];
+        return $results;
+    }
+    
     public function search( ) {
         $query = "";
         $filters = "";
@@ -67,8 +74,6 @@ class Home extends Controller
         
 //        ---------------PREVIOUS VERSION-------------------
 //        
-//        $query_array = explode(" ", $query);
-//        
 //        $apartments;
 //        if( $filters == '') {
 //            $apartments = $this->model->search( $query_array, array()); 
@@ -82,16 +87,6 @@ class Home extends Controller
 //            
 //            $apartments = $this->model->search( $query_array, $result);
 //        }
-//        
-//        $results = "";
-//        if( !$apartments) {
-//            $results = "No Results!";
-//        } else {
-//            $results .=  $this->displayApartments( $apartments);   
-//        }
-//
-//        echo $results;
-        
     }
       
     // id, user_id, area_code, actual_price, begin_term, end_term, rental_term, parking, pet_friendly, description, bedroom, thumbnail
