@@ -228,38 +228,37 @@ End of Corner Ribbon~~!>
                             <option value="December">December</option>
                         </select>
                     </div>
-                
+
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="pet_friendly" value="1">Pet Friendly</label>
+                        <label> <input type="checkbox" name="pet_friendly" value="">Pet Friendly</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="parking" value="1">Parking Available</label>
+                        <label> <input type="checkbox" name="parking" value="">Parking Available</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="laundry" value="1">Laundry</label>
+                        <label> <input type="checkbox" value="">Laundry Available</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="smoking" value="0">No Smoking</label>
-                    </div>
-                    
-                    <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="shared_room" value="1">Shared Room</label>
+                        <label> <input type="checkbox" value="">No Smoking</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="furnished" value="1">Furnished</label>
+                        <label> <input type="checkbox" value="">Shared Room</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="wheel_chair_access" value="1">Wheelchair Access</label>
+                        <label> <input type="checkbox" value="">Furnished</label>
+                    </div>
+
+                    <div class="checkbox" class="list-group-item">
+                        <label> <input type="checkbox" value="">Wheelchair accessible</label>
                     </div>
 
                     <input type="reset" class="btn btn-danger" value="Clear">
                     <input type="submit" class="btn btn-info pull-right" value="Refine">
-                    
                 </div>
             </form>
         </div>
