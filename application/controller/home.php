@@ -54,7 +54,7 @@ class Home extends Controller
             }
         }
         
-        $apartments = $this->model->search( $query_array, $filters_array);
+        $apartments = $this->apartment_db->search( $query_array, $filters_array);
         
         $results = "";
         if( !$apartments) {
@@ -140,7 +140,7 @@ class Home extends Controller
                                                                         <div id="myCarousel" class="carousel slide">
                                                                             <!-- main slider carousel items -->
                                                                             <div class="carousel-inner">';
-            $images = $this->model->getImageDB( $apartment->id);
+            $images = $this->apartment_db->getImageDB( $apartment->id);
             $j = 0;
             
             foreach( $images as $image) {
