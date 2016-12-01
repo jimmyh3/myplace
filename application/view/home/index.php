@@ -148,9 +148,9 @@ End of Corner Ribbon~~!>
                         <div class="form-group">
                             <label for="sort_by_sel">Sort By:</label>
                             <select class="form-control" id="sort_by_sel">
-                                <option>Any</option>
-                                <option>Price: Low to High</option>
-                                <option>Price: High to Low</option>
+                                <option value="0">Any</option>
+                                <option value="1">Price: Low to High</option>
+                                <option value="2">Price: High to Low</option>
                             </select>
                         </div>
 
