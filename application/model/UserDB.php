@@ -56,6 +56,16 @@ class UserDB {
         
     }
     
+    // function used for testing
+    public function getUsers() {
+        $sql = "SELECT * FROM User";
+        
+        $stmt = $this->db->prepare( $sql);
+        $stmt->execute();
+        
+        return $stmt->fetchAll();
+    }
+    
     /**
      * Check if the given email belongs to any existing user account.
      * 
