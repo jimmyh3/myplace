@@ -37,7 +37,8 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="<?php echo URL; ?>post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a></li> 
-                        <li><a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-inglyphicon glyphicon-log-in"></span> Log in/Sign up</a></li>
+                        <li id="login_button"><a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a></li>
+                        <li id="logout_button" ><span class="glyphicon glyphicon-log-out"></span> Welcome <?php echo $this->user?></li>
                     </ul>
 
 
@@ -61,7 +62,7 @@
         </nav>
 
         <!-- Modal  http://bootsnipp.com/snippets/featured/sign-in-sign-up-dual-modal -->
-        <div class="modal fade bs-modal-sm" id="myModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+        <div class="modal fade bs-modal-sm" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-sm">
                 
                 <div class="modal-content">
@@ -82,7 +83,7 @@
 
                             </div>
                             <div class="tab-pane fade active in" id="signin">
-                                <form class="form-horizontal" name="signinForm" id="signinForm">
+                                <form class="form-horizontal" name="signinForm" id="ajax_signin_form" method="POST">
                                     <fieldset>
                                         <!-- Sign In Form -->
                                         <!-- Text input-->
@@ -91,8 +92,6 @@
                                             <div class="controls">
                                                 <input id="email" name="Email" type="text" class="form-control" placeholder="bob@mail.sfsu.edu" class="input-medium">
                                             </div>
-
-
                                         </div>
 
                                         <!-- Password input-->
@@ -105,13 +104,14 @@
 
                                         <br>
                                         <div id="signinForm_errorloc"></div>
-
-
+                                        <div id="signin_error"></div>
+                                        
+                                        
                                         <!-- Button -->
                                         <div class="control-group">
                                             <label class="control-label" for="signin"></label>
                                             <div class="controls text-right">
-                                                <button id="signin" name="signin" class="btn btn-success">Sign In</button>
+                                                <input type="submit" class="btn btn-success" value="Sign In">
                                             </div>
                                         </div>
                                     </fieldset>
@@ -120,7 +120,7 @@
 
                             <!-- Register tab -->    
                             <div class="tab-pane fade" id="signup">
-                                <form class="form-horizontal" name="registerForm" id="registerForm">
+                                <form class="form-horizontal" name="registerForm" id="ajax_signup_form" method="POST">
                                     <fieldset>
                                         <!-- Sign Up Form -->
                                         <!-- Text input-->
@@ -182,13 +182,13 @@
 
                                         <br>
                                         <div id="registerForm_errorloc"></div>
-
+                                        <div id="register_error"></div>
                                         
                                         <!-- Button -->
                                         <div class="control-group">
                                             <label class="control-label" for="confirmsignup"></label>
                                             <div class="controls text-right">
-                                                <button id="confirmsignup" name="confirmsignup" class="btn btn-success">Sign Up</button>
+                                                <input type="submit" class="btn btn-success" value="Sign Up">
                                             </div>
                                         </div>
                                     </fieldset>

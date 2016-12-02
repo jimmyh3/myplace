@@ -1,6 +1,6 @@
-![MINI - A naked barebone PHP application](_install/mini-logo.png)
+![MyPlace - A apartment renting site for SFSU students](public/img/ggbridge.jpg)
 
-# MINI
+# MyPlace
 
 MINI is an extremely simple and easy to understand skeleton PHP application, reduced to the max.
 MINI is NOT a professional framework and it does not come with all the stuff real frameworks have.

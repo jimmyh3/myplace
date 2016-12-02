@@ -3,15 +3,36 @@
 /**
  * Description of User
  *
- * @author Jimmy
+ * @author Jimmy, Ilya
  */
 class User {
     
-    private $userID     = NULL;
+    private $userID     = 0;
     private $email      = "";
     private $name       = "";
     private $password   = "";
     private $userType   = 0;
+    
+    public function __construct( $id, $email, $userName, $password, $type){
+        $this->userID = $id;
+        $this->email = $email;
+        $this->name = $userName;
+        $this->password = $this->encryptPassword( $password);
+        $this->userType = $type;
+    }
+    
+//    public function constructFromDB( $db_user) {
+//        $this->userID = $db_user->id;
+//        $this->email = $db_user->email;
+//        $this->userName = $db_user->name;
+//        $this->password = $db_user->password;
+//        $this->userType = $db_user->usertype;
+//    } 
+    
+    public function encryptPassword( $password) {
+        // TODO encrypt password
+        return $password;
+    }
     
     /**
      * Set the user's ID.

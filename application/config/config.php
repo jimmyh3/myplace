@@ -59,9 +59,16 @@ define('URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
 //define('DB_PASS', 'mini');
 //define('DB_CHARSET', 'utf8');
 
+//define('DB_TYPE', 'mysql');
+//define('DB_HOST', '127.0.0.1');
+//define('DB_NAME', 'f16g14');
+//define('DB_USER', 'f16g14');
+//define('DB_PASS', 'sfsuf16swe');
+//define('DB_CHARSET', 'utf8');
+
 define('DB_TYPE', 'mysql');
 define('DB_HOST', '127.0.0.1');
 define('DB_NAME', 'f16g14');
-define('DB_USER', 'f16g14');
-define('DB_PASS', 'sfsuf16swe');
+define('DB_USER', 'root');
+define('DB_PASS', 'root');
 define('DB_CHARSET', 'utf8');
