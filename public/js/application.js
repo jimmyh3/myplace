@@ -31,9 +31,10 @@ $(function() {
     if($('#ajax_signin_form') !== 0) {
         $('#ajax_signin_form').on('submit', function( e) {
             e.preventDefault();
+            //alert( "signin clicked");
             // makes sure login info is valid 
             if( document.getElementById( "signinForm_errorloc").innerHTML == "") {
-                $.post( url + '/pagetemplate/login', {"userinfo": $('#ajax_signin_form').serialize()})
+                $.post( url + '/home/login', {"userinfo": $('#ajax_signin_form').serialize()})
                     .done( function( results) {
                         //alert( results);
                         if( results.substring(0,6) === "Error-") { // Some error occured
@@ -50,10 +51,8 @@ $(function() {
                         } else { // successful login
                             $('#signin_error').html( "");
                             $('#loginModal').modal('hide');
-                            $('#login_button').hide();
-                            $('#logout_button').show();
-                            // TODO edit page html with successful login
-                            //alert( results);
+                            //login_logout_button
+                            $('#login_logout_button').html( results); 
                         }
                     });
             }
@@ -63,7 +62,8 @@ $(function() {
     if($('#ajax_signup_form') !== 0) {
         $('#ajax_signup_form').on('submit', function( e) {
             e.preventDefault();
-            // makes sure registration infro is valid
+            //alert( "register clicked");
+            // makes sure registration info is valid
             if( document.getElementById( "registerForm_errorloc").innerHTML == "") {
                 $.post( url + '/home/register', {"userinfo": $('#ajax_signup_form').serialize()})
                     .done( function( results) {
@@ -73,6 +73,9 @@ $(function() {
                                 case "AUF": // Adding user failed
                                     error = "Adding user failed";
                                     break;
+                                case "UAE":
+                                    error = "User already exists with that email";
+                                    break;
                                 case "WEF": // Wrong email format
                                     error = "Wrong email format, when registering as a student email must end in @mail.sfsu.edu";
                                     break;
@@ -81,13 +84,19 @@ $(function() {
                         } else {
                             $('#register_error').html( "");
                             $('#loginModal').modal('hide');
-                            $('#login_button').hide();
-                            $('#logout_button').show();
-                            // TODO edit page html with successful login
-                            //alert( results);
+                            //$('#login_logout_button').html( ""); // TODO Logout button to be displayed
+                            $('#login_logout_button').html( results);
                         }
                     });
             }
         });
     }
 });
+
+function logout( e) {
+    $.ajax( url + '/home/logout')
+               .done( function( results) {
+                   $('#login_logout_button').html( results);
+                   alert( document.URL);
+           });
+}

@@ -31,6 +31,7 @@ class PageTemplate extends Controller {
             $user = new User( $results->id, $results->email, $results->name, $results->password, $results->usertype);
             if( $user->encryptPassword( $results_array["Password"]) == $user->getPassword()) { // password it correct
                 $this->user = $user->getName();
+                setcookie( "myPlace_user", $this->user, time() + (84600 * 7), '/'); // create a login cookie that expires after a week
                 $results = $this->formatLogin();
             } else {
                 // wrong password error
@@ -42,13 +43,16 @@ class PageTemplate extends Controller {
         } 
         
         echo $results;
-        //create cookie with user info
     }
     
     public function logout() {
         $user = '';
+        if( isset($_COOKIE["myPlace_user"])) { //unload the cookie and expire it
+            unset($_COOKIE["myPlace_user"]);
+            setcookie( 'myPlace_user', 'none', time() - 3600, '/'); 
+        }
+        echo $this->formatLogout();
         //TODO create logout
-        //remove cookie with user info
     }
     
     public function checkLogin() {
@@ -61,12 +65,17 @@ class PageTemplate extends Controller {
     }
     
     protected function formatLogin() {
-        return "Login successful as " . $user;
+        return '<a id="ajax_logout" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-log-out"></span> Welcome ' . $this->user . '</a>';
         // TODO format page html for logged in user
         
     }
     
     protected function formatLogout() { 
+        return '<a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a>';
         // TODO format page html for logged out user
+    }
+    
+    protected function getUser() {
+        return $this->user;
     }
 }

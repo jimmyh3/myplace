@@ -52,20 +52,20 @@ class Home extends PageTemplate
                 if( $this->user_db->addUser( $user)) { // adding user to db successful
                     $this->user = $user->getName();
                     $results = $this->formatLogin();
+                    setcookie( "myPlace_user", $this->user, time() + (84600 * 7), '/'); // create a login cookie that expires after a week
                 } else { // failed to add user
                     // Error adding user failed
                     $results = "Error-AUF";
                 }
+            } else { // user already exists
+                // Error user already exists
+                $results = "Error-UAE";
             }
         } else { // student registering with email that is not @mail.sfsu.edu
             // Error wrong email format
             $results = "Error-WEF";
         }
-        
-        
-        // check if user already exists
-        
-        
+    
         echo $results;
     }
     

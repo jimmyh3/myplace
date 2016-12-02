@@ -37,8 +37,15 @@
 
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="<?php echo URL; ?>post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a></li> 
-                        <li id="login_button"><a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a></li>
-                        <li id="logout_button" ><span class="glyphicon glyphicon-log-out"></span> Welcome <?php echo $this->user?></li>
+                        <li id="login_logout_button">
+                            <?php
+                                if( isset($_COOKIE["myPlace_user"])) {
+                                    echo '<a id="ajax_logout" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-log-out"></span> Welcome ' . $_COOKIE["myPlace_user"] . '</a>';
+                                } else {
+                                    echo '<a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a>';
+                                }
+                            ?>
+                        </li>
                     </ul>
 
 
