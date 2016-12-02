@@ -49,6 +49,8 @@ class Home extends PageTemplate
                 }
                 
                 $user = new User( 0, $results_array["Email"], $results_array["Username"], $results_array["Password"], $user_type);
+                $user->setPassword( $user->encryptPassword( $user->getPassword()));
+                echo( $user->getPassword());
                 if( $this->user_db->addUser( $user)) { // adding user to db successful
                     $this->user = $user->getName();
                     $results = $this->formatLogin();

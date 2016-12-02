@@ -83,7 +83,6 @@ $(document).ready(function () {
     });
 })(jQuery);
 
-
 // sign in form validation
 $(function () {
     var signinValidator = new Validator("signinForm");

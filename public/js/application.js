@@ -8,6 +8,7 @@ $(function() {
                 .done( function( filters) {
                    $.post(url + "/home/search", {"query" : $('#search_bar').val(), "filters" : filters})
                    .done( function ( result) {
+                       alert( result);
                        $('#results').html( result);
                    });
                 });
@@ -49,6 +50,7 @@ $(function() {
                             }
                             $('#signin_error').html( error);
                         } else { // successful login
+                            //alert( results);
                             $('#signin_error').html( "");
                             $('#loginModal').modal('hide');
                             //login_logout_button

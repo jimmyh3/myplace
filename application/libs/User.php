@@ -17,7 +17,7 @@ class User {
         $this->userID = $id;
         $this->email = $email;
         $this->name = $userName;
-        $this->password = $this->encryptPassword( $password);
+        $this->password = $password;
         $this->userType = $type;
     }
     
@@ -31,7 +31,7 @@ class User {
     
     public function encryptPassword( $password) {
         // TODO encrypt password
-        return $password;
+        return password_hash( $password, PASSWORD_DEFAULT);
     }
     
     /**

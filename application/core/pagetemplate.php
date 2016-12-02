@@ -29,7 +29,7 @@ class PageTemplate extends Controller {
         
         if( $results) { // if user exists in db
             $user = new User( $results->id, $results->email, $results->name, $results->password, $results->usertype);
-            if( $user->encryptPassword( $results_array["Password"]) == $user->getPassword()) { // password it correct
+            if( password_verify( $results_array['Password'], $results->password)) { //passsword is correct
                 $this->user = $user->getName();
                 setcookie( "myPlace_user", $this->user, time() + (84600 * 7), '/'); // create a login cookie that expires after a week
                 $results = $this->formatLogin();
@@ -60,14 +60,11 @@ class PageTemplate extends Controller {
     }
     
     protected function formatLogin() {
-        return '<a id="ajax_logout" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-log-out"></span> Welcome ' . $this->user . '</a>';
-        // TODO format page html for logged in user
-        
+        return '<a id="ajax_logout" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-log-out"></span> Welcome ' . $this->user . '</a>';        
     }
     
     protected function formatLogout() { 
         return '<a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a>';
-        // TODO format page html for logged out user
     }
     
     protected function getUser() {
