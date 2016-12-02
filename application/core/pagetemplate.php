@@ -51,12 +51,7 @@ class PageTemplate extends Controller {
             unset($_COOKIE["myPlace_user"]);
             setcookie( 'myPlace_user', 'none', time() - 3600, '/'); 
         }
-        echo $this->formatLogout();
-        //TODO create logout
-    }
-    
-    public function checkLogin() {
-        // TODO check if implementation needed
+        echo $this->formatLogout();    
     }
     
     protected function validateEmail( $email) {

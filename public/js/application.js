@@ -97,6 +97,5 @@ function logout( e) {
     $.ajax( url + '/home/logout')
                .done( function( results) {
                    $('#login_logout_button').html( results);
-                   alert( document.URL);
            });
 }
