@@ -47,9 +47,9 @@
                         <div class="form-group" style="display:inline;">
                             <div class="input-group" style="display:table;">
 
-                                <input class="form-control" id="search_bar" name="search" placeholder="Enter zip code" autocomplete="off" autofocus="autofocus" type="text">
+                                <input class="form-control" id="search_bar" name="search" placeholder="Enter zip code" maxlength="50" autocomplete="off" autofocus="autofocus" type="text">
                                 <span class="input-group-addon" id="ajax_search" style="width:1%;cursor:pointer;cursor:hand;"><span class="glyphicon glyphicon-search"></span></span>
-
+                                
                             </div>
                         </div>
                     </form>
