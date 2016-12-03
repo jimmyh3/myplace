@@ -339,7 +339,7 @@ class ApartmentDB{
             {
                 $sql_where_filters .= $f_key;       //Append filter_key
                 $sql_where_filters .= $sql_equal;   //Append " = "
-                $sql_where_filters .= $f_val;       //Append filter_value
+                $sql_where_filters .= (is_numeric($f_val)) ? $f_val : "'".$f_val."'"; //Append filter_value
             }else {
                 $sql_where_filters .= $this->search_create_param_range($f_key, $f_val);
             }
@@ -448,82 +448,6 @@ class ApartmentDB{
                 $k++;
             }
 
-//       }
-//        
-//        /* Execute the Query */
-//       // $stmt = $this->db->prepare($sql);
-//       // $stmt->execute();
-//
-//        /* Get all applicable apartments */
-//       // return $stmt->fetchAll();
-//
-//        
-//        /* Create and return an array of Apartments */
-////        $apartmentArray = array();
-////        foreach ($apartmentRecords as $apartmentRecord)
-////        {
-////            $aprt = $this->dbRecordToApartment($apartmentRecord);
-////            array_push($apartmentArray, $aprt);
-////        }
-////
-////        return $apartmentArray;
-//        
-//    }
-//    
-//    
-//    /**
-//     * Retrieve all Apartments belonging to a landlord of the specified ID.
-//     * @param int $user_id - user landlord ID.
-//     */
-//    public function getLandLordApartments($user_id)
-//    {
-//        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
-//        
-//        $stmt = $this->db->prepare($sql);
-//        $stmt->execute(
-//            array('user_id' => $user_id)
-//        );
-//        
-//        /* Get all applicable apartments */
-//        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//        
-//        return $apartmentRecords;
-//        
-////        $apartmentArray = array();
-////        foreach ($apartmentRecords as $apartmentRecord)
-////        {
-////            $aprt = $this->dbRecordToApartment($apartmentRecord);
-////            array_push($apartmentArray, $aprt);
-////        }
-////        
-////        return $apartmentArray;
-//    }
-//    
-//    
-//    //--------------------PRIVATE HELPER FUNCTIONS------------------------------
-//    
-//    /**
-//     * Helper method to convert a database apartment record into an Apartment
-//     * object.
-//     * @param array $apartmentRecord - a single database apartment record.
-//     * @return Apartment
-//     */
-//    private function dbRecordToApartment($apartmentRecord)
-//    {
-//        $aprt = new Apartment();
-//        
-//        $aprt->apartment_id = $apartmentRecord['id'];
-//        $aprt->user_id      = $apartmentRecord['user_id'];
-//        $aprt->areaCode     = $apartmentRecord['area_code'];
-//        $aprt->actualPrice  = $apartmentRecord['actual_price'];
-//        $aprt->beginTerm    = $apartmentRecord['begin_term'];
-//        $aprt->endTerm      = $apartmentRecord['end_term'];
-//        $aprt->rentalTerm   = $apartmentRecord['rental_term'];
-//        $aprt->parking      = $apartmentRecord['parking'];
-//        $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
-//        $aprt->description  = $apartmentRecord['description'];
-//        $aprt->bedroom      = $apartmentRecord['bedroom'];
-//        $aprt->thumbnail    = $apartmentRecord['thumbnail'];
             /*
              *  Finalize the SQL ORDER BY arguments
              */
