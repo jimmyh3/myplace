@@ -58,8 +58,6 @@ class Home extends Controller
         if (sizeof($filters_array) > 0)
         {
             $temp_array = array_slice($filters_array, 0, 1 );
-            print_r($temp_array);
-
             $order = $temp_array['order'];
         }
 
