@@ -139,6 +139,23 @@ End of Corner Ribbon~~!>
     <div class="row">
         <div id="result_test"></div>
         <div class="col-md-3">
+            
+            
+<!--            <form id="ajax_filter_form" method="POST">
+                <div class="form-group">
+                    <label for="sort_by_sel">Sort By:</label>
+                    <select class="form-control" id="sort_by_sel">
+                    Storing order value breaks search function since order is not a searchable column in the database 
+                    <select name="order" class="form-control" id="sort_by_sel">
+                        <option value="0">Any</option>
+                        <option value="1">Price: Low to High</option>
+                        <option value="2">Price: High to Low</option>
+                    </select
+                </div>
+                <input type="submit" class="btn btn-info pull-right" value="Sort">
+            </form>-->
+            
+            
             <form id="ajax_filter_form" method="POST">
 
                 <div class="panel panel-footer clearfix">
@@ -147,6 +164,8 @@ End of Corner Ribbon~~!>
                     <form>
                         <div class="form-group">
                             <label for="sort_by_sel">Sort By:</label>
+                            <!--<select class="form-control" id="sort_by_sel">-->
+                            <!--Storing order value breaks search function since order is not a searchable column in the database--> 
                             <select name="order" class="form-control" id="sort_by_sel">
                                 <option value="0">Any</option>
                                 <option value="1">Price: Low to High</option>
@@ -167,15 +186,15 @@ End of Corner Ribbon~~!>
                     <div class="form-group">
                         <label for="price_sel">Price:</label>
                         <!--<input name="min_price" type="text" class="form-control" id="min_price" placeholder="Minimum">-->
-                        <input name="actual_price[]" type="text" class="form-control" id="min_price" placeholder="Minimum">
+                        <input name="min_price" type="text" class="form-control" id="min_price" placeholder="Minimum">
                     </div>                   
 
                     <div class="form-group">
                         <!--<input name="max_price" type="text" class="form-control" id="max_price" placeholder="Maximum">-->
-                        <input name="actual_price[]" type="text" class="form-control" id="max_price" placeholder="Maximum">
+                        <input name="max_price" type="text" class="form-control" id="max_price" placeholder="Maximum">
                     </div>
 
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label for="price_sel">Price:</label>
                         <select class="form-control" id="price_sel">
                             <option>Any</option>
@@ -186,7 +205,7 @@ End of Corner Ribbon~~!>
                             <option>Between $1000 and $1499</option>
                             <option>$1500+</option>
                         </select>
-                    </div>
+                    </div>-->
 
                     <div class="form-group">
                         <label for="area_code">Zip code:</label>
@@ -263,7 +282,7 @@ End of Corner Ribbon~~!>
                 </div>
             </form>
         </div>
-        
+    
         <div class="col-md-9">
             <div class="row" id="results">
                 <?php echo $this->search(); ?>
