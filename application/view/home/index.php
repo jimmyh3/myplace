@@ -144,14 +144,15 @@ End of Corner Ribbon~~!>
                 <div class="panel panel-footer clearfix">
                     <p class="lead">Filters</p>
 
-                    <div class="form-group">
-                        <label for="sort_by_sel">Sort By:</label>
-                        <select class="form-control" id="sort_by_sel">
-                            <option>Any</option>
-                            <option>Price: Low to High</option>
-                            <option>Price: High to Low</option>
-                        </select>
-                    </div>
+                    <form>
+                        <div class="form-group">
+                            <label for="sort_by_sel">Sort By:</label>
+                            <select name="order" class="form-control" id="sort_by_sel">
+                                <option value="0">Any</option>
+                                <option value="1">Price: Low to High</option>
+                                <option value="2">Price: High to Low</option>
+                            </select>
+                        </div>
 
                     <div class="form-group">
                         <label for="bedroom_sel">Bedrooms:</label>
@@ -227,37 +228,38 @@ End of Corner Ribbon~~!>
                             <option value="December">December</option>
                         </select>
                     </div>
-
+                
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="pet_friendly" value="">Pet Friendly</label>
+                        <label> <input type="checkbox" name="pet_friendly" value="1">Pet Friendly</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" name="parking" value="">Parking Available</label>
+                        <label> <input type="checkbox" name="parking" value="1">Parking Available</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" value="">Laundry Available</label>
+                        <label> <input type="checkbox" name="laundry" value="1">Laundry</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" value="">No Smoking</label>
+                        <label> <input type="checkbox" name="smoking" value="0">No Smoking</label>
+                    </div>
+                    
+                    <div class="checkbox" class="list-group-item">
+                        <label> <input type="checkbox" name="shared_room" value="1">Shared Room</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" value="">Shared Room</label>
+                        <label> <input type="checkbox" name="furnished" value="1">Furnished</label>
                     </div>
 
                     <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" value="">Furnished</label>
-                    </div>
-
-                    <div class="checkbox" class="list-group-item">
-                        <label> <input type="checkbox" value="">Wheelchair accessible</label>
+                        <label> <input type="checkbox" name="wheel_chair_access" value="1">Wheelchair Access</label>
                     </div>
 
                     <input type="reset" class="btn btn-danger" value="Clear">
                     <input type="submit" class="btn btn-info pull-right" value="Refine">
+                    
                 </div>
             </form>
         </div>
