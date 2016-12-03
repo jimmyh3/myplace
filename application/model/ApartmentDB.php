@@ -66,7 +66,7 @@ class ApartmentDB{
         if ($stmt === false)
             {throw new Exception('Could not prepare apartment INSERT query'); }
             
-        /* Bind columns names listed in $sql apartment object values */
+        /* Bind columns names listed in $sql to apartment object values */
         foreach ($aptColsValsArray as $colName=>$colVal)
         {
             $param = 0;
@@ -78,7 +78,9 @@ class ApartmentDB{
                 $param = PDO::PARAM_NULL;
             } elseif(is_string($colVal)) {
                 $param = PDO::PARAM_STR;
-            } else {
+            } elseif($colName === 'thumbnail') {
+                $param = PDO::PARAM_LOB;
+            }else {
                 $param = FALSE;
             }
             
