@@ -165,11 +165,12 @@ class ApartmentDB{
      * @param associative array $filters - values to look through specific columns.
      * @return array $apartments - an array of Apartments from the database.
      */
-    public function search(array $query, array $filters, int $order)
+    
+
+    public function search(array $query, array $filters, $order)
     {
         //TODO: Delete $order later.
-//        $order = 0; //0 = default; will use $query to set ordering of retrieved records.
-        
+
         /* Default SQL statement - get all Apartments */
         $sql                =   " SELECT * FROM Apartments ";
         $sql_where          =   " WHERE ";
@@ -194,7 +195,7 @@ class ApartmentDB{
         $sql .= ($sql_where_filters)    ? "(".$sql_where_filters.")" : "";  
         /* Append ORDER BY with its arguments */
         $sql .= ($sql_orderby_args)     ? $sql_orderby . $sql_orderby_args : "";
-
+        //$sql .= $sql_orderby; 
         
         /* Execute the Query */
         $stmt = $this->db->prepare($sql);
@@ -375,7 +376,6 @@ class ApartmentDB{
     {
         /* Return: SQL ORDER BY clause arguments */
         $sql_orderby = "";  
-        
         /* These are the apartment columns $query will search against. */
         $aprt_cols  = array("area_code",
                             "actual_price",
@@ -388,7 +388,7 @@ class ApartmentDB{
                             "bedroom"
                             );
 
-        if ($order === 0 && !empty($query))
+        if ($order == 0 && !empty($query))
         {
             $sql_orderby_case  =    "   CASE
                                             WHEN %s THEN 1
