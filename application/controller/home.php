@@ -32,32 +32,13 @@ class Home extends Controller
         if( isset($_POST['filters']))
             $filters = $_POST['filters'];
 
-//        $filters = substr($filters, 0, strlen($filters)-1);
-        
-//        rtrim($filters, "1");
         $query_array = explode(" ", $query);
         
         $filters_array = array();
-        
-        echo "filters ";
-        echo $filters;
-        echo "<br> <br>";
-        
+
         /* rawurldecode() converts any "%##" (unsafe chars) to its actual value */
         /* parse_str() creates array of key/value pairs based on a URL argument string */
         parse_str(rawurldecode($filters), $filters_array);
-        
-        echo "filters ";
-        echo $filters;
-        echo "<br> <br>";
-        
-        echo"filter_array: ";
-        print_r($filters_array);
-        echo "<br> <br>";
-        
-        
-        // remove order
-        
         
         /* Minor handling for $filters_array and $query_array */
         foreach ($filters_array as $f_key=>$f_val)
@@ -74,11 +55,6 @@ class Home extends Controller
             }
         }
         
-        echo "filters_array: ";
-        print_r($filters_array);
-        echo "<br>";
-        
-        echo "temp_array: ";
         if (sizeof($filters_array) > 0)
         {
             $temp_array = array_slice($filters_array, 0, 1 );
@@ -86,17 +62,7 @@ class Home extends Controller
 
             $order = $temp_array['order'];
         }
-        
-        echo "<br> <br>";
-        echo "order: ";
 
-        
-        echo $order;
-        
-        
-
-        
-        
         $apartments = $this->model->search( $query_array, $filters_array, $order);
         
         $results = "";
