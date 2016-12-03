@@ -21,59 +21,86 @@ class ApartmentDB{
         }
     }
     
-//    /**
-//     * Adds the given Apartment object to the 'Apartments' table of the database.
-//     * 
-//     * @param Apartment $apt - the Apartment object to add to the database.
-//     */
-//    public function addApartment(Apartment $apt)
-//    {
-//        $sql = "";  //SQL query to execute.
-//        $sql_insert     = "INSERT INTO Apartments ";
-//        $sql_values     = " VALUES ";
-//        $sql_openPrn    = " ( ";
-//        $sql_closePrn   = " ) ";
-//        
-//        /* Get mapping of Apartments column names to Apartment object value */
-//        $aptColsValsArray  = $this->apartmentToDBRecord($apt);
-//        
-//        $sqlAptColumns = "";  //stores: ( col1, col2, col3 ...)
-//        $sqlAptValues  = "";  //stores: ( val1, val2, val3 ...)
-//        
-//        $colNames = array_keys($aptColsValsArray);
-//        /* Create Column and Value SQL string for INSERT */
-//        for ($i = 0; $i < count($aptColsValsArray); $i++)
-//        {
-//            /* Append column names together. */
-//            $sqlAptColumns = $sqlAptColumns . $colNames[$i];
-//            /* Append values of specific columns respectively. */
-//            $sqlAptValues  = $sqlAptValues  . $aptColsValsArray[$colNames[$i]];
-//            
-//            /* Append comma for the next value */
-//            if (($i+1) < count($aptColsValsArray)){
-//                $sqlAptColumns = $sqlAptColumns . " , ";
-//                $sqlAptValues  = $sqlAptValues  . " , ";
-//            }
-//        }
-//        
-//        //----------------------------------------------------------------------
-//        /* Create INSERT query with the column and value strings */
-//        
-//        //e.g INSERT INTO Apartments ( <column names> ) VALUES ( <values> )
-//        $sql = $sql_insert . $sql_openPrn . $sqlAptColumns . $sql_closePrn .
-//               $sql_values . $sql_openPrn . $sqlAptValues  . $sql_closePrn ;
-//         
-//        /* Execute the assembled INSERT query */
-//        $stmt = $this->db->prepare($sql);
-//        if ($stmt === false)
-//            {throw new Exception('Could not prepare apartment INSERT query'); }
-//        
-//        $result = $stmt->execute();
-//        if ($result === false)
-//            {throw new Exception('Could not execute apartment INSERT query'); }
-//        
-//        return true ;
-//    }  
+    /**
+     * Adds the given Apartment object to the 'Apartments' table of the database.
+     * 
+     * @param Apartment $apt - the Apartment object to add to the database.
+     */
+    public function addApartment(Apartment $apt)
+    {
+        $sql =  " INSERT INTO Apartments 
+                  ( %s )
+                  VALUES
+                  ( %s ) ";
+        
+        /* Get mapping of Apartments column names to Apartment object value */
+        $aptColsValsArray  = $this->apartmentToDBRecord($apt);
+        
+        $sqlAptColumns = "";  //stores: ( col1, col2, col3 ...)
+        $sqlAptValues  = "";  //stores: ( val1, val2, val3 ...)
+        
+        /* Create Column and Value SQL string for INSERT */
+        $i = 0; //index
+        foreach ($aptColsValsArray as $colName=>$colVal)
+        {
+            /* Append column names */
+            $sqlAptColumns  .= $colName;
+            /* Append values of specific columns respectively. */
+            $sqlAptValues   .= ":".$colName;
+            
+            /* Append comma for the next value */
+            if (($i+1) < count($aptColsValsArray)){
+                $sqlAptColumns .= " , ";
+                $sqlAptValues  .= " , ";
+            }
+            
+            $i++;
+        }
+        
+        /* Create INSERT query with the column and value strings */
+        $sql = sprintf($sql, $sqlAptColumns,
+                             $sqlAptValues);
+        
+        /* Execute the assembled INSERT query */
+        $stmt = $this->db->prepare($sql);
+        if ($stmt === false)
+            {throw new Exception('Could not prepare apartment INSERT query'); }
+            
+        /* Bind columns names listed in $sql apartment object values */
+        foreach ($aptColsValsArray as $colName=>$colVal)
+        {
+            $param = 0;
+            if(is_numeric($colVal)) {
+                $param = PDO::PARAM_INT; 
+            } elseif(is_bool($colVal)) {
+                $param = PDO::PARAM_BOOL;
+            } elseif(is_null($colVal)) {
+                $param = PDO::PARAM_NULL;
+            } elseif(is_string($colVal)) {
+                $param = PDO::PARAM_STR;
+            } else {
+                $param = FALSE;
+            }
+            
+            $stmt->bindValue(":".$colName, $colVal, $param);
+        }
+        
+        $result = $stmt->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute apartment INSERT query'); }
+        
+        return true ;
+        
+        /*
+         * Resulting SQL example:
+         * 
+         * INSERT INTO Apartments 
+         * ( <column names> ) 
+         * VALUES 
+         * ( <values> )
+         */
+        
+    }  
     
 //    /**
 //     * Delete the targeted database apartment record with the given id.
@@ -561,52 +588,47 @@ class ApartmentDB{
 //        return $aprt;
 //    }
     
-//    /**
-//     * Helper method to convert an Apartment object to an array that maps the
-//     * actual apartment column name to the value stored in the Apartment object.
-//     * 
-//     * @param Apartment $apt - the Apartment object to be converted.
-//     * @return array - key values of column names with values paired.
-//     */
-//    private function apartmentToDBRecord(Apartment $apt)
-//    {
-//        /*
-//         * TODO: Apartment->thumbnail and Apartment->image  need implementing.
-//         * Blob values which are string seems to be causing issues. I assume it
-//         * may have to do with the fact that the blob consist of commas and
-//         * apostrophes which may cause SQL to believe they're new arguments.
-//         */
-//        
-//        $aptColsArray = array(  "user_id"       => $apt->user_id,
-//                                "area_code"     => $apt->areaCode,
-//                                "actual_price"  => $apt->actualPrice,
-//                                "begin_term"    => "'" . $apt->beginTerm   . "'",
-//                                "end_term"      => "'" . $apt->endTerm     . "'",
-//                                "rental_term"   => "'" . $apt->rentalTerm  . "'", 
-//                                "parking"       => $apt->parking,
-//                                "pet_friendly"  => $apt->petFriendly,
-//                                "description"   => "'" . $apt->description . "'",
-//                                "bedroom"       => $apt->bedroom,
-//                                //"thumbnail"     => "'" . $apt->thumbnail   . "'",
-//                                );
-//        
-//        /* Convert Apartment->tags array to a single string with comma separation */  
-//        $tagStr = "";
-//        
-//        for ($i = 0; $i < count($apt->tags); $i++)
-//        {
-//            $tagStr = $tagStr . $apt->tags[$i];
-//            
-//            if (($i + 1) < count($apt->tags)) { //Append comma for next tag.
-//                $tagStr = $tagStr . ",";
-//            }
-//        }
-//        
-//        /* Add the newly converted tag string to the array */
-//        $aptColsArray['tags'] = "'" . $tagStr . "'";
-//        
-//        return $aptColsArray;
-//    }
+    /**
+     * Helper method to convert an Apartment object to an array that maps the
+     * actual apartment column name to the value stored in the Apartment object.
+     * 
+     * @param Apartment $apt - the Apartment object to be converted.
+     * @return array - key values of column names with values paired.
+     */
+    private function apartmentToDBRecord(Apartment $apt)
+    {
+        /*
+         * TODO: Apartment->thumbnail and Apartment->image  need implementing.
+         * Blob values which are string seems to be causing issues. I assume it
+         * may have to do with the fact that the blob consist of commas and
+         * apostrophes which may cause SQL to believe they're new arguments.
+         */
+        
+        
+        $aptColsArray = array(  //"id"                    => $apt->id,
+                                "title"                 => $apt->title,
+                                "user_id"               => $apt->user_id,
+                                "area_code"             => $apt->areaCode,
+                                "actual_price"          => $apt->actualPrice,
+                                "begin_term"            => $apt->beginTerm,
+                                "end_term"              => $apt->endTerm, 
+                                "parking"               => $apt->parking,
+                                "pet_friendly"          => $apt->petFriendly,
+                                "description"           => $apt->description,
+                                "bedroom"               => $apt->bedroom,
+                                "thumbnail"             => $apt->thumbnail,
+                                "smoking"               => $apt->smoking,
+                                "laundry"               => $apt->laundry,
+                                "shared_room"           => $apt->sharedRoom,
+                                "furnished"             => $apt->furnished,
+                                "wheel_chair_access"    => $apt->wheelChairAccess
+                                //"tags"                  => $apt->tags
+                                //"rental_term"   => "'" . $apt->rentalTerm  . "'",
+                                );
+        
+        
+        return $aptColsArray;
+    }
     
     public function getImageDB( $id) {
         $sql = "SELECT * FROM Image WHERE apartment_id = " . $id;
@@ -615,4 +637,6 @@ class ApartmentDB{
         
         return $query->fetchAll();
     }
+    
+    
 }
