@@ -202,8 +202,10 @@ class Apartment {
     
     public function setParking($boolean){
         $result = false;
-        if (filter_var($boolean, FILTER_VALIDATE_BOOLEAN)) {
-            $this->parking = $boolean;
+        $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
+                                        FILTER_NULL_ON_FAILURE  );
+        if (is_bool($bool)) {
+            $this->parking = $bool;
             $result = true;
         } else {
             throw new Exception("The given parking setting is not true or false!");
@@ -217,8 +219,10 @@ class Apartment {
     
     public function setWheelChairAccess($boolean){
         $result = false;
-        if (filter_var($boolean, FILTER_VALIDATE_BOOLEAN)) {
-            $this->wheelChairAccess = $boolean;
+        $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
+                                        FILTER_NULL_ON_FAILURE  );
+        if (is_bool($bool)) {
+            $this->wheelChairAccess = $bool;
             $result = true;
         } else {
             throw new Exception("The given wheelchair access setting is not true or false!");
@@ -232,8 +236,10 @@ class Apartment {
     
     public function setSmoking($boolean){
         $result = false;
-        if (filter_var($boolean, FILTER_VALIDATE_BOOLEAN)) {
-            $this->smoking = $boolean;
+        $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
+                                        FILTER_NULL_ON_FAILURE  );
+        if (is_bool($bool)) {
+            $this->smoking = $bool;
             $result = true;
         } else {
             throw new Exception("The given smoking setting is not true or false!");
@@ -247,8 +253,10 @@ class Apartment {
     
     public function setLaundry($boolean){
         $result = false;
-        if (filter_var($boolean, FILTER_VALIDATE_BOOLEAN)) {
-            $this->laundry = $boolean;
+        $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
+                                        FILTER_NULL_ON_FAILURE  );
+        if (is_bool($bool)) {
+            $this->laundry = $bool;
             $result = true;
         } else {
             throw new Exception("The given laundry setting is not true or false!");
@@ -262,8 +270,10 @@ class Apartment {
     
     public function setPetFriendly($boolean){
         $result = false;
-        if (filter_var($boolean, FILTER_VALIDATE_BOOLEAN)) {
-            $this->petFriendly = $boolean;
+        $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
+                                        FILTER_NULL_ON_FAILURE  );
+        if (is_bool($bool)) {
+            $this->petFriendly = $bool;
             $result = true;
         } else {
             throw new Exception("The given pet friendly setting is not true or false!");
@@ -277,8 +287,10 @@ class Apartment {
     
     public function setSharedRoom($boolean){
         $result = false;
-        if (filter_var($boolean, FILTER_VALIDATE_BOOLEAN)) {
-            $this->sharedRoom = $boolean;
+        $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
+                                        FILTER_NULL_ON_FAILURE  );
+        if (is_bool($bool)) {
+            $this->sharedRoom = $bool;
             $result = true;
         } else {
             throw new Exception("The given shared room setting is not true or false!");
@@ -292,23 +304,17 @@ class Apartment {
     
     public function setFurnished($boolean){
         $result = false;
-        if (filter_var($boolean, FILTER_VALIDATE_BOOLEAN)) {
-            $this->furnished = $boolean;
+        $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
+                                        FILTER_NULL_ON_FAILURE  );
+        if (is_bool($bool)) {
+            $this->furnished = $bool;
             $result = true;
         } else {
             throw new Exception("The given furnished setting is not true or false!");
         }
         return $result;
     }
-    
-    
-//    public function getTags(){
-//        return $this->tags;
-//    }
-//    
-//    public function getRentalTerm(){
-//        return $this->rentalTerm;
-//    }
+        
     
     public function getThumbnail(){
         return $this->thumbnail;
@@ -336,8 +342,6 @@ class Apartment {
         //TODO: store BLOB data into images[]
     }
     
-    
-    
     /**
      * 
      * @param int $zip_code - used for Google Maps
@@ -346,4 +350,5 @@ class Apartment {
     {
         //TODO: implement this.
     }
+    
 }

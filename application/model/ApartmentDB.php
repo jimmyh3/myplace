@@ -33,11 +33,14 @@ class ApartmentDB{
                   VALUES
                   ( %s ) ";
         
-        /* Get mapping of Apartments column names to Apartment object value */
-        $aptColsValsArray  = $this->apartmentToDBRecord($apt);
+        $sql_comma = " , ";
+        $sql_colon = ":";
         
         $sqlAptColumns = "";  //stores: ( col1, col2, col3 ...)
         $sqlAptValues  = "";  //stores: ( val1, val2, val3 ...)
+        
+        /* Get mapping of Apartments column names to Apartment object value */
+        $aptColsValsArray  = $this->apartmentToDBRecord($apt);
         
         /* Create Column and Value SQL string for INSERT */
         $i = 0; //index
@@ -46,12 +49,12 @@ class ApartmentDB{
             /* Append column names */
             $sqlAptColumns  .= $colName;
             /* Append values of specific columns respectively. */
-            $sqlAptValues   .= ":".$colName;
+            $sqlAptValues   .= $sql_colon . $colName;
             
             /* Append comma for the next value */
             if (($i+1) < count($aptColsValsArray)){
-                $sqlAptColumns .= " , ";
-                $sqlAptValues  .= " , ";
+                $sqlAptColumns .= $sql_comma;
+                $sqlAptValues  .= $sql_comma;
             }
             
             $i++;
@@ -611,22 +614,22 @@ class ApartmentDB{
          */
         
         $aptColsArray = array(  //"id"                    => $apt->id,
-                                "title"                 => $apt->title,
-                                "user_id"               => $apt->user_id,
-                                "area_code"             => $apt->areaCode,
-                                "actual_price"          => $apt->actualPrice,
-                                //"begin_term"            => $apt->beginTerm,
-                                //"end_term"              => $apt->endTerm, 
-                                "parking"               => $apt->parking,
-                                "pet_friendly"          => $apt->petFriendly,
-                                "description"           => $apt->description,
-                                "bedroom"               => $apt->bedroom,
-                                "thumbnail"             => $apt->thumbnail,
-                                "smoking"               => $apt->smoking,
-                                "laundry"               => $apt->laundry,
-                                "shared_room"           => $apt->sharedRoom,
-                                "furnished"             => $apt->furnished,
-                                "wheel_chair_access"    => $apt->wheelChairAccess
+                                "title"                 => $apt->getTitle(),
+                                "user_id"               => $apt->getUserID(),
+                                "area_code"             => $apt->getAreaCode(),
+                                "actual_price"          => $apt->getActualPrice(),
+                                //"begin_term"            => $apt->getBeginTerm(),
+                                //"end_term"              => $apt->getEndTerm(), 
+                                "parking"               => $apt->hasParking(),
+                                "pet_friendly"          => $apt->isPetFriendly(),
+                                "description"           => $apt->getDescription(),
+                                "bedroom"               => $apt->getBedRoomCount(),
+                                "thumbnail"             => $apt->getThumbnail(),
+                                "smoking"               => $apt->hasSmoking(),
+                                "laundry"               => $apt->hasLaundry(),
+                                "shared_room"           => $apt->isSharedRoom(),
+                                "furnished"             => $apt->isFurnished(),
+                                "wheel_chair_access"    => $apt->hasWheelChairAccess()
                                 //"tags"                  => $apt->tags
                                 //"rental_term"   => "'" . $apt->rentalTerm  . "'",
                                 );
