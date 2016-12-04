@@ -66,14 +66,22 @@ class Apartment {
     /** @var String */
     public $rentalTerm = "";
     
-    /**
-     * @var String[] - array of BLOBs that are images for this apartment.
-     */
-    public $apartmentImages = array();
+    /** @var String[] - array of BLOBs that are images for this apartment. */
+    private $images = array();
     
     
     public function __construct() {
         
+    }
+    
+    public function getImages()
+    {
+        return $this->images;
+    }
+    
+    public function addImages(array $images)
+    {
+        //TODO: store BLOB data into images[]
     }
     
     /**

@@ -72,7 +72,7 @@ class ApartmentDB{
             $param = 0;
             if(is_numeric($colVal)) {
                 $param = PDO::PARAM_INT; 
-            } elseif(is_bool($colVal)) {
+            } elseif(filter_var($colVal, FILTER_VALIDATE_BOOLEAN)) {
                 $param = PDO::PARAM_BOOL;
             } elseif(is_null($colVal)) {
                 $param = PDO::PARAM_NULL;
@@ -80,7 +80,7 @@ class ApartmentDB{
                 $param = PDO::PARAM_STR;
             } elseif($colName === 'thumbnail') {
                 $param = PDO::PARAM_LOB;
-            }else {
+            } else {
                 $param = FALSE;
             }
             
@@ -606,14 +606,17 @@ class ApartmentDB{
          * apostrophes which may cause SQL to believe they're new arguments.
          */
         
+        /**
+         * TODO: HANDLE begin_term, end_term, and thumbnail/images.
+         */
         
         $aptColsArray = array(  //"id"                    => $apt->id,
                                 "title"                 => $apt->title,
                                 "user_id"               => $apt->user_id,
                                 "area_code"             => $apt->areaCode,
                                 "actual_price"          => $apt->actualPrice,
-                                "begin_term"            => $apt->beginTerm,
-                                "end_term"              => $apt->endTerm, 
+                                //"begin_term"            => $apt->beginTerm,
+                                //"end_term"              => $apt->endTerm, 
                                 "parking"               => $apt->parking,
                                 "pet_friendly"          => $apt->petFriendly,
                                 "description"           => $apt->description,

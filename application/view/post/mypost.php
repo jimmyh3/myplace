@@ -276,7 +276,7 @@
 
                                             <div class="input-group">
 
-                                                <select class="form-control" id="StartTerm" name="begin_term">
+                                                <select class="form-control" id="StartTerm" name="StartTerm">
                                                     <option value="-1">Any</option>
                                                     <option value="1">January</option>
                                                     <option value="2">February</option>
@@ -296,7 +296,7 @@
 
 
                                                 <span class="input-group-addon">-</span>
-                                                <select class="form-control" id="EndTerm" name="end_term">
+                                                <select class="form-control" id="EndTerm" name="EndTerm">
                                                     <option value="-1">Any</option>
                                                     <option value="1">January</option>
                                                     <option value="2">February</option>
@@ -317,7 +317,7 @@
                                             <div class="control-group">
                                                 <label class="control-label" for="ZipCode">*Zip Code:</label>
                                                 <div class="controls">
-                                                    <input id="ZipCode" name="area_code" class="form-control" type="text" placeholder="94132" class="input-large">
+                                                    <input id="ZipCode" name="ZipCode" class="form-control" type="text" placeholder="94132" class="input-large">
                                                 </div>
                                             </div>
 
@@ -325,36 +325,36 @@
 
                                                 <label  class="control-label" for="desc">Description:</label>
                                                 <div class="controls">
-                                                    <textarea class="form-control" class="input-large" rows="5" id="desc"></textarea>
+                                                    <textarea class="form-control" class="input-large" rows="5" id="desc" name="Description"></textarea>
                                                 </div> 
                                             </div>
 
                                                       <div class="checkbox" class="list-group-item">
-                                                <label> <input type="checkbox" value="">Pet Friendly</label>
+                                                <label> <input type="checkbox" value="true" name="PetFriendly">Pet Friendly</label>
                                             </div>
 
                                             <div class="checkbox" class="list-group-item">
-                                                <label> <input type="checkbox" value="">Parking Available</label>
+                                                <label> <input type="checkbox" value="true" name="Parking">Parking Available</label>
                                             </div>
                                             
                                             <div class="checkbox" class="list-group-item">
-                                                <label> <input type="checkbox" value="">Laundry</label>
+                                                <label> <input type="checkbox" value="true" name="Laundry">Laundry</label>
                                             </div>
 
                                             <div class="checkbox" class="list-group-item">
-                                                <label> <input type="checkbox" value="">No Smoking</label>
+                                                <label> <input type="checkbox" value="true" name="Smoking">No Smoking</label>
                                             </div>
                                             
                                             <div class="checkbox" class="list-group-item">
-                                                <label> <input type="checkbox" value="">Shared Room</label>
+                                                <label> <input type="checkbox" value="true" name="SharedRoom">Shared Room</label>
                                             </div>
 
                                             <div class="checkbox" class="list-group-item">
-                                                <label> <input type="checkbox" value="">Furnished</label>
+                                                <label> <input type="checkbox" value="true" name="Furnished">Furnished</label>
                                             </div>
                                             
                                             <div class="checkbox" class="list-group-item">
-                                                <label> <input type="checkbox" value="">Wheelchair Acessible</label>
+                                                <label> <input type="checkbox" value="true" name="WheelChairAccess">Wheelchair Accessible</label>
                                             </div>
 
                                 
