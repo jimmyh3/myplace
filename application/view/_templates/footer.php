@@ -8,7 +8,7 @@
     <footer>
         <div class="row">
             <div class="col-md-3">
-                <p> <a href="<?php echo URL; ?>about">About Us</a></p>
+                <p> <a href="<?php echo URL; ?>about">About us</a></p>
             </div>
 
             <div class="col-md-3">
@@ -16,7 +16,7 @@
             </div>
 
             <div class="col-md-3">
-                <p><a href="<?php echo URL; ?>policy">Privacy Policy</a></p>
+                <p><a href="#">Privacy Policy</a></p>
             </div>
 
             <div class="col-md-3">

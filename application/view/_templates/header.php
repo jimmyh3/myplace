@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <title>myPlace</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=3.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
         <!-- JS -->
         <!-- please note: The JavaScript files are loaded in the footer to speed up page construction -->
         <!-- See more here: http://stackoverflow.com/q/2105327/1114320 -->
@@ -14,8 +14,7 @@
 
         <link href="<?php echo URL; ?>css/shop-homepage.css" rel="stylesheet">
         <link href="<?php echo URL; ?>css/bootstrap.css" rel="stylesheet">
-	
-		
+
 
 
 
@@ -31,19 +30,8 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
-                    
-                        
                     </button>
-   
-                    <div>
-                    <a class="span9 nav clearfix" href="<?php echo URL; ?>home">
-					<img src="public/img/648logo.png" alt="logo" width="170" height="85" border="4" style="padding-right: 30px;">
-					</a>
-                     </div>
-
-
- 
-
+                    <a class="navbar-brand" href="<?php echo URL; ?>home/index">myPlace &nbsp; &nbsp; &nbsp; &nbsp;</a>
                 </div>
                 <div class="navbar-collapse collapse" id="searchbar">
 
@@ -66,7 +54,7 @@
                     </form>
                     
                     <!-- Disclaimer at bottom of nav bar -->
-                    <h2 class="disclaimer">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only</h2>
+                    <p class="disclaimer">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only</p>
 
                 </div><!--/.nav-collapse -->
             </div>

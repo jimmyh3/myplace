@@ -126,13 +126,4 @@ class Model
         // fetch() is the PDO method that get exactly one result
         return $query->fetch()->amount_of_songs;
     }
-
-    public function getApartmentDB()
-    {
-        $sql = "SELECT * FROM Apartments ";
-        $query = $this->db->prepare($sql);
-        $query->execute();
-        
-        return $query->fetchAll();
-    }
 }
