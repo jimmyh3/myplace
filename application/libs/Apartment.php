@@ -310,6 +310,21 @@ class Apartment {
 //        return $this->rentalTerm;
 //    }
     
+    public function getThumbnail(){
+        return $this->thumbnail;
+    }
+    
+    public function setThumbnail($blob){
+        $result = false;
+        if (is_string($blob)) {
+            $this->thumbnail = $blob;
+            $result = true;
+        } else {
+            throw new Exception("The given thumbnail does not register!");
+        }
+        return $result;
+    }
+    
     public function getImages()
     {
         return $this->images;
