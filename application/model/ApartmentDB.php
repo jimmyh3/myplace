@@ -41,6 +41,7 @@ class ApartmentDB{
         
         /* Get mapping of Apartments column names to Apartment object value */
         $aptColsValsArray  = $this->apartmentToDBRecord($apt);
+        unset($aptColsValsArray['id']);  //Adding new apartment, 'id' unneeded.
         
         /* Create Column and Value SQL string for INSERT */
         $i = 0; //index
@@ -542,56 +543,49 @@ class ApartmentDB{
     }
     
     
-//    /**
-//     * Helper method to convert a database apartment record into an Apartment
-//     * object.
-//     * @param array $apartmentRecord - a single database apartment record.
-//     * @return Apartment
-//     */
-//    private function dbRecordToApartment($apartmentRecord)
-//    {
-//        $aprt = new Apartment();
-//        
-//        $aprt->apartment_id = $apartmentRecord['id'];
-//        $aprt->user_id      = $apartmentRecord['user_id'];
-//        $aprt->areaCode     = $apartmentRecord['area_code'];
-//        $aprt->actualPrice  = $apartmentRecord['actual_price'];
-//        $aprt->beginTerm    = $apartmentRecord['begin_term'];
-//        $aprt->endTerm      = $apartmentRecord['end_term'];
-//        $aprt->rentalTerm   = $apartmentRecord['rental_term'];
-//        $aprt->parking      = $apartmentRecord['parking'];
-//        $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
-//        $aprt->description  = $apartmentRecord['description'];
-//        $aprt->bedroom      = $apartmentRecord['bedroom'];
-//        $aprt->thumbnail    = $apartmentRecord['thumbnail'];
-//
-//        //----------------------------------------------------------------------
-//        /* Parse the 'tags' string into an array of strings */
-//        $tags_tokenized = explode(",", $apartmentRecord['tags']);
-//        
-//        foreach ($tags_tokenized as $tags_token)
-//        {
-//            array_push($aprt->tags, trim($tags_token));
-//        }
-//        
-//        //----------------------------------------------------------------------
-//        /* Get Images of the this Apartment */
-//        $sql_getimages = "SELECT * FROM Image WHERE apartment_id = :apartment_id";
-//        
-//        $stmt=$this->db->prepare($sql_getimages);
-//        $stmt->execute(array("apartment_id" => $aprt->apartment_id));
-//        
-//        //Note, there may be no Images at all.
-//        $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//        
-//        foreach ($images as $image)
-//        {
-//            array_push($aprt->image, $image['image']);
-//        }
-//        //----------------------------------------------------------------------
-//        
-//        return $aprt;
-//    }
+    /**
+     * Helper method to convert a database apartment record into an Apartment
+     * object.
+     * @param array $apartmentRecord - a single database apartment record.
+     * @return Apartment
+     */
+    //private function dbRecordToApartment($apartmentRecord)
+    public function dbRecordToApartment($apartmentRecord)
+    {
+        $aprt = new Apartment();
+        
+        $aprt->setID($apartmentRecord->id);
+        $aprt->setTitle($apartmentRecord->title);
+        $aprt->setUserID($apartmentRecord->user_id);
+        $aprt->setAreaCode($apartmentRecord->area_code);
+        $aprt->setActualPrice($apartmentRecord->actual_price);
+        $aprt->setBeginTerm($apartmentRecord->begin_term);
+        $aprt->setEndTerm($apartmentRecord->end_term);
+        $aprt->setParking($apartmentRecord->parking);
+        $aprt->setPetFriendly($apartmentRecord->pet_friendly);
+        $aprt->setDescription($apartmentRecord->description);
+        $aprt->setBedRoomCount($apartmentRecord->bedroom);
+        $aprt->setThumbnail($apartmentRecord->thumbnail);
+        $aprt->setSmoking($apartmentRecord->smoking);
+        $aprt->setLaundry($apartmentRecord->laundry);
+        $aprt->setSharedRoom($apartmentRecord->shared_room);
+        $aprt->setFurnished($apartmentRecord->furnished);
+        $aprt->setWheelChairAccess($apartmentRecord->wheel_chair_access);
+        
+        //----------------------------------------------------------------------
+        /* Get Images of the this Apartment */
+        $images = array();
+        foreach ($this->getImageDB($apartmentRecord->id) as $imageRecord)
+        {
+            array_push($images, $imageRecord->image);
+        }
+        
+        /* Set Apartment's array of images */
+        $aprt->addImages($images);
+        //----------------------------------------------------------------------
+        
+        return $aprt;
+    }
     
     /**
      * Helper method to convert an Apartment object to an array that maps the
@@ -602,24 +596,14 @@ class ApartmentDB{
      */
     private function apartmentToDBRecord(Apartment $apt)
     {
-        /*
-         * TODO: Apartment->thumbnail and Apartment->image  need implementing.
-         * Blob values which are string seems to be causing issues. I assume it
-         * may have to do with the fact that the blob consist of commas and
-         * apostrophes which may cause SQL to believe they're new arguments.
-         */
         
-        /**
-         * TODO: HANDLE begin_term, end_term, and thumbnail/images.
-         */
-        
-        $aptColsArray = array(  //"id"                    => $apt->id,
+        $aptColsArray = array(  "id"                    => $apt->getID(),
                                 "title"                 => $apt->getTitle(),
                                 "user_id"               => $apt->getUserID(),
                                 "area_code"             => $apt->getAreaCode(),
                                 "actual_price"          => $apt->getActualPrice(),
-                                //"begin_term"            => $apt->getBeginTerm(),
-                                //"end_term"              => $apt->getEndTerm(), 
+                                "begin_term"            => $apt->getBeginTerm(),
+                                "end_term"              => $apt->getEndTerm(), 
                                 "parking"               => $apt->hasParking(),
                                 "pet_friendly"          => $apt->isPetFriendly(),
                                 "description"           => $apt->getDescription(),
@@ -629,19 +613,18 @@ class ApartmentDB{
                                 "laundry"               => $apt->hasLaundry(),
                                 "shared_room"           => $apt->isSharedRoom(),
                                 "furnished"             => $apt->isFurnished(),
-                                "wheel_chair_access"    => $apt->hasWheelChairAccess()
+                                "wheel_chair_access"    => $apt->hasWheelChairAccess(),
                                 //"tags"                  => $apt->tags
                                 //"rental_term"   => "'" . $apt->rentalTerm  . "'",
                                 );
-        
         
         return $aptColsArray;
     }
     
     public function getImageDB( $id) {
-        $sql = "SELECT * FROM Image WHERE apartment_id = " . $id;
+        $sql = "SELECT * FROM Image WHERE apartment_id = :apartment_id ";
         $query = $this->db->prepare( $sql);
-        $query->execute();
+        $query->execute(array("apartment_id" => $id));
         
         return $query->fetchAll();
     }

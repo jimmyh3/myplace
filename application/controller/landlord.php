@@ -24,26 +24,32 @@ class Landlord extends PageTemplate{
             return;
         }
 
+        $apartment  = new Apartment();
         $apartForm  = array();
 
         $rawFormElements = filter_input(INPUT_POST, 'add-aprt-form');
         parse_str(rawurldecode( $rawFormElements), $apartForm);
 
-        //-------DUMMY USER------------------------
+        
+                //-------DUMMY USER------------------------
+                /*
+                 * TODO: use actual User when User is fully implemented.
+                 * TODO: use actual 'Name' and 'Email' from User object that
+                 *       should be logged in and setup at this time.
+                 */
+                require_once APP . 'test/TEST.php';
+                $user       = TEST::getLocalDummyLandlordUser();
 
-        //TODO: remove this line if TEST no longer required.
-        require_once APP . 'test/TEST.php';
-        $user       = TEST::getDummyLandlordUser();
-        $user->setName($apartForm['Name']);
-        $user->setEmail($apartForm['Email']);
-        //$user->setPhone($apartForm['Number']);    //Phone number stored where?
+                $user->setName($apartForm['Name']);
+                $user->setEmail($apartForm['Email']);
+                //$user->setPhone($apartForm['Number']); //Phone number stored where?
 
-        //-------DUMMY USER------------------------
+                //-------DUMMY USER------------------------
 
-
-        $apartment  = new Apartment();
-
-        try{
+                
+        
+        /* Create new Apartment object acccording to the form values */
+        try {
             
             //if (isset($apartForm['UserID']))   { $apartment->setBedRoomCount($apartForm['UserID']); }
             if (isset($apartForm['Bedroom']))   { $apartment->setBedRoomCount($apartForm['Bedroom']); }
@@ -61,7 +67,7 @@ class Landlord extends PageTemplate{
             if (isset($apartForm['WheelChairAccess'])) { $apartment->setWheelChairAccess($apartForm['WheelChairAccess']); }
             if (isset($apartForm['images']))    { $apartment->addImages($apartForm['images']); }
 
-            $result = $this->apartment_db->addApartment($apartment);
+            $this->apartment_db->addApartment($apartment);
             
         } catch (Exception $exception) {
             echo $exception->getMessage() . "\n Failed to add new apartment ";

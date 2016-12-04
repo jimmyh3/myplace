@@ -99,6 +99,8 @@ class Apartment {
         if (is_string($title)) {
             $this->title = $title;
             $result = true;
+        } elseif (is_null($title)) {
+            $this->title = "";
         } else {
             throw new Exception("The given title is not a string!");
         }
@@ -154,16 +156,18 @@ class Apartment {
         return $this->beginTerm;
     }
     
-    public function setBeginTerm($beginTerm){
-        return $this->beginTerm = $beginTerm;
+    public function setBeginTerm($year_month_day){
+        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
+        return $this->beginTerm = $date->format('Y-m-d');
     }
     
     public function getEndTerm(){
         return $this->endTerm;
     }
     
-    public function setEndTerm($endTerm){
-        return $this->endTerm = $endTerm;
+    public function setEndTerm($year_month_day){
+        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
+        return $this->endTerm = $date->format('Y-m-d');
     }
     
     public function getDescription(){
@@ -175,6 +179,8 @@ class Apartment {
         if (is_string($description)) {
             $this->description = $description;
             $result = true;
+        } elseif (is_null($description)) {
+            $this->description = "";
         } else {
             throw new Exception("The given description is not a string!");
         }
@@ -322,24 +328,34 @@ class Apartment {
     
     public function setThumbnail($blob){
         $result = false;
-        if (is_string($blob)) {
+        if (is_string($blob) || is_null($blob)) {
             $this->thumbnail = $blob;
             $result = true;
         } else {
-            throw new Exception("The given thumbnail does not register!");
+            throw new Exception("Failed to add thumbnail!");
         }
         return $result;
     }
     
-    public function getImages()
-    {
+    public function getImages(){
         return $this->images;
     }
     
     
     public function addImages(array $images)
     {
-        //TODO: store BLOB data into images[]
+        foreach ($images as $image){
+            if (is_string($image) || is_null($image)) {
+                array_push($this->images, $image);
+            } else {
+                throw new Exception("Failed to add images!");
+            }
+        }
+        return true;
+    }
+    
+    public function getImagesCount(){
+        return count($this->images);
     }
     
     /**

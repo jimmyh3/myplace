@@ -70,7 +70,7 @@ class PageTemplate extends Controller {
     
     protected function formatApartment($apartments) {
         $results = '<div class="pull-right">Total apartments:' . count( $apartments) . ' </div><br><br><div class="row">';
-        $i = 0;
+        $i = 0; 
         foreach ( $apartments as $apartment) {
             $results .= '<div class="col-sm-4 col-lg-4 col-md-4">
                     <div class="thumbnail">';
