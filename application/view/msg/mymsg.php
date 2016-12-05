@@ -1,3 +1,25 @@
+<!DOCTYPE html>
+<html>
+<title>myMessages</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inconsolata">
+
+<div id="headerwrap">
+    <div class="container">
+        <div class="row">
+            <h1>myMessages</h1>
+            <br>
+            <h3>Messages from interested SFSU students</h3>
+            <p><a href="<?php echo URL; ?>home" class="w3-btn w3-padding-large w3-large">APARTMENTS</a></p>
+            <br>
+            <br>
+            <div class="col-lg-6 col-lg-offset-3">
+            </div>
+        </div>
+    </div><!-- /container -->
+</div><!-- /headerwrap -->   
+
 <div class="container">
     <h2>myMessages</h2>
     <p>Interested students contacted you</p>

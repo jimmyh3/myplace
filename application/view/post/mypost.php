@@ -17,9 +17,7 @@
 <br>
 <br>
 	
-    <div class="container">
-    <div class="row">
-    
+        <div class="row">
 
         <div class="col-sm-4 col-lg-4 col-md-4">
             <div class="thumbnail"> 
@@ -33,7 +31,7 @@
                 <div class="ratings">
                     <div style="width:100%;text-align: center;">
                         <button style="display: inline-block;" type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#aptModal">Edit Post</button>
-                        <a href="<?php echo URL; ?>msg" <button style="display: inline-block;" type="button" class="btn btn-primary btn-sm">View Messages</button></a>
+                        <a href="<?php echo URL; ?>msg"> <button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm">View Messages</button></a>
                         <button style="display: inline-block;" type="button" class="btn btn-danger btn-sm pull-right">Delete Post</button>
 
                     </div>
@@ -198,7 +196,7 @@
                                         <br>
                                         <div id="aptInfoForm_errorloc"></div>
 
-                                    <button type="submit" class="btn btn-success pull-right">Submit</button>
+                                    <button type="submit" class="btn btn-success pull-right">Update</button>
                                       </fieldset>
                                     </form>
                                     
@@ -373,7 +371,7 @@
                                         <br>
                                         <div id="aptInfoForm_errorloc"></div>
 
-                                    <button type="submit" class="btn btn-success pull-right">Submit</button>
+                                    <button type="submit" class="btn btn-success pull-right"><span class="glyphicon glyphicon-pencil"></span> Post</button>
                                       </fieldset>
                                     </form>
                                     

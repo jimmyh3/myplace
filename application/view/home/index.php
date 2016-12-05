@@ -23,7 +23,7 @@
         <div class="row">
             <h1>myPlace</h1><br>
             <h3>Apartments for SFSU students</h3><br><br>
-            <p><a href="<?php echo URL; ?>home/index" class="w3-btn w3-padding-large w3-large">APARTMENTS</a></p>
+            <p><a href="<?php echo URL; ?>home" class="w3-btn w3-padding-large w3-large">APARTMENTS</a></p>
             <div class="col-lg-6 col-lg-offset-3">
             </div>
         </div>
@@ -153,13 +153,14 @@
                     </div>
 
                     <input type="reset" class="btn btn-danger" value="Clear">
-                    <input type="submit" class="btn btn-info pull-right" value="Refine">
+                    <input type="submit" class="btn btn-info pull-right" value="Filter">
                 </div>
             </form>
         </div>
         
         <div class="col-md-9">
             <div class="row" id="results">
+            <h3>Featured Apartments</h3><br>
                 <?php echo $this->search(); ?>
             </div>
         </div>
