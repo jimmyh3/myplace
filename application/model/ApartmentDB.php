@@ -603,14 +603,14 @@ class ApartmentDB{
      */
     private function apartmentToDBRecord(Apartment $apt)
     {
-        
+        //TODO: fix begin_term and end_term
         $aptColsArray = array(  "id"                    => $apt->getID(),
                                 "title"                 => $apt->getTitle(),
                                 "user_id"               => $apt->getUserID(),
                                 "area_code"             => $apt->getAreaCode(),
                                 "actual_price"          => $apt->getActualPrice(),
-                                "begin_term"            => $apt->getBeginTerm(),
-                                "end_term"              => $apt->getEndTerm(), 
+//                                "begin_term"            => $apt->getBeginTerm(),
+//                                "end_term"              => $apt->getEndTerm(), 
                                 "parking"               => $apt->hasParking(),
                                 "pet_friendly"          => $apt->isPetFriendly(),
                                 "description"           => $apt->getDescription(),

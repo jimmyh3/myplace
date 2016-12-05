@@ -157,8 +157,9 @@ class Apartment {
     }
     
     public function setBeginTerm($year_month_day){
-        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
-        return $this->beginTerm = $date->format('Y-m-d');
+        //TODO: below is correctly implemented. Just need UI to send right format.
+//        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
+//        $this->beginTerm = $date->format('Y-m-d');
     }
     
     public function getEndTerm(){
@@ -166,8 +167,9 @@ class Apartment {
     }
     
     public function setEndTerm($year_month_day){
-        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
-        return $this->endTerm = $date->format('Y-m-d');
+        //TODO: below is correctly implemented. Just need UI to send right format.
+//        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
+//        $this->endTerm = $date->format('Y-m-d');
     }
     
     public function getDescription(){

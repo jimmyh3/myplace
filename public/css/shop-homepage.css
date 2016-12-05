@@ -1,3 +1,4 @@
+
 .slide-image {
     width: 100%;
 }
@@ -88,5 +89,12 @@ footer {
 .disclaimer {
     color: white; 
     text-align: center;
-    font-size: 16px;
+    font-size: 25px;
 }
+
+.myLogo { 
+width: 170px;
+height: 85px;
+border: 4px;
+padding: 50px;
+background-image: (/img/648logo.png) no-repeat 0 0; }
