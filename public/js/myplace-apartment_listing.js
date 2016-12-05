@@ -7,13 +7,14 @@ $(function() {
             
             $.post(url + '/landlord/addApartment', {"add-aprt-form": $('#add-aprt-form').serialize()})
                     .done( function( result) {
-                           //$('#results').html( result);
-                           console.log(result);
+                            //target some <div> to pretty it up later
+                            //$('#results').html( result);
+                            alert(result);
                     });
 
         });
+        
     }
-    
     
 });
 

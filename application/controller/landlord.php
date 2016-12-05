@@ -32,7 +32,7 @@ class Landlord extends PageTemplate{
         if (!isset($_POST['add-aprt-form'])) {
             echo "Failure: Adding apartment form data has not been sent!";
             return;
-        }        
+        }
                 
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
         if ($user->getType() !== 1)
@@ -48,7 +48,13 @@ class Landlord extends PageTemplate{
         /* Parse the form data and store it in $apartForm */
         $rawFormElements = filter_input(INPUT_POST, 'add-aprt-form');
         parse_str(rawurldecode( $rawFormElements), $apartForm);
-
+ 
+        /*
+         * -------------------------------------------------------
+         * TODO: Need to find some way to handle file uploads.
+         * -------------------------------------------------------
+         */
+        
         /* Create new Apartment object acccording to the form values */
         try {
             //if (isset($apartForm['UserID']))   { $apartment->setBedRoomCount($apartForm['UserID']); }

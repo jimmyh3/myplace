@@ -226,7 +226,7 @@
                                    
                                     <p class="text-right"><span class="error">* required field.</span></p>
                                    
-                                    <form class="form-horizontal" name="aptInfoForm" id="add-aprt-form" method="POST">
+                                    <form action="<?php echo URL; ?>landlord/addApartment" class="form-horizontal" name="aptInfoForm" id="add-aprt-form" method="POST" enctype="multipart/form-data">
                                         <fieldset>
                                             <!-- Text input-->
                                             <div class="control-group">
@@ -275,6 +275,7 @@
                                             <label class="control-label" for="Term">*Availability Term:</label>
 
                                             <div class="input-group">
+                                                <!-- Calendar input in appropriate format:  -->
                                                 <input class="form-control" id="StartTerm" name="StartTerm" type="date" value=""/>
 <!--                                                <select class="form-control" id="StartTerm" name="StartTerm">
                                                     <option value="-1">Any</option>
@@ -292,7 +293,7 @@
                                                     <option value="12">December</option>
                                                 </select>-->
                                                 
-                                                <!-- Calendar input in approprate format:  -->
+                                                <!-- Calendar input in appropriate format:  -->
                                                 <span class="input-group-addon">-</span>
                                                 <input class="form-control" id="EndTerm" name="EndTerm" type="date" value=""/>
                                                 
@@ -363,6 +364,7 @@
                                             <label>Upload Images (max 10):</label>
 
                                             <div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                <input type="hidden" name="MAX_FILE_SIZE" value="10000000" />
                                                 <input type="file" accept="image/png" name="images[]" class="form-control">
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-success btn-add">+</button>
