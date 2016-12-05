@@ -95,6 +95,13 @@ class ApartmentDB{
         if ($result === false)
             {throw new Exception('Could not execute apartment INSERT query'); }
         
+            
+        /* Send any Apartment images to the Image database table */
+        foreach ($apt->getImages() as $image)
+        {
+            $this->addImage($apt->getID(), $image);
+        }
+        
         return true ;
         
         /*
@@ -629,5 +636,34 @@ class ApartmentDB{
         return $query->fetchAll();
     }
     
+    /**
+     * Add the given BLOB image to the Image table. Each image must be
+     * associated with an Apartment, thus the apartment's ID is required.
+     * 
+     * @param type $aparmentID - the apartment's ID.
+     * @param type $blob - the BLOB data image.
+     * @return boolean - true
+     * @throws Exception - thrown if the INSERT query fails.
+     */
+    public function addImage($aparmentID, $blob)
+    {
+        $sql = " INSERT INTO Image 
+                 ( apartment_id , image ) 
+                 VALUES 
+                 (:apartment_id , :image ) ";
+        
+        $query = $this->db->prepare( $sql);
+        if ($query === false)
+            {throw new Exception('Could not prepare Image INSERT query'); }
+        
+        $query->bindValue(":apartment_id", $aparmentID, PDO::PARAM_INT);
+        $query->bindValue(":image", $blob, PDO::PARAM_LOB);
+        
+        $result = $query->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute Image INSERT query'); }
+        
+        return true;
+    }
     
 }

@@ -6,7 +6,7 @@
  * 12/4/2016
  * Testing ground...
  * 
- * DON'T DELETE ME !!! AT LEAST NOT UNTIL NOTHING HERE IS USED ANYMORE.
+ * DON'T DELETE ME YET!!! AT LEAST NOT UNTIL NOTHING HERE IS USED ANYMORE.
  * Put whatever here to make actual things work....for the moment.
  * 
  * ---------------------------------------------------------------
@@ -65,5 +65,17 @@ class TEST {
         
         $apartment = self::$apartment_db->dbRecordToApartment($apartmentRecords[0]);
         self::$apartment_db->addApartment($apartment);
+    }
+    
+    //Tests addImage() of ApartmentDB class. This works.
+    public static function addImageViaApartmentDB()
+    {
+        self::openConnection();
+        $apartmentRecords = self::$apartment_db->search(array(),array());
+        
+        $apartment = self::$apartment_db->dbRecordToApartment($apartmentRecords[0]);
+        $result = self::$apartment_db->addImage($apartment->getID(), $apartment->getThumbnail());
+        
+        echo "Query was..." .  $result;
     }
 }
