@@ -75,10 +75,20 @@ class Apartment {
         
     }
     
+    /**
+     * Get Apartment_id.
+     * @return int $id
+     */
     public function getID(){
         return $this->id;
     }
     
+    /**
+     * Set Apartment ID.
+     * @param type $id - the id to set apartment_id to.
+     * @return boolean
+     * @throws Exception
+     */
     public function setID($id){
         $result = false;
         if (filter_var($id, FILTER_VALIDATE_INT)) {
@@ -90,10 +100,20 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Get the title of this Apartment.
+     * @return string or null
+     */
     public function getTitle(){
         return $this->title;
     }
     
+    /**
+     * Set the title of this Apartment.
+     * @param string or null: $title
+     * @return boolean
+     * @throws Exception
+     */
     public function setTitle($title){
         $result = false;
         if (is_string($title)) {
@@ -107,10 +127,20 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Get the ID of the User of which this Apartment belongs to.
+     * @return int
+     */
     public function getUserID(){
         return $this->user_id;
     }
     
+    /**
+     * Set the ID of the User of which this Apartment belongs to.
+     * @param int $userID
+     * @return boolean
+     * @throws Exception
+     */
     public function setUserID($userID){
         $result = false;
         if (filter_var($userID, FILTER_VALIDATE_INT)) {
@@ -122,60 +152,115 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Get the Apartment's zip code.
+     * @return int
+     */
     public function getAreaCode(){
         return $this->areaCode;
     }
     
+    /**
+     * Set the Apartment's zip code.
+     * @param int $areaCode
+     * @return boolean
+     * @throws Exception
+     */
     public function setAreaCode($areaCode){
         $result = false;
-        if (filter_var($areaCode, FILTER_VALIDATE_INT)) {
+        if (filter_var($areaCode,   FILTER_VALIDATE_INT) && 
+                                    strlen($areaCode) === 5) {
             $this->areaCode = $areaCode;
             $result = true;
         } else {
-            throw new Exception("The given area code is not a valid integer!");
+            throw new Exception("The given area code is not a valid zip code!");
         }
         return $result;
     }
     
+    /**
+     * Get the renting price of the Apartment.
+     * @return double
+     */
     public function getActualPrice(){
         return $this->actualPrice;
     }
     
+    /**
+     * Set the price of the Apartment.
+     * @param double $actualPrice
+     * @return boolean
+     * @throws Exception
+     */
     public function setActualPrice($actualPrice){
         $result = false;
         if (filter_var($actualPrice, FILTER_VALIDATE_FLOAT)) {
             $this->actualPrice = $actualPrice;
             $result = true;
         } else {
-            throw new Exception("The given price is not a valid float!");
+            throw new Exception("The given price is not a valid decimal!");
         }
         return $result;
     }
     
+    /**
+     * Get the date of which the renting term begins.
+     * @return string - date
+     */
     public function getBeginTerm(){
         return $this->beginTerm;
     }
     
+    /**
+     * Set the date of which the renting term begins.
+     * @param string $year_month_day - date
+     * @throws Exception
+     */
     public function setBeginTerm($year_month_day){
-        //TODO: below is correctly implemented. Just need UI to send right format.
-//        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
-//        $this->beginTerm = $date->format('Y-m-d');
+        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
+        if ($date) {
+            $this->beginTerm = $date->format('Y-m-d');
+        } else {
+            throw new Exception("The starting term is not a valid date!");
+        }
     }
     
+    /**
+     * Get the date of which the renting term ends.
+     * @return string - date
+     */
     public function getEndTerm(){
         return $this->endTerm;
     }
     
+    /**
+     * Get the date of which the renting term ends.
+     * @param string $year_month_day - date
+     * @throws Exception
+     */
     public function setEndTerm($year_month_day){
-        //TODO: below is correctly implemented. Just need UI to send right format.
-//        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
-//        $this->endTerm = $date->format('Y-m-d');
+        $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
+        if ($date) {
+            $this->endTerm = $date->format('Y-m-d');
+        } else {
+            throw new Exception("The ending term is not a valid date!");
+        }
     }
     
+    /**
+     * Get the Apartment's description.
+     * @return string
+     */
     public function getDescription(){
         return $this->description;
     }
     
+    /**
+     * Set the Apartment's description
+     * @param string $description
+     * @return boolean
+     * @throws Exception
+     */
     public function setDescription($description){
         $result = false;
         if (is_string($description)) {
@@ -189,10 +274,20 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Get the total count of available bedrooms.
+     * @return type
+     */
     public function getBedRoomCount(){
         return $this->bedroom;
     }
     
+    /**
+     * Set the total count of available bedrooms.
+     * @param int $count
+     * @return boolean
+     * @throws Exception
+     */
     public function setBedRoomCount($count){
         $result = false;
         if (filter_var($count, FILTER_VALIDATE_INT) && $count >= 0) {
@@ -204,10 +299,20 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Check if this Apartment supports parking.
+     * @return boolean
+     */
     public function hasParking(){
         return $this->parking;
     }
     
+    /**
+     * Change if this Apartment supports parking.
+     * @param boolean $boolean
+     * @return boolean
+     * @throws Exception
+     */
     public function setParking($boolean){
         $result = false;
         $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
@@ -221,10 +326,20 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Check if this Apartment has wheel chair access.
+     * @return boolean
+     */
     public function hasWheelChairAccess(){
         return $this->wheelChairAccess;
     }
     
+    /**
+     * Change if this Apartment has wheel chair access.
+     * @param boolean $boolean
+     * @return boolean
+     * @throws Exception
+     */
     public function setWheelChairAccess($boolean){
         $result = false;
         $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
@@ -238,10 +353,20 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Check if this Apartment allows smoking.
+     * @return boolean
+     */
     public function hasSmoking(){
         return $this->smoking;
     }
     
+    /**
+     * Change if this Apartment allows smoking.
+     * @param boolean $boolean
+     * @return boolean
+     * @throws Exception
+     */
     public function setSmoking($boolean){
         $result = false;
         $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
@@ -255,10 +380,19 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Check if this Apartment supports laundry cleaning.
+     * @return boolean
+     */
     public function hasLaundry(){
         return $this->laundry;
     }
     
+    /**
+     * Change if this Apartment supports laundry cleaning.
+     * @throws Exception
+     * @return boolean
+     */
     public function setLaundry($boolean){
         $result = false;
         $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
@@ -272,10 +406,19 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Check if this Apartment allow pets.
+     * @return boolean
+     */
     public function isPetFriendly(){
         return $this->petFriendly;
     }
     
+    /**
+     * Change if this Apartment allow pets.
+     * @throws Exception
+     * @return boolean
+     */
     public function setPetFriendly($boolean){
         $result = false;
         $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
@@ -289,10 +432,19 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Check if this Apartment is a shared room.
+     * @return boolean
+     */
     public function isSharedRoom(){
         return $this->sharedRoom;
     }
     
+    /**
+     * Change if this Apartment is a shared room.
+     * @throws Exception
+     * @return boolean
+     */
     public function setSharedRoom($boolean){
         $result = false;
         $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
@@ -306,10 +458,19 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Check if this Apartment is furnished.
+     * @return boolean
+     */
     public function isFurnished(){
         return $this->furnished;
     }
     
+    /**
+     * Change if this Apartment is furnished.
+     * @throws Exception
+     * @return boolean
+     */
     public function setFurnished($boolean){
         $result = false;
         $bool   = filter_var($boolean,  FILTER_VALIDATE_BOOLEAN, 
@@ -323,11 +484,20 @@ class Apartment {
         return $result;
     }
         
-    
+    /**
+     * Get the thumbnail of which this Apartment features.
+     * @return boolean
+     */
     public function getThumbnail(){
         return $this->thumbnail;
     }
     
+    /**
+     * Set the thumbnail of which this Apartment features.
+     * @param string $blob - image BLOB
+     * @return boolean
+     * @throws Exception
+     */
     public function setThumbnail($blob){
         $result = false;
         if (is_string($blob) || is_null($blob)) {
@@ -339,11 +509,20 @@ class Apartment {
         return $result;
     }
     
+    /**
+     * Get the set of images of this Apartment.
+     * @return array
+     */
     public function getImages(){
         return $this->images;
     }
     
-    
+    /**
+     * Add the set the of images to this Apartment.
+     * @param array $images
+     * @return boolean
+     * @throws Exception
+     */
     public function addImages(array $images)
     {
         foreach ($images as $image){
@@ -356,6 +535,10 @@ class Apartment {
         return true;
     }
     
+    /**
+     * Get the total count of images for this Apartment.
+     * @return int
+     */
     public function getImagesCount(){
         return count($this->images);
     }

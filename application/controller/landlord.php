@@ -19,35 +19,33 @@ class Landlord extends PageTemplate{
     
     public function addApartment()
     {
+        //-------DUMMY USER--DELETE THIS WHEN $user in PageTemplate is setup----
+                 /* TODO: use actual User when User is fully implemented. */
+                require_once APP . 'test/TEST.php';
+                $user       = TEST::getLocalDummyLandlordUser();
+                //$user->setName($apartForm['Name']);     //This should be set by $user object.
+                //$user->setEmail($apartForm['Email']);   //This should be set by $user object.
+                //$user->setPhone($apartForm['Number']);  //Phone number stored where?
+        //-------DUMMY USER------------------------
+                
+        /* Return if form data was somehow not sent over */
         if (!isset($_POST['add-aprt-form'])) {
             echo "Failure: Adding apartment form data has not been sent!";
             return;
-        }
-        
-        //-------DUMMY USER--DELETE THIS WHEN $user in PageTemplate is setup----
-                /* 
-                 * TODO: use actual User when User is fully implemented.
-                 * TODO: use actual 'Name' and 'Email' from User object that
-                 *       should be logged in and setup at this time.
-                 */
-                require_once APP . 'test/TEST.php';
-                $user       = TEST::getLocalDummyLandlordUser();
-                
-                //$user->setName($apartForm['Name']);     //This should be set by $user object.
-                //$user->setEmail($apartForm['Email']);   //This should be set by $user object.
-                //$user->setPhone($apartForm['Number']); //Phone number stored where?
-
-        //-------DUMMY USER------------------------
-                
+        }        
                 
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
         if ($user->getType() !== 1)
             { throw new Exception("You must be a landlord who's signed in to add a new apartment!"); }
-                
+            
         
-        $apartment  = new Apartment();
-        $apartForm  = array();
+        $apartment  = new Apartment();  //Apartment object to add to database.
+        $isAdded    = false;            //if Apartment was added successfully.
+        $message   = "";                //response message to echo to Client.
+        
+        $apartForm  = array(); //will hold the POST-ed form data.
 
+        /* Parse the form data and store it in $apartForm */
         $rawFormElements = filter_input(INPUT_POST, 'add-aprt-form');
         parse_str(rawurldecode( $rawFormElements), $apartForm);
 
@@ -71,13 +69,15 @@ class Landlord extends PageTemplate{
             /* Set the 'user_id' of Apartment to equal this logged in landlord's ID */
             $apartment->setUserID($user->getID());
             
-            $this->apartment_db->addApartment($apartment);
-            
+            /* Add apartment to Apartment database */
+            $isAdded = $this->apartment_db->addApartment($apartment);
+            $message = "Apartment has been successfully added!";
         } catch (Exception $exception) {
-            echo $exception->getMessage() . "\n Failed to add new apartment ";
+            $message = $exception->getMessage();
         }
         
-        echo "<p>Apartment has been successfully added!</p>";
-            
+        echo $message;
+        
+        return $isAdded;
     }
 }

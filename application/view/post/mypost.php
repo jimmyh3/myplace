@@ -275,8 +275,8 @@
                                             <label class="control-label" for="Term">*Availability Term:</label>
 
                                             <div class="input-group">
-
-                                                <select class="form-control" id="StartTerm" name="StartTerm">
+                                                <input class="form-control" id="StartTerm" name="StartTerm" type="date" value=""/>
+<!--                                                <select class="form-control" id="StartTerm" name="StartTerm">
                                                     <option value="-1">Any</option>
                                                     <option value="1">January</option>
                                                     <option value="2">February</option>
@@ -290,13 +290,14 @@
                                                     <option value="10">October</option>
                                                     <option value="11">November</option>
                                                     <option value="12">December</option>
-                                                </select>
-
-
-
-
+                                                </select>-->
+                                                
+                                                <!-- Calendar input in approprate format:  -->
                                                 <span class="input-group-addon">-</span>
-                                                <select class="form-control" id="EndTerm" name="EndTerm">
+                                                <input class="form-control" id="EndTerm" name="EndTerm" type="date" value=""/>
+                                                
+                                                
+<!--                                                <select class="form-control" id="EndTerm" name="EndTerm">
                                                     <option value="-1">Any</option>
                                                     <option value="1">January</option>
                                                     <option value="2">February</option>
@@ -310,7 +311,7 @@
                                                     <option value="10">October</option>
                                                     <option value="11">November</option>
                                                     <option value="12">December</option>
-                                                </select>
+                                                </select>-->
                                             </div>
 
                                             <!-- Text input-->

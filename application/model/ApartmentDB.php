@@ -24,7 +24,9 @@ class ApartmentDB{
     /**
      * Adds the given Apartment object to the 'Apartments' table of the database.
      * 
+     * @throws Exception - throws exception if the SQL query fails.
      * @param Apartment $apt - the Apartment object to add to the database.
+     * @return boolean - returns true upon success.
      */
     public function addApartment(Apartment $apt)
     {
@@ -609,8 +611,8 @@ class ApartmentDB{
                                 "user_id"               => $apt->getUserID(),
                                 "area_code"             => $apt->getAreaCode(),
                                 "actual_price"          => $apt->getActualPrice(),
-//                                "begin_term"            => $apt->getBeginTerm(),
-//                                "end_term"              => $apt->getEndTerm(), 
+                                "begin_term"            => $apt->getBeginTerm(),
+                                "end_term"              => $apt->getEndTerm(), 
                                 "parking"               => $apt->hasParking(),
                                 "pet_friendly"          => $apt->isPetFriendly(),
                                 "description"           => $apt->getDescription(),
