@@ -23,34 +23,36 @@ class Landlord extends PageTemplate{
             echo "Failure: Adding apartment form data has not been sent!";
             return;
         }
-
-        $apartment  = new Apartment();
-        $apartForm  = array();
-
-        $rawFormElements = filter_input(INPUT_POST, 'add-aprt-form');
-        parse_str(rawurldecode( $rawFormElements), $apartForm);
-
         
-                //-------DUMMY USER------------------------
-                /*
+        //-------DUMMY USER--DELETE THIS WHEN $user in PageTemplate is setup----
+                /* 
                  * TODO: use actual User when User is fully implemented.
                  * TODO: use actual 'Name' and 'Email' from User object that
                  *       should be logged in and setup at this time.
                  */
                 require_once APP . 'test/TEST.php';
                 $user       = TEST::getLocalDummyLandlordUser();
-
-                $user->setName($apartForm['Name']);
-                $user->setEmail($apartForm['Email']);
+                
+                //$user->setName($apartForm['Name']);     //This should be set by $user object.
+                //$user->setEmail($apartForm['Email']);   //This should be set by $user object.
                 //$user->setPhone($apartForm['Number']); //Phone number stored where?
 
-                //-------DUMMY USER------------------------
-
+        //-------DUMMY USER------------------------
+                
+                
+        /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
+        if ($user->getType() !== 1)
+            { throw new Exception("You must be a landlord who's signed in to add a new apartment!"); }
                 
         
+        $apartment  = new Apartment();
+        $apartForm  = array();
+
+        $rawFormElements = filter_input(INPUT_POST, 'add-aprt-form');
+        parse_str(rawurldecode( $rawFormElements), $apartForm);
+
         /* Create new Apartment object acccording to the form values */
         try {
-            
             //if (isset($apartForm['UserID']))   { $apartment->setBedRoomCount($apartForm['UserID']); }
             if (isset($apartForm['Bedroom']))   { $apartment->setBedRoomCount($apartForm['Bedroom']); }
             if (isset($apartForm['Price']))     { $apartment->setActualPrice($apartForm['Price']);  }
@@ -66,7 +68,9 @@ class Landlord extends PageTemplate{
             if (isset($apartForm['Furnished'])) { $apartment->setFurnished($apartForm['Furnished']); }
             if (isset($apartForm['WheelChairAccess'])) { $apartment->setWheelChairAccess($apartForm['WheelChairAccess']); }
             if (isset($apartForm['images']))    { $apartment->addImages($apartForm['images']); }
-
+            /* Set the 'user_id' of Apartment to equal this logged in landlord's ID */
+            $apartment->setUserID($user->getID());
+            
             $this->apartment_db->addApartment($apartment);
             
         } catch (Exception $exception) {
