@@ -165,11 +165,12 @@ class ApartmentDB{
      * @param associative array $filters - values to look through specific columns.
      * @return array $apartments - an array of Apartments from the database.
      */
-    public function search(array $query, array $filters /*int $order */)
+    
+
+    public function search(array $query, array $filters, $order)
     {
         //TODO: Delete $order later.
-        $order = 0; //0 = default; will use $query to set ordering of retrieved records.
-        
+
         /* Default SQL statement - get all Apartments */
         $sql                =   " SELECT * FROM Apartments ";
         $sql_where          =   " WHERE ";
@@ -194,7 +195,7 @@ class ApartmentDB{
         $sql .= ($sql_where_filters)    ? "(".$sql_where_filters.")" : "";  
         /* Append ORDER BY with its arguments */
         $sql .= ($sql_orderby_args)     ? $sql_orderby . $sql_orderby_args : "";
-
+        //$sql .= $sql_orderby; 
         
         /* Execute the Query */
         $stmt = $this->db->prepare($sql);
@@ -331,8 +332,13 @@ class ApartmentDB{
         $sql_equal      = " = ";
         $filtersCount   = count($filters);
         
-        $i = 0;
-        foreach ($filters as $f_key=>$f_val)
+        $i = 1;
+        
+        // Using array_slice to omit the first filter array element 'order'
+        // 'order' is a not being used to query the database, it is used to
+        // determine the type of sorting for the query results
+        
+        foreach (array_slice($filters,1) as $f_key=>$f_val)
         {
             /* Array - will be a range search */
             if (!is_array($f_val))
@@ -344,9 +350,10 @@ class ApartmentDB{
                 $sql_where_filters .= $this->search_create_param_range($f_key, $f_val);
             }
             $sql_where_filters .= (($i + 1) < $filtersCount) ? $sql_and : "";
-            
+
             $i++;
         }
+        
         
         return $sql_where_filters;
         
@@ -365,11 +372,10 @@ class ApartmentDB{
      * @param int $order default 0 - indicates which way to use $query/$filter to set the ordering.
      * @return String   - possibly empty string : append this after ORDER BY clause.
      */
-    private function search_create_param_orderby(array $query, array $filters, $order = 0)
+    private function search_create_param_orderby(array $query, array $filters, $order)
     {
         /* Return: SQL ORDER BY clause arguments */
         $sql_orderby = "";  
-        
         /* These are the apartment columns $query will search against. */
         $aprt_cols  = array("area_code",
                             "actual_price",
@@ -382,7 +388,7 @@ class ApartmentDB{
                             "bedroom"
                             );
 
-        if ($order === 0 && !empty($query))
+        if ($order == 0 && !empty($query))
         {
             $sql_orderby_case  =    "   CASE
                                             WHEN %s THEN 1
@@ -536,6 +542,10 @@ class ApartmentDB{
 
                 $sql_orderby .= $sql_orderby_case;
             }
+        }else if($order == 1){
+            $sql_orderby = " actual_price ASC"; 
+        }else if($order == 2){
+            $sql_orderby = " actual_price DESC"; 
         }
         
         return $sql_orderby;       
