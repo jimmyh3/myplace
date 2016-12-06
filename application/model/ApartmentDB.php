@@ -707,7 +707,7 @@ class ApartmentDB{
     // msg and dispay each of them in a table. 
     public function getMessages($aid, $user_id){
         $sql = "SELECT * FROM Messages WHERE apartment_id = " . $aid; 
-        $sql .= "AND message_recipent = " . $user_id; 
+        $sql .= " AND message_recipent = " . $user_id; 
         $query = $this->db->prepare($sql); 
         $query->excute(); 
         return $query->fetchAll(); 
