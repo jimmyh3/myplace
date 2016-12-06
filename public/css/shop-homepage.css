@@ -81,7 +81,7 @@ footer {
 
 #headerwrap .logo {
     text-align: left;
-    margin-left: 20px;
+    margin-left: 30px;
     margin-top: 15px;
 }
 
@@ -89,11 +89,11 @@ footer {
 .disclaimer {
     color: white; 
     text-align: center;
-    font-size: 25px;
+    font-size: 15px;
 }
 
 .myLogo { 
-width: 170px;
+width: 150px;
 height: 85px;
 border: 4px;
 padding: 50px;

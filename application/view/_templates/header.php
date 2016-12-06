@@ -37,7 +37,7 @@
    
                     <div>
                     <a class="span9 nav clearfix" href="<?php echo URL; ?>home">
-					<img src="public/img/648logo.png" alt="logo" width="170" height="85" border="4" style="padding-right: 30px;">
+					<img src="public/img/648logo.png" alt="logo" width="90" height="75" border="4" style="padding-right: 10px; padding-top: 5px;">
 					</a>
                      </div>
 
@@ -59,7 +59,7 @@
                         <div class="form-group" style="display:inline;">
                             <div class="input-group" style="display:table;">
 
-                                <input class="form-control" id="search_bar" name="search" placeholder="Enter zip code" maxlength="50" autocomplete="off" autofocus="autofocus" type="text">
+                                <input class="form-control" id="search_bar" name="search" placeholder="Search (e.g. zip code)" autocomplete="off" autofocus="autofocus" type="text">
                                 <span class="input-group-addon" id="ajax_search" style="width:1%;cursor:pointer;cursor:hand;"><span class="glyphicon glyphicon-search"></span></span>
                                 
                             </div>

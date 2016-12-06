@@ -117,33 +117,33 @@ class ApartmentDB{
         
     }  
     
-//    /**
-//     * Delete the targeted database apartment record with the given id.
-//     * 
-//     * @param int $apt_id - unique apartment ID to target.
-//     * @throws Exception - if the query failed.
-//     * @return boolean - true for success.
-//     */
-//    public function deleteApartment($apt_id)
-//    {
-//        if ($apt_id === NULL){ return false; }  //Need id to target Apartments record
-//        
-//        $sql  = "DELETE FROM Apartments WHERE id = :id";
-//        
-//        /* Create and execute the DELETE Apartment query */
-//        $stmt = $this->db->prepare($sql);
-//        
-//        if ($stmt === false)
-//            {throw new Exception('Could not prepare apartment DELETE query'); }
-//        
-//        /* Execute $sql with the array argument id */
-//        $result = $stmt->execute(array("id" => $apt_id));
-//        
-//        if ($result === false)
-//            {throw new Exception('Could not execute apartment DELETE query'); }
-//        
-//        return true;
-//    }
+    /**
+     * Delete the targeted database apartment record with the given id.
+     * 
+     * @param int $apt_id - unique apartment ID to target.
+     * @throws Exception - if the query failed.
+     * @return boolean - true for success.
+     */
+    public function deleteApartment($apt_id)
+    {
+        if ($apt_id === NULL){ return false; }  //Need id to target Apartments record
+        
+        $sql  = "DELETE FROM Apartments WHERE id = :id";
+        
+        /* Create and execute the DELETE Apartment query */
+        $stmt = $this->db->prepare($sql);
+        
+        if ($stmt === false)
+            {throw new Exception('Could not prepare apartment DELETE query'); }
+        
+        /* Execute $sql with the array argument id */
+        $result = $stmt->execute(array("id" => $apt_id));
+        
+        if ($result === false)
+            {throw new Exception('Could not execute apartment DELETE query'); }
+        
+        return true;
+    }
     
 //    /**
 //     * Update the apartment database record based on the given Apartment object.
@@ -270,24 +270,24 @@ class ApartmentDB{
         
     }
     
-//    /**
-//     * Retrieve all Apartments belonging to a landlord of the specified ID.
-//     * @param int $user_id - user landlord ID.
-//     */
-//    public function getLandLordApartments($user_id)
-//    {
-//        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
-//        
-//        $stmt = $this->db->prepare($sql);
-//        $stmt->execute(
-//            array('user_id' => $user_id)
-//        );
-//        
-//        /* Get all applicable apartments */
-//        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//        
-//        return $apartmentRecords;
-//    }
+    /**
+     * Retrieve all Apartments belonging to a landlord of the specified ID.
+     * @param int $user_id - user landlord ID.
+     */
+    public function getLandLordApartments($user_id)
+    {
+        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(
+            array('user_id' => $user_id)
+        );
+        
+        /* Get all applicable apartments */
+        $apartmentRecords = $stmt->fetchAll();
+        
+        return $apartmentRecords;
+    }
     
     
     /*
