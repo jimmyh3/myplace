@@ -21,10 +21,19 @@ class Post extends Controller
     }
     
    
-    public function displayApartments()
+    public function displayApartments($user_id)
     {
-        $result = '';
-        return $result;
+        $result =""; 
+        $apartments = $this->model->getLandLordApartments($user_id); 
+        if(!$apartments){
+             $result .= 'No Apartments Listed'; 
+        }else{
+            
+            
+            return $result;
+        }
+        
+        
     }
 }
 
