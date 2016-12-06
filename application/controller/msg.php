@@ -31,15 +31,19 @@ class Msg extends Controller
         $result .='<table class="table table-hover">
         <thead>
             <tr>
-                <th>Date</th>
-                <th>Name</th>
-                <th>Message</th>
-                <th>Email</th>
+                <th>aid</th>
+                <th>idMessages</th>
+                <th>parent_id</th>
+                <th>message_recipient</th>
+                <th>message</th>
             </tr>
         </thead>
         <tbody>';
         foreach($messages as $message) {
-            $result .= '<tr><td>'.htmlspecialchars($message->message_recipient).'</td>';
+            $result .= '<tr><td>'.htmlspecialchars($message->aid).'</td>';
+            $result .= '<td>'.htmlspecialchars($message->idMessages).'</td>';
+            $result .= '<td>'.htmlspecialchars($message->parent_id).'</td>';
+            $result .= '<td>'.htmlspecialchars($message->message_recipient).'</td>';
             $result .= '<td>'.htmlspecialchars($message->message).'</td></tr>';
 
         }
