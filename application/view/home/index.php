@@ -288,7 +288,17 @@ End of Corner Ribbon~~!>
         <div class="col-md-9">
             <div class="row" id="results">
             <h3>Featured Apartments</h3><br>
+                
                 <?php echo $this->search(); ?>
+                <?php
+                //For testing
+                //$results = "";
+                //$users = $this->user_db->getUsers();
+                //foreach( $users as $user) {
+                //    $results .= "Id: " . $user->id . "<br>Name: " . $user->name . "<br>Email: " . $user->email . "<br>Password: " . $user->password . "<br>Type: " . $user->usertype . "<br><br>"; 
+                //}
+                //echo $results; ?>
+
             </div>
         </div>
     </div>
