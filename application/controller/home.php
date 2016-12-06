@@ -138,7 +138,6 @@ class Home extends PageTemplate
     }
       
     // id, user_id, area_code, actual_price, begin_term, end_term, rental_term, parking, pet_friendly, description, bedroom, thumbnail
-    
     public function displayApartments( $apartments)
     {
         $results = '<div class="pull-right">Total apartments:' . count( $apartments) . ' </div><br><br><div class="row">';

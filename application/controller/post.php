@@ -7,7 +7,6 @@ class Post extends Controller
     {
         // load views
 
-        $apartments = $this->apartment_db->getApartmentDB();
         require APP . 'view/_templates/header.php';
         require APP . 'view/post/mypost.php';
         require APP . 'view/_templates/footer.php';
@@ -24,6 +23,10 @@ class Post extends Controller
    
     public function displayApartments( $user_id )
     {
+        // this section is to be moved to mypost.php 
+        if(isset($_COOKIE["myPlace_userID"])){
+            $user_id = $_COOKIE["myPlace_userID"]; 
+        }
         $result =""; 
         $apartments = $this->apartment_db->getLandLordApartments($user_id); 
         if(!$apartments){
@@ -398,7 +401,6 @@ class Post extends Controller
                         </div>
                     </div>';
             }
-            
             
             return $result;
         }
