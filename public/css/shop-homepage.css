@@ -1,3 +1,4 @@
+
 .slide-image {
     width: 100%;
 }
@@ -80,7 +81,7 @@ footer {
 
 #headerwrap .logo {
     text-align: left;
-    margin-left: 20px;
+    margin-left: 30px;
     margin-top: 15px;
 }
 
@@ -88,5 +89,12 @@ footer {
 .disclaimer {
     color: white; 
     text-align: center;
-    font-size: 16px;
+    font-size: 15px;
 }
+
+.myLogo { 
+width: 150px;
+height: 85px;
+border: 4px;
+padding: 50px;
+background-image: (/img/648logo.png) no-repeat 0 0; }

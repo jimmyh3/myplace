@@ -1,11 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <title>myPlace</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+        <meta name="viewport" content="width=device-width, initial-scale=3.0">
         <!-- JS -->
         <!-- please note: The JavaScript files are loaded in the footer to speed up page construction -->
         <!-- See more here: http://stackoverflow.com/q/2105327/1114320 -->
@@ -14,7 +14,8 @@
 
         <link href="<?php echo URL; ?>css/shop-homepage.css" rel="stylesheet">
         <link href="<?php echo URL; ?>css/bootstrap.css" rel="stylesheet">
-
+	
+		
 
 
 
@@ -30,8 +31,19 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
+                    
+                        
                     </button>
-                    <a class="navbar-brand" href="<?php echo URL; ?>home/index">myPlace &nbsp; &nbsp; &nbsp; &nbsp;</a>
+   
+                    <div>
+                    <a class="span9 nav clearfix" href="<?php echo URL; ?>home">
+					<img src="public/img/648logo.png" alt="logo" width="90" height="75" border="4" style="padding-right: 10px; padding-top: 5px;">
+					</a>
+                     </div>
+
+
+ 
+
                 </div>
                 <div class="navbar-collapse collapse" id="searchbar">
 
@@ -46,7 +58,7 @@
                         <div class="form-group" style="display:inline;">
                             <div class="input-group" style="display:table;">
 
-                                <input class="form-control" id="search_bar" name="search" placeholder="Enter zip code" autocomplete="off" autofocus="autofocus" type="text">
+                                <input class="form-control" id="search_bar" name="search" placeholder="Search (e.g. zip code)" autocomplete="off" autofocus="autofocus" type="text">
                                 <span class="input-group-addon" id="ajax_search" style="width:1%;cursor:pointer;cursor:hand;"><span class="glyphicon glyphicon-search"></span></span>
 
                             </div>
@@ -54,7 +66,7 @@
                     </form>
                     
                     <!-- Disclaimer at bottom of nav bar -->
-                    <p class="disclaimer">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only</p>
+                    <h2 class="disclaimer">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only</h2>
 
                 </div><!--/.nav-collapse -->
             </div>
