@@ -198,6 +198,7 @@ class ApartmentDB{
         //$sql .= $sql_orderby; 
         
         /* Execute the Query */
+        //echo $sql;
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
 
@@ -264,6 +265,7 @@ class ApartmentDB{
      */
     private function search_create_param_query(array $query)
     {
+//        echo print_r($query);
         /* Return: SQL WHERE clause arguments */
         $sql_where_query = "";
         
@@ -292,17 +294,22 @@ class ApartmentDB{
         $i = 0; //index for $query
         foreach ($query as $query_val)
         {
-            $j = 0;      //index for $aprt_cols
-            foreach ($aprt_cols as $aprt_col)
+            if( $query_val != "")
             {
-                $sql_where_query .= $aprt_col;          //Append apartment_column_name
-                $sql_where_query .= $sql_like;          //Append LIKE
-                $sql_where_query .= "'%".$query_val."%'";         //Append '%value%'
-                $sql_where_query .= (($j + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR
+                $j = 0;      //index for $aprt_cols
+                foreach ($aprt_cols as $aprt_col)
+                {
+                    $sql_where_query .= $aprt_col;          //Append apartment_column_name
+                    $sql_where_query .= $sql_like;          //Append LIKE
+                    $sql_where_query .= "'%".$query_val."%'";         //Append '%value%'
+                    $sql_where_query .= (($j + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR
+
+                    $j++;
+                }
+                $sql_where_query .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
+            } else {
                 
-                $j++;
             }
-            $sql_where_query .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
             $i++;
         }
         
@@ -345,10 +352,10 @@ class ApartmentDB{
             {
                 if( $f_key == "min_price") {
                     $sql_where_filters .= "actual_price";
-                    $sql_where_filters .= ">";
+                    $sql_where_filters .= ">=";
                 } else if ( $f_key == "max_price") {
                     $sql_where_filters .= "actual_price";
-                    $sql_where_filters .= "<";
+                    $sql_where_filters .= "<=";
                 } else {
                     $sql_where_filters .= $f_key;       //Append filter_key
                     $sql_where_filters .= $sql_equal;   //Append " = "
@@ -398,158 +405,159 @@ class ApartmentDB{
 
         if ($order == 0 && !empty($query))
         {
-            $sql_orderby_case  =    "   CASE
-                                            WHEN %s THEN 1
-                                            WHEN %s THEN 2
-                                            WHEN %s THEN 3
-                                            ELSE 4
-                                        END";       //default
-
-            /* Arguments for CASE clause $sql_ordebyr_case */
-            $sql_order_case_arg1 = "";
-            $sql_order_case_arg2 = "";
-            $sql_order_case_arg3 = "";
-
-            /* Values for quick reuse */
-            $sql_like       = " LIKE ";
-            $sql_or         = " OR ";
-            $sql_equal      = " = ";      
-            $queryCount     = count($query);
-            $aprt_colsCount = count($aprt_cols);
-
-            /* 
-             * Set ORDER BY CASE arguments here to return results in a certain order.
-             */
-            $k = 0; //index for $query
-            foreach ($query as $query_val)
-            {
-                $l = 0; //index for $aprt_cols
-                foreach ($aprt_cols as $aprt_col)
-                {
-                    //col1 = val1 ...
-                    $sql_order_case_arg1 .= $aprt_col;   //Append aprt_column_name
-                    $sql_order_case_arg1 .= $sql_equal;  //Append ' = '
-                    $sql_order_case_arg1 .= (is_numeric($query_val)) ? $query_val : "'".$query_val."'";   //Append value
-                    $sql_order_case_arg1 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";                  //Append OR ?
-
-                    //col1 LIKE 'val1%' OR col1 LIKE '%val1' ...   < NOTICE '%' placements >
-                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
-                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
-                    $sql_order_case_arg2 .= "'".$query_val."%'";    //Append 'value%'
-                    $sql_order_case_arg2 .= $sql_or;                //Append OR
-                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
-                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
-                    $sql_order_case_arg2 .= "'%".$query_val."'";    //Append '%value'
-                    $sql_order_case_arg2 .= (($l + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR ?
-
-                    //col1 LIKE '%val1% ...
-                    $sql_order_case_arg3 .= $aprt_col;              //Append aprt_column_name
-                    $sql_order_case_arg3 .= $sql_like;              //Append LIKE
-                    $sql_order_case_arg3 .= "'%".$query_val."%'";   //Append '%value%'
-                    $sql_order_case_arg3 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";    //Append OR ?
-
-                    $l++;
-                }
-
-                //Append OR    if there are more $query values
-                if (($k + 1) < $queryCount)
-                {
-                    $sql_order_case_arg1 .= $sql_or;
-                    $sql_order_case_arg2 .= $sql_or;
-                    $sql_order_case_arg3 .= $sql_or;
-                }
-
-                $k++;
-            }
-
-//       }
-//        
-//        /* Execute the Query */
-//       // $stmt = $this->db->prepare($sql);
-//       // $stmt->execute();
+            $sql_orderby = " id ASC";
+//            $sql_orderby_case  =    "   CASE
+//                                            WHEN %s THEN 1
+//                                            WHEN %s THEN 2
+//                                            WHEN %s THEN 3
+//                                            ELSE 4
+//                                        END";       //default
 //
-//        /* Get all applicable apartments */
-//       // return $stmt->fetchAll();
+//            /* Arguments for CASE clause $sql_ordebyr_case */
+//            $sql_order_case_arg1 = "";
+//            $sql_order_case_arg2 = "";
+//            $sql_order_case_arg3 = "";
 //
-//        
-//        /* Create and return an array of Apartments */
-////        $apartmentArray = array();
-////        foreach ($apartmentRecords as $apartmentRecord)
-////        {
-////            $aprt = $this->dbRecordToApartment($apartmentRecord);
-////            array_push($apartmentArray, $aprt);
-////        }
-////
-////        return $apartmentArray;
-//        
-//    }
-//    
-//    
-//    /**
-//     * Retrieve all Apartments belonging to a landlord of the specified ID.
-//     * @param int $user_id - user landlord ID.
-//     */
-//    public function getLandLordApartments($user_id)
-//    {
-//        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
-//        
-//        $stmt = $this->db->prepare($sql);
-//        $stmt->execute(
-//            array('user_id' => $user_id)
-//        );
-//        
-//        /* Get all applicable apartments */
-//        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//        
-//        return $apartmentRecords;
-//        
-////        $apartmentArray = array();
-////        foreach ($apartmentRecords as $apartmentRecord)
-////        {
-////            $aprt = $this->dbRecordToApartment($apartmentRecord);
-////            array_push($apartmentArray, $aprt);
-////        }
+//            /* Values for quick reuse */
+//            $sql_like       = " LIKE ";
+//            $sql_or         = " OR ";
+//            $sql_equal      = " = ";      
+//            $queryCount     = count($query);
+//            $aprt_colsCount = count($aprt_cols);
+//
+//            /* 
+//             * Set ORDER BY CASE arguments here to return results in a certain order.
+//             */
+//            $k = 0; //index for $query
+//            foreach ($query as $query_val)
+//            {
+//                $l = 0; //index for $aprt_cols
+//                foreach ($aprt_cols as $aprt_col)
+//                {
+//                    //col1 = val1 ...
+//                    $sql_order_case_arg1 .= $aprt_col;   //Append aprt_column_name
+//                    $sql_order_case_arg1 .= $sql_equal;  //Append ' = '
+//                    $sql_order_case_arg1 .= (is_numeric($query_val)) ? $query_val : "'".$query_val."'";   //Append value
+//                    $sql_order_case_arg1 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";                  //Append OR ?
+//
+//                    //col1 LIKE 'val1%' OR col1 LIKE '%val1' ...   < NOTICE '%' placements >
+//                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
+//                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
+//                    $sql_order_case_arg2 .= "'".$query_val."%'";    //Append 'value%'
+//                    $sql_order_case_arg2 .= $sql_or;                //Append OR
+//                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
+//                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
+//                    $sql_order_case_arg2 .= "'%".$query_val."'";    //Append '%value'
+//                    $sql_order_case_arg2 .= (($l + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR ?
+//
+//                    //col1 LIKE '%val1% ...
+//                    $sql_order_case_arg3 .= $aprt_col;              //Append aprt_column_name
+//                    $sql_order_case_arg3 .= $sql_like;              //Append LIKE
+//                    $sql_order_case_arg3 .= "'%".$query_val."%'";   //Append '%value%'
+//                    $sql_order_case_arg3 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";    //Append OR ?
+//
+//                    $l++;
+//                }
+//
+//                //Append OR    if there are more $query values
+//                if (($k + 1) < $queryCount)
+//                {
+//                    $sql_order_case_arg1 .= $sql_or;
+//                    $sql_order_case_arg2 .= $sql_or;
+//                    $sql_order_case_arg3 .= $sql_or;
+//                }
+//
+//                $k++;
+//            }
+//
+////       }
 ////        
-////        return $apartmentArray;
-//    }
-//    
-//    
-//    //--------------------PRIVATE HELPER FUNCTIONS------------------------------
-//    
-//    /**
-//     * Helper method to convert a database apartment record into an Apartment
-//     * object.
-//     * @param array $apartmentRecord - a single database apartment record.
-//     * @return Apartment
-//     */
-//    private function dbRecordToApartment($apartmentRecord)
-//    {
-//        $aprt = new Apartment();
-//        
-//        $aprt->apartment_id = $apartmentRecord['id'];
-//        $aprt->user_id      = $apartmentRecord['user_id'];
-//        $aprt->areaCode     = $apartmentRecord['area_code'];
-//        $aprt->actualPrice  = $apartmentRecord['actual_price'];
-//        $aprt->beginTerm    = $apartmentRecord['begin_term'];
-//        $aprt->endTerm      = $apartmentRecord['end_term'];
-//        $aprt->rentalTerm   = $apartmentRecord['rental_term'];
-//        $aprt->parking      = $apartmentRecord['parking'];
-//        $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
-//        $aprt->description  = $apartmentRecord['description'];
-//        $aprt->bedroom      = $apartmentRecord['bedroom'];
-//        $aprt->thumbnail    = $apartmentRecord['thumbnail'];
-            /*
-             *  Finalize the SQL ORDER BY arguments
-             */
-            if ($queryCount > 0)
-            {
-                //Apply ORDER BY arguments via formatting.
-                $sql_orderby_case = sprintf($sql_orderby_case,  $sql_order_case_arg1,
-                                                                $sql_order_case_arg2,
-                                                                $sql_order_case_arg3);
-
-                $sql_orderby .= $sql_orderby_case;
-            }
+////        /* Execute the Query */
+////       // $stmt = $this->db->prepare($sql);
+////       // $stmt->execute();
+////
+////        /* Get all applicable apartments */
+////       // return $stmt->fetchAll();
+////
+////        
+////        /* Create and return an array of Apartments */
+//////        $apartmentArray = array();
+//////        foreach ($apartmentRecords as $apartmentRecord)
+//////        {
+//////            $aprt = $this->dbRecordToApartment($apartmentRecord);
+//////            array_push($apartmentArray, $aprt);
+//////        }
+//////
+//////        return $apartmentArray;
+////        
+////    }
+////    
+////    
+////    /**
+////     * Retrieve all Apartments belonging to a landlord of the specified ID.
+////     * @param int $user_id - user landlord ID.
+////     */
+////    public function getLandLordApartments($user_id)
+////    {
+////        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
+////        
+////        $stmt = $this->db->prepare($sql);
+////        $stmt->execute(
+////            array('user_id' => $user_id)
+////        );
+////        
+////        /* Get all applicable apartments */
+////        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+////        
+////        return $apartmentRecords;
+////        
+//////        $apartmentArray = array();
+//////        foreach ($apartmentRecords as $apartmentRecord)
+//////        {
+//////            $aprt = $this->dbRecordToApartment($apartmentRecord);
+//////            array_push($apartmentArray, $aprt);
+//////        }
+//////        
+//////        return $apartmentArray;
+////    }
+////    
+////    
+////    //--------------------PRIVATE HELPER FUNCTIONS------------------------------
+////    
+////    /**
+////     * Helper method to convert a database apartment record into an Apartment
+////     * object.
+////     * @param array $apartmentRecord - a single database apartment record.
+////     * @return Apartment
+////     */
+////    private function dbRecordToApartment($apartmentRecord)
+////    {
+////        $aprt = new Apartment();
+////        
+////        $aprt->apartment_id = $apartmentRecord['id'];
+////        $aprt->user_id      = $apartmentRecord['user_id'];
+////        $aprt->areaCode     = $apartmentRecord['area_code'];
+////        $aprt->actualPrice  = $apartmentRecord['actual_price'];
+////        $aprt->beginTerm    = $apartmentRecord['begin_term'];
+////        $aprt->endTerm      = $apartmentRecord['end_term'];
+////        $aprt->rentalTerm   = $apartmentRecord['rental_term'];
+////        $aprt->parking      = $apartmentRecord['parking'];
+////        $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
+////        $aprt->description  = $apartmentRecord['description'];
+////        $aprt->bedroom      = $apartmentRecord['bedroom'];
+////        $aprt->thumbnail    = $apartmentRecord['thumbnail'];
+//            /*
+//             *  Finalize the SQL ORDER BY arguments
+//             */
+//            if ($queryCount > 0)
+//            {
+//                //Apply ORDER BY arguments via formatting.
+//                $sql_orderby_case = sprintf($sql_orderby_case,  $sql_order_case_arg1,
+//                                                                $sql_order_case_arg2,
+//                                                                $sql_order_case_arg3);
+//
+//                $sql_orderby .= $sql_orderby_case;
+//            }
         }else if($order == 1){
             $sql_orderby = " actual_price ASC"; 
         }else if($order == 2){

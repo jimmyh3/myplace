@@ -8,7 +8,7 @@ $(function() {
                 .done( function( filters) {
                    $.post(url + "/home/search", {"query" : $('#search_bar').val(), "filters" : filters})
                    .done( function ( result) {
-                       alert( result);
+                       //alert( result);
                        $('#results').html( result);
                    });
                 });
