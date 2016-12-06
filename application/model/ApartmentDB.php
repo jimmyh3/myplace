@@ -481,29 +481,7 @@ class ApartmentDB{
 //     * Retrieve all Apartments belonging to a landlord of the specified ID.
 //     * @param int $user_id - user landlord ID.
 //     */
-//    public function getLandLordApartments($user_id)
-//    {
-//        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
-//        
-//        $stmt = $this->db->prepare($sql);
-//        $stmt->execute(
-//            array('user_id' => $user_id)
-//        );
-//        
-//        /* Get all applicable apartments */
-//        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//        
-//        return $apartmentRecords;
-//        
-////        $apartmentArray = array();
-////        foreach ($apartmentRecords as $apartmentRecord)
-////        {
-////            $aprt = $this->dbRecordToApartment($apartmentRecord);
-////            array_push($apartmentArray, $aprt);
-////        }
-////        
-////        return $apartmentArray;
-//    }
+
 //    
 //    
 //    //--------------------PRIVATE HELPER FUNCTIONS------------------------------
@@ -549,6 +527,30 @@ class ApartmentDB{
         }
         
         return $sql_orderby;       
+    }
+    
+    public function getLandLordApartments($user_id)
+    {
+        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(
+            array('user_id' => $user_id)
+        );
+        
+        /* Get all applicable apartments */
+        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        return $apartmentRecords;
+        
+//        $apartmentArray = array();
+//        foreach ($apartmentRecords as $apartmentRecord)
+//        {
+//            $aprt = $this->dbRecordToApartment($apartmentRecord);
+//            array_push($apartmentArray, $aprt);
+//        }
+//        
+//        return $apartmentArray;
     }
     
     /**
@@ -693,6 +695,15 @@ class ApartmentDB{
     
     public function getImageDB( $id) {
         $sql = "SELECT * FROM Image WHERE apartment_id = " . $id;
+        $query = $this->db->prepare( $sql);
+        $query->execute();
+        
+        return $query->fetchAll();
+    }
+    
+    public function getApartmentDB()
+    {
+        $sql = "SELECT * FROM Apartments";
         $query = $this->db->prepare( $sql);
         $query->execute();
         
