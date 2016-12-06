@@ -699,4 +699,15 @@ class ApartmentDB{
         
         return $query->fetchAll();
     }
+    
+    // function will pass apartment_id and "landlord" id to 
+    // pull data from Messages table, messages should be passed to 
+    // msg and dispay each of them in a table. 
+    public function getMessages($aid, $user_id){
+        $sql = "SELECT * FROM Messages WHERE apartment_id = " . $aid; 
+        $sql .= "AND message_recipent = " . $user_id; 
+        $query = $this->db->prepare($sql); 
+        $query->excute(); 
+        return $query->fetchAll(); 
+    }
 }
