@@ -90,8 +90,16 @@ class UserDB {
         //NOTE: this is using fetch() not fetchAll() [no foreach needed]
         $account  = $stmt->fetch();
         
-        return ($account) ? $account : false;
+        return ($account) ? $account : false; 
+    }
+    // get user information for messages table 
+    // pass parent_id to function to get information about user 
+    public function getUser($user_id){
+        $sql = "SELECT * FROM User WHERE id = " . $user_id; 
+        $query = $this->db->prepare($sql); 
+        $query->execute(); 
         
+        return $query->fetchAll(); 
     }
     
 }
