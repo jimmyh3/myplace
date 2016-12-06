@@ -8,14 +8,9 @@ class Controller
     public $db = null;
 
     /**
-     * @var null ApartmentDB
+     * @var null Model
      */
-    public $apartment_db = null;
-    
-    /**
-     * @var null UserDB
-     */
-    public $user_db = null;
+    public $model = null;
 
     /**
      * Whenever controller is created, open a database connection too and load "the model".
@@ -49,9 +44,7 @@ class Controller
     public function loadModel()
     {
         require APP . 'model/ApartmentDB.php';
-        require APP . 'model/UserDB.php';
         // create new "model" (and pass the database connection)
-        $this->apartment_db = new ApartmentDB($this->db);
-        $this->user_db      = new UserDB($this->db);
+        $this->model = new ApartmentDB($this->db);
     }
 }

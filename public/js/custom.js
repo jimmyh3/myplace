@@ -83,11 +83,14 @@ $(document).ready(function () {
     });
 })(jQuery);
 
+
 // sign in form validation
 $(function () {
+
     var signinValidator = new Validator("signinForm");
     signinValidator.EnableOnPageErrorDisplaySingleBox();
     signinValidator.EnableMsgsTogether();
+
 
     signinValidator.addValidation("Email", "maxlen=50");
     signinValidator.addValidation("Email", "req");
@@ -95,6 +98,7 @@ $(function () {
 
     signinValidator.addValidation("Password", "req");
     signinValidator.addValidation("Password", "maxlen=50");
+
 });
 
 // registration form validation

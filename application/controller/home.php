@@ -74,15 +74,16 @@ class Home extends PageTemplate
     public function search( ) {
         $query = "";
         $filters = "";
+        $order = 0;
         if( isset( $_POST['query']))    
             $query = $_POST['query'];
         if( isset($_POST['filters']))
             $filters = $_POST['filters'];
-      
+
         $query_array = explode(" ", $query);
         
         $filters_array = array();
-        
+
         /* rawurldecode() converts any "%##" (unsafe chars) to its actual value */
         /* parse_str() creates array of key/value pairs based on a URL argument string */
         parse_str(rawurldecode($filters), $filters_array);
@@ -102,7 +103,13 @@ class Home extends PageTemplate
             }
         }
         
-        $apartments = $this->apartment_db->search( $query_array, $filters_array);
+        if (sizeof($filters_array) > 0)
+        {
+            $temp_array = array_slice($filters_array, 0, 1 );
+            $order = $temp_array['order'];
+        }
+
+        $apartments = $this->model->search( $query_array, $filters_array, $order);
         
         $results = "";
         if( !$apartments) {
@@ -253,14 +260,26 @@ class Home extends PageTemplate
             if( isset( $apartment->area_code)) $results .= '<li> <strong>Zip code: </strong>'. htmlspecialchars( $apartment->area_code) .'</li>';
 //            if( isset( $apartment->)) $results .= '<li> <strong>Distance: </strong>'..'</li>';
             if( isset( $apartment->rental_term)) $results .= '<li> <strong>Availability term: </strong>'. htmlspecialchars( $apartment->rental_term) .'</li>';
-            if( isset( $apartment->pet_friendly)) {
-                $results .= '<li> <strong>Pet friendly: </strong>';
-                if( $apartment->actual_price == 0)
+
+            
+            if( isset( $apartment->furnished)) {
+                $results .= '<li> <strong>Furnished: </strong>';
+                if( $apartment->furnished == 0)
                     $results .= htmlspecialchars ( 'No');
                 else
                     $results .= htmlspecialchars ( 'Yes');
                 $results .= '</li>';
             }
+            
+            if( isset( $apartment->laundry)) {
+                $results .= '<li> <strong>Laundry: </strong>';
+                if( $apartment->laundry == 0)
+                    $results .= htmlspecialchars ( 'No');
+                else
+                    $results .= htmlspecialchars ( 'Yes');
+                $results .= '</li>';
+            }
+            
             if( isset( $apartment->parking)) {
                 $results .= '<li> <strong>Parking available: </strong>';
                 if( $apartment->parking == 0)
@@ -269,6 +288,44 @@ class Home extends PageTemplate
                     $results .= htmlspecialchars ( 'Yes');
                 $results .= '</li>';    
             }
+            
+            if( isset( $apartment->pet_friendly)) {
+                $results .= '<li> <strong>Pet friendly: </strong>';
+                if( $apartment->actual_price == 0)
+                    $results .= htmlspecialchars ( 'No');
+                else
+                    $results .= htmlspecialchars ( 'Yes');
+                $results .= '</li>';
+            }
+            
+            if( isset( $apartment->shared_room)) {
+                $results .= '<li> <strong>Shared Room: </strong>';
+                if( $apartment->shared_room == 0)
+                    $results .= htmlspecialchars ( 'No');
+                else
+                    $results .= htmlspecialchars ( 'Yes');
+                $results .= '</li>';
+            }
+            
+            if( isset( $apartment->smoking)) {
+                $results .= '<li> <strong>Smoking: </strong>';
+                if( $apartment->smoking == 0)
+                    $results .= htmlspecialchars ( 'No');
+                else
+                    $results .= htmlspecialchars ( 'Yes');
+                $results .= '</li>';
+            }
+            
+            if( isset( $apartment->wheel_chair_access)) {
+                $results .= '<li> <strong>Wheelchair Access: </strong>';
+                if( $apartment->wheel_chair_access == 0)
+                    $results .= htmlspecialchars ( 'No');
+                else
+                    $results .= htmlspecialchars ( 'Yes');
+                $results .= '</li>';
+            }
+            
+            
 //            if( isset( $apartment->actual_price)) $results .= '<li> <strong>Tags: </strong>Spacious, comfy, inviting</li';>
             $results .= '</ul>
 
