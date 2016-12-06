@@ -10,8 +10,8 @@
         <div class="row">
             <h1>Terms and Conditions</h1>
             <br>
-            <h3>myPlace - Apartments for SFSU students</h3>
-            <p><a href="<?php echo URL; ?>home/index" class="w3-btn w3-padding-large w3-large">SEE APARTMENTS AVAILABLE</a></p>
+            <h3>These terms and conditions shall govern your use of our website.</h3>
+            <p><a href="<?php echo URL; ?>home" class="w3-btn w3-padding-large w3-large">APARTMENTS</a></p>
             <br>
             <br>
             <div class="col-lg-6 col-lg-offset-3">

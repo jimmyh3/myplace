@@ -11,8 +11,7 @@
             <h1>About Us</h1>
             <br>
             <h3>myPlace - Apartments for SFSU students</h3>
-            <p><a href="<?php echo URL; ?>home/index" class="w3-btn w3-padding-large w3-large">SEE APARTMENTS AVAILABLE</a></p>
-            <br>
+            <p><a href="<?php echo URL; ?>home" class="w3-btn w3-padding-large w3-large">APARTMENTS</a></p>
             <br>
             <div class="col-lg-6 col-lg-offset-3">
             </div>

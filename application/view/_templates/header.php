@@ -31,7 +31,16 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="<?php echo URL; ?>home/index">myPlace &nbsp; &nbsp; &nbsp; &nbsp;</a>
+   
+                    <div>
+                    <a class="span9 nav clearfix" href="<?php echo URL; ?>home">
+					<img src="public/img/648logo.png" alt="logo" width="90" height="75" border="4" style="padding-right: 10px; padding-top: 5px;">
+					</a>
+                     </div>
+
+
+ 
+
                 </div>
                 <div class="navbar-collapse collapse" id="searchbar">
 
@@ -46,7 +55,7 @@
                         <div class="form-group" style="display:inline;">
                             <div class="input-group" style="display:table;">
 
-                                <input class="form-control" id="search_bar" name="search" placeholder="Enter zip code" autocomplete="off" autofocus="autofocus" type="text">
+                                <input class="form-control" id="search_bar" name="search" placeholder="Search (e.g. zip code)" autocomplete="off" autofocus="autofocus" type="text">
                                 <span class="input-group-addon" id="ajax_search" style="width:1%;cursor:pointer;cursor:hand;"><span class="glyphicon glyphicon-search"></span></span>
 
                             </div>
