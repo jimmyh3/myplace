@@ -708,8 +708,10 @@ class ApartmentDB{
     
     // aid = 12345
     public function getMessages($aid, $user_id){
+        
         $sql = "SELECT * FROM Messages WHERE aid = " . $aid; 
         $sql .= " AND message_recipient = " . $user_id; 
+
         $query = $this->db->prepare($sql); 
         $query->execute(); 
         return $query->fetchAll(); 
