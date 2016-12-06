@@ -109,7 +109,7 @@ class Home extends PageTemplate
             $order = $temp_array['order'];
         }
 
-        $apartments = $this->model->search( $query_array, $filters_array, $order);
+        $apartments = $this->apartment_db->search( $query_array, $filters_array, $order);
         
         $results = "";
         if( !$apartments) {

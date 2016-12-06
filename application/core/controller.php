@@ -8,9 +8,14 @@ class Controller
     public $db = null;
 
     /**
-     * @var null Model
+     * @var null ApartmentDB
      */
-    public $model = null;
+    public $apartment_db = null;
+    
+    /**
+     * @var null UserDB
+     */
+    public $user_db = null;
 
     /**
      * Whenever controller is created, open a database connection too and load "the model".
@@ -34,7 +39,7 @@ class Controller
 
         // generate a database connection, using the PDO connector
         // @see http://net.tutsplus.com/tutorials/php/why-you-should-be-using-phps-pdo-for-database-access/
-        //$this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
+        $this->db = new PDO(DB_TYPE . ':host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=' . DB_CHARSET, DB_USER, DB_PASS, $options);
     }
 
     /**
@@ -44,7 +49,9 @@ class Controller
     public function loadModel()
     {
         require APP . 'model/ApartmentDB.php';
+        require APP . 'model/UserDB.php';
         // create new "model" (and pass the database connection)
-        $this->model = new ApartmentDB($this->db);
+        $this->apartment_db = new ApartmentDB($this->db);
+        $this->user_db      = new UserDB($this->db);
     }
 }

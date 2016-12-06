@@ -28,7 +28,7 @@
 .ratings {
     padding-right: 10px;
     padding-left: 10px;
-    //color: #d17581;
+    /*color: #d17581;*/
 }
 
 .thumbnail {
@@ -97,4 +97,4 @@ width: 150px;
 height: 85px;
 border: 4px;
 padding: 50px;
-background-image: (/img/648logo.png) no-repeat 0 0; }
+background-image: url('../img/648logo.png') no-repeat 0 0; }

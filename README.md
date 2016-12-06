@@ -1,11 +1,9 @@
-<<<<<<< HEAD
-myPlace is an apartment rental web application that is built by San Francisco University (SFSU) students, for SFSU students. myPlace leverages itself over its competitors by limiting its rental services to SFSU students only. myPlace will include basic features such as search, filters, maps, apartment listing, and communication. However we highlight these features by basing the design similar to official SFSU websites; thereby creating a welcoming and native feel familiar to SFSU students as well as an extension of SFSU’s online identity. By emphasizing simplicity and intuitive design, we can serve clients of all ages and focus on delivering the one desire of our SFSU students: finding a place to rent.
-
-=======
 ![MyPlace - A apartment renting site for SFSU students](public/img/ggbridge.jpg)
 
 # MyPlace
->>>>>>> login-signup
+myPlace is an apartment rental web application that is built by San Francisco University (SFSU) students, for SFSU students. myPlace leverages itself over its competitors by limiting its rental services to SFSU students only. myPlace will include basic features such as search, filters, maps, apartment listing, and communication. However we highlight these features by basing the design similar to official SFSU websites; thereby creating a welcoming and native feel familiar to SFSU students as well as an extension of SFSU’s online identity. By emphasizing simplicity and intuitive design, we can serve clients of all ages and focus on delivering the one desire of our SFSU students: finding a place to rent.
+
+=======
 
 Guests and students shall be able to view apartment listings provided by landlords and filter results to better find exactly what they are looking for. After finding an appropriate living space, the student can contact the landlord to get more information and setup appointments.
 
