@@ -37,40 +37,36 @@
 					<img src="public/img/648logo.png" alt="logo" width="90" height="75" border="4" style="padding-right: 10px; padding-top: 5px;">
 					</a>
                     </div>
-                    <div class="navbar-collapse collapse" id="searchbar">
+                </div>    
+                    
+                <div class="navbar-collapse collapse" id="searchbar">
 
-                        <ul class="nav navbar-nav navbar-right">
-                            <li><a href="<?php echo URL; ?>post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a></li> 
-                            <li id="login_logout_button">
-                                <?php
-                                    if( isset($_COOKIE["myPlace_user"])) {
-                                        echo '<a id="ajax_logout" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-log-out"></span> Welcome ' . $_COOKIE["myPlace_user"] . '</a>';
-                                    } else {
-                                        echo '<a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a>';
-                                    }
-                                ?>
-                            </li>
-                        </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="<?php echo URL; ?>post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a></li> 
+                        <li id="login_logout_button">
+                            <?php
+                                if( isset($_COOKIE["myPlace_user"])) {
+                                    echo '<a id="ajax_logout" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-log-out"></span> Welcome ' . $_COOKIE["myPlace_user"] . '</a>';
+                                } else {
+                                    echo '<a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a>';
+                                }
+                            ?>
+                        </li>
+                    </ul>
 
-
-
-                        <form class="navbar-form">
-                            <div class="form-group" style="display:inline;">
-                                <div class="input-group" style="display:table;">
-
-                                    <input class="form-control" id="search_bar" name="search" placeholder="Search (e.g. zip code)" autocomplete="off" autofocus="autofocus" type="text">
-                                    <span class="input-group-addon" id="ajax_search" style="width:1%;cursor:pointer;cursor:hand;"><span class="glyphicon glyphicon-search"></span></span>
-
-                                </div>
+                    <form class="navbar-form">
+                        <div class="form-group" style="display:inline;">
+                            <div class="input-group" style="display:table;">
+                                <input class="form-control" id="search_bar" name="search" placeholder="Search (e.g. zip code)" autocomplete="off" autofocus="autofocus" type="text">
+                                <span class="input-group-addon" id="ajax_search" style="width:1%;cursor:pointer;cursor:hand;"><span class="glyphicon glyphicon-search"></span></span>
                             </div>
-                        </form>
+                        </div>
+                    </form>
 
-                        <!-- Disclaimer at bottom of nav bar -->
-                        <h2 class="disclaimer">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only</h2>
-
-                    </div><!--/.nav-collapse -->
-                </div>
-            </div>
+                    <!-- Disclaimer at bottom of nav bar -->
+                    <h2 class="disclaimer">SFSU/FAU/Fulda Software Engineering Project, Fall 2016. For Demonstration Only</h2>
+                </div><!--/.nav-collapse -->
+            </div>          
         </nav>
 
         <!-- Modal  http://bootsnipp.com/snippets/featured/sign-in-sign-up-dual-modal -->
