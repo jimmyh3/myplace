@@ -7,7 +7,7 @@
  * This is really weird behaviour, but documented here: http://php.net/manual/en/language.oop5.decon.php
  *
  */
-class Home extends Controller
+class Home extends PageTemplate
 {
     /**
      * PAGE: index
@@ -16,13 +16,61 @@ class Home extends Controller
     public function index()
     {
         // load views
-
         require APP . 'view/_templates/header.php';
         require APP . 'view/home/index.php';
         require APP . 'view/_templates/footer.php';
         
     }
 
+    /*
+     * 
+     * Takes user registration data and attempts to add user to database
+     */
+    public function register( ) {
+        $results = "Register default";
+        if( isset( $_POST['userinfo']))
+            $results = $_POST['userinfo'];
+        
+        $results_array = array();
+        parse_str(rawurldecode( $results), $results_array);
+        
+        // if registering as landlord then no need for email validation
+        // if student registration must end with @mail.sfsu.edu
+        if( $results_array["registerAs"] == "landlord" || $this->validateEmail($results_array["Email"])) {
+            if( !( $this->user_db->hasUser( $results_array["Email"]))) { // user doesn't already exist
+                $user_type = null;
+                switch( $results_array["registerAs"]) {
+                    case "student":
+                        $user_type = 0;
+                        break;
+                    case "landlord":
+                        $user_type = 1;
+                        break;
+                }
+                
+                $user = new User( 0, $results_array["Email"], $results_array["Username"], $results_array["Password"], $user_type);
+                $user->setPassword( $user->encryptPassword( $user->getPassword()));
+                echo( $user->getPassword());
+                if( $this->user_db->addUser( $user)) { // adding user to db successful
+                    $this->user = $user->getName();
+                    $results = $this->formatLogin();
+                    setcookie( "myPlace_user", $this->user, time() + (84600 * 7), '/'); // create a login cookie that expires after a week
+                } else { // failed to add user
+                    // Error adding user failed
+                    $results = "Error-AUF";
+                }
+            } else { // user already exists
+                // Error user already exists
+                $results = "Error-UAE";
+            }
+        } else { // student registering with email that is not @mail.sfsu.edu
+            // Error wrong email format
+            $results = "Error-WEF";
+        }
+    
+        echo $results;
+    }
+    
     public function search( ) {
         $query = "";
         $filters = "";
@@ -54,7 +102,7 @@ class Home extends Controller
             }
         }
         
-        $apartments = $this->model->search( $query_array, $filters_array);
+        $apartments = $this->apartment_db->search( $query_array, $filters_array);
         
         $results = "";
         if( !$apartments) {
@@ -66,8 +114,6 @@ class Home extends Controller
         echo $results;
         
 //        ---------------PREVIOUS VERSION-------------------
-//        
-//        $query_array = explode(" ", $query);
 //        
 //        $apartments;
 //        if( $filters == '') {
@@ -82,16 +128,6 @@ class Home extends Controller
 //            
 //            $apartments = $this->model->search( $query_array, $result);
 //        }
-//        
-//        $results = "";
-//        if( !$apartments) {
-//            $results = "No Results!";
-//        } else {
-//            $results .=  $this->displayApartments( $apartments);   
-//        }
-//
-//        echo $results;
-        
     }
       
     // id, user_id, area_code, actual_price, begin_term, end_term, rental_term, parking, pet_friendly, description, bedroom, thumbnail
@@ -140,7 +176,7 @@ class Home extends Controller
                                                                         <div id="myCarousel" class="carousel slide">
                                                                             <!-- main slider carousel items -->
                                                                             <div class="carousel-inner">';
-            $images = $this->model->getImageDB( $apartment->id);
+            $images = $this->apartment_db->getImageDB( $apartment->id);
             $j = 0;
             
             foreach( $images as $image) {
@@ -188,7 +224,7 @@ class Home extends Controller
                                                     </div>
                                                 </div>
 
-                                                <div class="col-sm-6 col-height">
+                                                <!--<div class="col-sm-6 col-height">
 
                                                     <h1> Map </h1>
 
@@ -206,7 +242,7 @@ class Home extends Controller
 
                                                     <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
 
-                                                </div>
+                                                </div>-->
 
                                                 <div class="col-sm-6 col-height">
 
