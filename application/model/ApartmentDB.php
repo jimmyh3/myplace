@@ -343,8 +343,16 @@ class ApartmentDB{
             /* Array - will be a range search */
             if (!is_array($f_val))
             {
-                $sql_where_filters .= $f_key;       //Append filter_key
-                $sql_where_filters .= $sql_equal;   //Append " = "
+                if( $f_key == "min_price") {
+                    $sql_where_filters .= "actual_price";
+                    $sql_where_filters .= ">";
+                } else if ( $f_key == "max_price") {
+                    $sql_where_filters .= "actual_price";
+                    $sql_where_filters .= "<";
+                } else {
+                    $sql_where_filters .= $f_key;       //Append filter_key
+                    $sql_where_filters .= $sql_equal;   //Append " = "
+                }
                 $sql_where_filters .= $f_val;       //Append filter_value
             }else {
                 $sql_where_filters .= $this->search_create_param_range($f_key, $f_val);
