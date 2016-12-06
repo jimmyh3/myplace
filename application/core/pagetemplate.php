@@ -30,8 +30,11 @@ class PageTemplate extends Controller {
         if( $results) { // if user exists in db
             $user = new User( $results->id, $results->email, $results->name, $results->password, $results->usertype);
             if( password_verify( $results_array['Password'], $results->password)) { //passsword is correct
+                setcookie( "myPlace_userID", $user->getID(), time() + (84600 * 7), '/'); // create a login cookie that expires after a week
+                setcookie( "myPlace_userType", $user->getType(), time() + (84600 * 7), '/');
+                setcookie( "myPlace_user", $user->getName(), time() + (84600 * 7), '/');
                 $this->user = $user->getName();
-                setcookie( "myPlace_user", $this->user, time() + (84600 * 7), '/'); // create a login cookie that expires after a week
+                
                 $results = $this->formatLogin();
             } else {
                 // wrong password error
@@ -47,9 +50,19 @@ class PageTemplate extends Controller {
     
     public function logout() {
         $user = '';
-        if( isset($_COOKIE["myPlace_user"])) { //unload the cookie and expire it
+        if( isset($_COOKIE["myPlace_user"])) { //unload the cookies and expire them
             unset($_COOKIE["myPlace_user"]);
-            setcookie( 'myPlace_user', 'none', time() - 3600, '/'); 
+            setcookie( "myPlace_user", 'none', time() - 3600, '/'); 
+        }
+        
+        if( isset($_COOKIE["myPlace_userID"])) {
+            unset($_COOKIE["myPlace_userID"]);
+            setcookie( "myPlace_userID", 'none', time() - 3600, '/');
+        }
+        
+        if( isset($_COOKIE["myPlace_userType"])) {
+            unset($_COOKIE["myPlace_userType"]);
+            setcookie( "myPlace_userType", 'none', time() - 3600, '/');
         }
         echo $this->formatLogout();    
     }
