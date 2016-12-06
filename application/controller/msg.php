@@ -24,6 +24,29 @@ class Msg extends Controller
         require APP . 'view/_templates/footer.php';
     }
     
+    public function displayMsg()
+    {
+        $result ="";
+        $messages = $this->apartment_db->getMessages(1, 1);
+        $result .='<table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Name</th>
+                <th>Message</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>';
+        foreach($messages as $message) {
+            $result .= '<tr><td>'.htmlspecialchars($message->message_recipient).'</td>';
+            $result .= '<td>'.htmlspecialchars($message->message).'</td></tr>';
+
+        }
+        $result .= '</tbody></table>';
+        
+        return $result;
+    }
    
     
 }

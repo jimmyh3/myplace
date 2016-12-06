@@ -25,7 +25,8 @@
     <p>Interested students contacted you</p>
     <p>"<"Insert REPLY button later">"</p>  
     <table class="table table-hover">
-        <thead>
+        <?php echo $this->displayMsg(); ?>
+<!--        <thead>
             <tr>
                 <th>Date</th>
                 <th>Name</th>
@@ -53,5 +54,5 @@
                 <td>july@example.com</td>
             </tr>
         </tbody>
-    </table>
+    </table>-->
 </div>
