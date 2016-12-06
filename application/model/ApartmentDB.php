@@ -521,17 +521,19 @@ class ApartmentDB{
     
     public function getLandLordApartments($user_id)
     {
-        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
+        $sql  = "SELECT * FROM Apartments WHERE user_id = ".$user_id;
         
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(
-            array('user_id' => $user_id)
-        );
+        $query = $this->db->prepare($sql);
+        
+//        $stmt = $this->db->prepare($sql);
+//        $stmt->execute(
+//            array('user_id' => $user_id)
+//        );
         
         /* Get all applicable apartments */
-        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        return $apartmentRecords;
+//        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $query->execute();
+        return $query->fetchAll();
         
 //        $apartmentArray = array();
 //        foreach ($apartmentRecords as $apartmentRecord)
