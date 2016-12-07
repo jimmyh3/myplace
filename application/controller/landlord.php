@@ -17,73 +17,124 @@ class Landlord extends PageTemplate{
         
     }
     
+    /**
+     * This method corresponds to the 'Add Apartment Form' from mypost.php. This
+     * method is called via POST and will add a new Apartment record to the
+     * database based on the POST-ed data.
+     * 
+     * @return \Apartment - Apartment object made from the POST-ed data.
+     * @throws Exception - if the query/upload fails.
+     */
     public function addApartment()
     {
-        //-------DUMMY USER--DELETE THIS WHEN $user in PageTemplate is setup----
-                 /* TODO: use actual User when User is fully implemented. */
+        
+        /* ---------------------------------------------------------------------
+         * TODO: DELETE Dummy landlord user in place of actual implemented user.
+         * vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+         */
                 require_once APP . 'test/TEST.php';
                 $user       = TEST::getLocalDummyLandlordUser();
-                //$user->setName($apartForm['Name']);     //This should be set by $user object.
-                //$user->setEmail($apartForm['Email']);   //This should be set by $user object.
-                //$user->setPhone($apartForm['Number']);  //Phone number stored where?
-        //-------DUMMY USER------------------------
                 
-        /* Return if form data was somehow not sent over */
-        if (!isset($_POST['add-aprt-form'])) {
-            echo "Failure: Adding apartment form data has not been sent!";
-            return;
-        }
+                //['Name'] ['Email'] ['Number'] from <form> should be set automatically..
+                //
+                // <UNTESTED possible alternative for if $user object is not persistent? ....>
+                // session_start(); //required at top of every page or put in Parent page.
+                // if (isset($_SESSION['login_id'])  //=== true ...
+                //      $user_id     = $_SESSION['login_id'];
+                //      $userObject  = $this->user_db->hasUser($user_id); //get valid user.
+                //      
+                // if (is_a($userObject, 'User') && ($userObject->getType() === 1))
+                //      ... perform $this->addApartment() ...
                 
+        /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+         * TODO: DELETE Dummy landlord user in place of actual implemented user.
+         * ---------------------------------------------------------------------
+         */
+                
+        
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
         if ($user->getType() !== 1)
             { throw new Exception("You must be a landlord who's signed in to add a new apartment!"); }
             
+        /* Form <input name=""> for quick reference */
+        $name_bedroom       = "Bedroom";
+        $name_price         = "Price";
+        $name_startTerm     = "StartTerm";
+        $name_endTerm       = "EndTerm";
+        $name_zipcode       = "ZipCode";
+        $name_description   = "Description";
+        $name_petFriendly   = "PetFriendly";
+        $name_parking       = "Parking";
+        $name_laundry       = "Laundry";
+        $name_smoking       = "Smoking";
+        $name_sharedRoom    = "SharedRoom";
+        $name_furnished     = "Furnished";
+        $name_wheelChairAcc = "WheelChairAccess";
+        $name_images        = "images";
         
-        $apartment  = new Apartment();  //Apartment object to add to database.
-        $isAdded    = false;            //if Apartment was added successfully.
-        $message   = "";                //response message to echo to Client.
         
-        $apartForm  = array(); //will hold the POST-ed form data.
-
-        /* Parse the form data and store it in $apartForm */
-        $rawFormElements = filter_input(INPUT_POST, 'add-aprt-form');
-        parse_str(rawurldecode( $rawFormElements), $apartForm);
- 
-        /*
-         * -------------------------------------------------------
-         * TODO: Need to find some way to handle file uploads.
-         * -------------------------------------------------------
-         */
+        /* Variables */
+        $apartForm      = array();          //holds the 'Add Apartment Form' data. 
+        $apartImages    = array();          //holds the images sent from the form.
+        $apartment      = new Apartment();  //Apartment object to add to database.
+        $message        = "";               //response message to echo to Client.
+        
+        /* Return if no form data was sent over */
+        if ($_POST){ 
+            $apartForm = array_filter($_POST);
+        } else {
+            throw new Exception( "Failure: cannot add new apartment!" );
+        }
+        
+        /* Have $apartForm['image'] set to image files array passed over */
+        if (isset($_FILES[$name_images]['tmp_name']) && (!empty($_FILES[$name_images]['tmp_name']))) 
+        {
+            $apartImages = array_filter($_FILES[$name_images]['tmp_name']);
+        }
         
         /* Create new Apartment object acccording to the form values */
         try {
-            //if (isset($apartForm['UserID']))   { $apartment->setBedRoomCount($apartForm['UserID']); }
-            if (isset($apartForm['Bedroom']))   { $apartment->setBedRoomCount($apartForm['Bedroom']); }
-            if (isset($apartForm['Price']))     { $apartment->setActualPrice($apartForm['Price']);  }
-            if (isset($apartForm['StartTerm'])) { $apartment->setBeginTerm($apartForm['StartTerm']); }
-            if (isset($apartForm['EndTerm']))   { $apartment->setEndTerm($apartForm['EndTerm']);    }
-            if (isset($apartForm['ZipCode']))   { $apartment->setAreaCode($apartForm['ZipCode']);   }
-            if (isset($apartForm['Description']))   { $apartment->setDescription($apartForm['Description']); }
-            if (isset($apartForm['PetFriendly']))   { $apartment->setPetFriendly($apartForm['PetFriendly']); }
-            if (isset($apartForm['Parking']))   { $apartment->setParking($apartForm['Parking']); }
-            if (isset($apartForm['Laundry']))   { $apartment->setLaundry($apartForm['Laundry']); }
-            if (isset($apartForm['Smoking']))   { $apartment->setSmoking($apartForm['Smoking']); }
-            if (isset($apartForm['SharedRoom']))    { $apartment->setSharedRoom($apartForm['SharedRoom']); }
-            if (isset($apartForm['Furnished'])) { $apartment->setFurnished($apartForm['Furnished']); }
-            if (isset($apartForm['WheelChairAccess'])) { $apartment->setWheelChairAccess($apartForm['WheelChairAccess']); }
-            if (isset($apartForm['images']))    { $apartment->addImages($apartForm['images']); }
-            /* Set the 'user_id' of Apartment to equal this logged in landlord's ID */
+            
+            /* Set the user ID of this Apartment to this logged in landlord's ID */
             $apartment->setUserID($user->getID());
             
+            //if (isset($apartForm['UserID']))   { $apartment->setBedRoomCount($apartForm['UserID']); }
+            if (isset($apartForm[$name_bedroom]))       { $apartment->setBedRoomCount($apartForm[$name_bedroom]);   }
+            if (isset($apartForm[$name_price]))         { $apartment->setActualPrice($apartForm[$name_price]);      }
+            if (isset($apartForm[$name_startTerm]))     { $apartment->setBeginTerm  ($apartForm[$name_startTerm]);  }
+            if (isset($apartForm[$name_endTerm]))       { $apartment->setEndTerm    ($apartForm[$name_endTerm]);    }
+            if (isset($apartForm[$name_zipcode]))       { $apartment->setAreaCode   ($apartForm[$name_zipcode]);    }
+            if (isset($apartForm[$name_description]))   { $apartment->setDescription($apartForm[$name_description]);}
+            if (isset($apartForm[$name_petFriendly]))   { $apartment->setPetFriendly($apartForm[$name_petFriendly]);}
+            if (isset($apartForm[$name_parking]))       { $apartment->setParking    ($apartForm[$name_parking]);    }
+            if (isset($apartForm[$name_laundry]))       { $apartment->setLaundry    ($apartForm[$name_laundry]);    }
+            if (isset($apartForm[$name_smoking]))       { $apartment->setSmoking    ($apartForm[$name_smoking]);    }
+            if (isset($apartForm[$name_sharedRoom]))    { $apartment->setSharedRoom ($apartForm[$name_sharedRoom]); }
+            if (isset($apartForm[$name_furnished]))     { $apartment->setFurnished  ($apartForm[$name_furnished]);  }
+            if (isset($apartForm[$name_wheelChairAcc])) { $apartment->setWheelChairAccess($apartForm[$name_wheelChairAcc]); }
+            
+            foreach ($apartImages as $filename){
+                if (!empty(trim($filename))){
+                    $result = $apartment->addImage(file_get_contents($filename));
+                    if (!$result){
+                        echo "<p>Not all images were added!</p>
+                              <p>The number of images exceeded 10</p>";
+                        break;
+                    }
+                } 
+            }
+            
             /* Add apartment to Apartment database */
-            $isAdded = $this->apartment_db->addApartment($apartment);
-            $message = "Apartment has been successfully added!";
+            $this->apartment_db->addApartment($apartment);
+            $message .= "Apartment has been successfully added!";
+            
         } catch (Exception $exception) {
             $message = $exception->getMessage();
         }
         
         echo $message;
         
-        return $isAdded;
+        return $apartment;
     }
+    
 }

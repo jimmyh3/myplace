@@ -74,7 +74,7 @@ class TEST {
         $apartmentRecords = self::$apartment_db->search(array(),array());
         
         $apartment = self::$apartment_db->dbRecordToApartment($apartmentRecords[0]);
-        $result = self::$apartment_db->addImage($apartment->getID(), $apartment->getThumbnail());
+        $result = self::$apartment_db->addToImageDB($apartment->getID(), $apartment->getThumbnail());
         
         echo "Query was..." .  $result;
     }

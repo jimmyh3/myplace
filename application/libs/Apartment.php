@@ -518,15 +518,43 @@ class Apartment {
     }
     
     /**
-     * Add the set the of images to this Apartment.
-     * @param array $images
+     * Add the images to this Apartment. The image should be a string that is 
+     * essentially <strong>raw data</strong>, meant to be directly displayed to 
+     * a web page using bas64_encode() or directly uploaded to the database as a
+     * BLOB.
+     * 
+     * @param array $images - array of raw data strings.
      * @return boolean
-     * @throws Exception
+     * @throws Exception - if the given is not a string.
+     */
+    public function addImage($image)
+    {
+        if ($this->getImagesCount() === 10){
+            return false;
+        } elseif (is_string($image) || is_null($image)) {
+            array_push($this->images, $image);
+        } else {
+            throw new Exception("Failed to add images!");
+        }
+        return true;
+    }
+    
+    /**
+     * Add the set the of images to this Apartment. The images in the given array
+     * should be a string that is essentially <strong>raw data</strong>, meant to be 
+     * directly displayed to a web page using bas64_encode() or directly uploaded 
+     * to the database as BLOBs.
+     * 
+     * @param array $images - array of raw data strings.
+     * @return boolean
+     * @throws Exception - if the given is not a string.
      */
     public function addImages(array $images)
     {
         foreach ($images as $image){
-            if (is_string($image) || is_null($image)) {
+            if ($this->getImagesCount() === 10){
+                return false;
+            } elseif (is_string($image) || is_null($image)) {
                 array_push($this->images, $image);
             } else {
                 throw new Exception("Failed to add images!");

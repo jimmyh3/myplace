@@ -33,7 +33,8 @@ class ApartmentDB{
         $sql =  " INSERT INTO Apartments 
                   ( %s )
                   VALUES
-                  ( %s ) ";
+                  ( %s );
+                  ";
         
         $sql_comma = " , ";
         $sql_colon = ":";
@@ -96,12 +97,18 @@ class ApartmentDB{
         $result = $stmt->execute();
         if ($result === false)
             {throw new Exception('Could not execute apartment INSERT query'); }
+
+        /*---------------------------------------------------------------------
+         * Get the new ID attributed to the new Apartment that was just added.
+         * -------------------------------------
+         */    
+        $aptID = $this->getLastInsertID();
+        $apt->setID($aptID);
         
-            
         /* Send any Apartment images to the Image database table */
         foreach ($apt->getImages() as $image)
         {
-            $this->addImage($apt->getID(), $image);
+            $this->addToImageDB($apt->getID(), $image);
         }
         
         return true ;
@@ -639,6 +646,31 @@ class ApartmentDB{
     }
     
     /**
+     * Retrieve the last ID belonging to <strong>whatever</strong> record that
+     * was inserted into the database.
+     * 
+     * @return int - id
+     * @throws Exception - if query fails to execute.
+     */
+    private function getLastInsertID()
+    {
+        /* Now get the autoincremented ID just made for the new Apartment */    
+        $sql = " SELECT * FROM Apartments WHERE id = LAST_INSERT_ID() ";
+        
+        /* Create INSERT query with the column and value strings */
+        $stmt = $this->db->prepare($sql);
+        if ($stmt === false)
+            {throw new Exception('Could not prepare apartment ID SELECT query'); }
+            
+        /* Execute the assembled INSERT query */    
+        $result = $stmt->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute apartment ID SELECT query'); }
+            
+        return $stmt->fetch()->id;
+    }
+    
+    /**
      * Add the given BLOB image to the Image table. Each image must be
      * associated with an Apartment, thus the apartment's ID is required.
      * 
@@ -647,7 +679,7 @@ class ApartmentDB{
      * @return boolean - true
      * @throws Exception - thrown if the INSERT query fails.
      */
-    public function addImage($aparmentID, $blob)
+    public function addToImageDB($aparmentID, $blob)
     {
         $sql = " INSERT INTO Image 
                  ( apartment_id , image ) 
@@ -664,7 +696,7 @@ class ApartmentDB{
         $result = $query->execute();
         if ($result === false)
             {throw new Exception('Could not execute Image INSERT query'); }
-        
+          
         return true;
     }
     

@@ -224,7 +224,7 @@
                                    
                                     <p class="text-right"><span class="error">* required field.</span></p>
                                    
-                                    <form action="<?php echo URL; ?>landlord/addApartment" class="form-horizontal" name="aptInfoForm" id="add-aprt-form" method="POST" enctype="multipart/form-data">
+                                    <form class="form-horizontal" name="add-aprt-form" id="add-aprt-form" enctype="multipart/form-data">
                                         <fieldset>
                                             <!-- Text input-->
                                             <div class="control-group">
@@ -273,44 +273,14 @@
                                             <label class="control-label" for="Term">*Availability Term:</label>
 
                                             <div class="input-group">
+                                                
                                                 <!-- Calendar input in appropriate format:  -->
-                                                <input class="form-control" id="StartTerm" name="StartTerm" type="date" value=""/>
-<!--                                                <select class="form-control" id="StartTerm" name="StartTerm">
-                                                    <option value="-1">Any</option>
-                                                    <option value="1">January</option>
-                                                    <option value="2">February</option>
-                                                    <option value="3">March</option>
-                                                    <option value="4">April</option>
-                                                    <option value="5">May</option>
-                                                    <option value="6">June</option>
-                                                    <option value="7">July</option>
-                                                    <option value="8">August</option>
-                                                    <option value="9">September</option>
-                                                    <option value="10">October</option>
-                                                    <option value="11">November</option>
-                                                    <option value="12">December</option>
-                                                </select>-->
+                                                <input class="form-control" id="StartTerm" name="StartTerm" type="date" value=""/>                                         
                                                 
                                                 <!-- Calendar input in appropriate format:  -->
                                                 <span class="input-group-addon">-</span>
                                                 <input class="form-control" id="EndTerm" name="EndTerm" type="date" value=""/>
                                                 
-                                                
-<!--                                                <select class="form-control" id="EndTerm" name="EndTerm">
-                                                    <option value="-1">Any</option>
-                                                    <option value="1">January</option>
-                                                    <option value="2">February</option>
-                                                    <option value="3">March</option>
-                                                    <option value="4">April</option>
-                                                    <option value="5">May</option>
-                                                    <option value="6">June</option>
-                                                    <option value="7">July</option>
-                                                    <option value="8">August</option>
-                                                    <option value="9">September</option>
-                                                    <option value="10">October</option>
-                                                    <option value="11">November</option>
-                                                    <option value="12">December</option>
-                                                </select>-->
                                             </div>
 
                                             <!-- Text input-->
@@ -362,8 +332,7 @@
                                             <label>Upload Images (max 10):</label>
 
                                             <div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
-                                                <input type="hidden" name="MAX_FILE_SIZE" value="10000000" />
-                                                <input type="file" accept="image/png" name="images[]" class="form-control">
+                                                <input type="file" id="imagesInput" accept="image/*" name="images[]" class="form-control">
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-success btn-add">+</button>
                                                 </span>
