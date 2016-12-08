@@ -30,10 +30,12 @@ require APP . 'config/config.php';
 // If you want to load pdoDebug via Composer, then have a look here: https://github.com/panique/pdo-debug
 require APP . 'libs/helper.php';
 
+// load google analytics 
+require APP . 'libs/analyticstracking.php'; 
+
 // load application class
 require APP . 'core/application.php';
 require APP . 'core/controller.php';
-require APP . 'core/pagetemplate.php';
 
 // start the application
 $app = new Application();
