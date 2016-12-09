@@ -307,8 +307,6 @@ class ApartmentDB{
                     $j++;
                 }
                 $sql_where_query .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
-            } else {
-                
             }
             $i++;
         }
@@ -406,70 +404,70 @@ class ApartmentDB{
         if ($order == 0 && !empty($query))
         {
             $sql_orderby = " id ASC";
-//            $sql_orderby_case  =    "   CASE
-//                                            WHEN %s THEN 1
-//                                            WHEN %s THEN 2
-//                                            WHEN %s THEN 3
-//                                            ELSE 4
-//                                        END";       //default
-//
-//            /* Arguments for CASE clause $sql_ordebyr_case */
-//            $sql_order_case_arg1 = "";
-//            $sql_order_case_arg2 = "";
-//            $sql_order_case_arg3 = "";
-//
-//            /* Values for quick reuse */
-//            $sql_like       = " LIKE ";
-//            $sql_or         = " OR ";
-//            $sql_equal      = " = ";      
-//            $queryCount     = count($query);
-//            $aprt_colsCount = count($aprt_cols);
-//
-//            /* 
-//             * Set ORDER BY CASE arguments here to return results in a certain order.
-//             */
-//            $k = 0; //index for $query
-//            foreach ($query as $query_val)
-//            {
-//                $l = 0; //index for $aprt_cols
-//                foreach ($aprt_cols as $aprt_col)
-//                {
-//                    //col1 = val1 ...
-//                    $sql_order_case_arg1 .= $aprt_col;   //Append aprt_column_name
-//                    $sql_order_case_arg1 .= $sql_equal;  //Append ' = '
-//                    $sql_order_case_arg1 .= (is_numeric($query_val)) ? $query_val : "'".$query_val."'";   //Append value
-//                    $sql_order_case_arg1 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";                  //Append OR ?
-//
-//                    //col1 LIKE 'val1%' OR col1 LIKE '%val1' ...   < NOTICE '%' placements >
-//                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
-//                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
-//                    $sql_order_case_arg2 .= "'".$query_val."%'";    //Append 'value%'
-//                    $sql_order_case_arg2 .= $sql_or;                //Append OR
-//                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
-//                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
-//                    $sql_order_case_arg2 .= "'%".$query_val."'";    //Append '%value'
-//                    $sql_order_case_arg2 .= (($l + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR ?
-//
-//                    //col1 LIKE '%val1% ...
-//                    $sql_order_case_arg3 .= $aprt_col;              //Append aprt_column_name
-//                    $sql_order_case_arg3 .= $sql_like;              //Append LIKE
-//                    $sql_order_case_arg3 .= "'%".$query_val."%'";   //Append '%value%'
-//                    $sql_order_case_arg3 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";    //Append OR ?
-//
-//                    $l++;
-//                }
-//
-//                //Append OR    if there are more $query values
-//                if (($k + 1) < $queryCount)
-//                {
-//                    $sql_order_case_arg1 .= $sql_or;
-//                    $sql_order_case_arg2 .= $sql_or;
-//                    $sql_order_case_arg3 .= $sql_or;
-//                }
-//
-//                $k++;
-//            }
-//
+            $sql_orderby_case  =    "   CASE
+                                            WHEN %s THEN 1
+                                            WHEN %s THEN 2
+                                            WHEN %s THEN 3
+                                            ELSE 4
+                                        END";       //default
+
+            /* Arguments for CASE clause $sql_ordebyr_case */
+            $sql_order_case_arg1 = "";
+            $sql_order_case_arg2 = "";
+            $sql_order_case_arg3 = "";
+
+            /* Values for quick reuse */
+            $sql_like       = " LIKE ";
+            $sql_or         = " OR ";
+            $sql_equal      = " = ";      
+            $queryCount     = count($query);
+            $aprt_colsCount = count($aprt_cols);
+
+            /* 
+             * Set ORDER BY CASE arguments here to return results in a certain order.
+             */
+            $k = 0; //index for $query
+            foreach ($query as $query_val)
+            {
+                $l = 0; //index for $aprt_cols
+                foreach ($aprt_cols as $aprt_col)
+                {
+                    //col1 = val1 ...
+                    $sql_order_case_arg1 .= $aprt_col;   //Append aprt_column_name
+                    $sql_order_case_arg1 .= $sql_equal;  //Append ' = '
+                    $sql_order_case_arg1 .= (is_numeric($query_val)) ? $query_val : "'".$query_val."'";   //Append value
+                    $sql_order_case_arg1 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";                  //Append OR ?
+
+                    //col1 LIKE 'val1%' OR col1 LIKE '%val1' ...   < NOTICE '%' placements >
+                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
+                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
+                    $sql_order_case_arg2 .= "'".$query_val."%'";    //Append 'value%'
+                    $sql_order_case_arg2 .= $sql_or;                //Append OR
+                    $sql_order_case_arg2 .= $aprt_col;              //Append aprt_column_name
+                    $sql_order_case_arg2 .= $sql_like;              //Append LIKE
+                    $sql_order_case_arg2 .= "'%".$query_val."'";    //Append '%value'
+                    $sql_order_case_arg2 .= (($l + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR ?
+
+                    //col1 LIKE '%val1% ...
+                    $sql_order_case_arg3 .= $aprt_col;              //Append aprt_column_name
+                    $sql_order_case_arg3 .= $sql_like;              //Append LIKE
+                    $sql_order_case_arg3 .= "'%".$query_val."%'";   //Append '%value%'
+                    $sql_order_case_arg3 .= (($l + 1) < $aprt_colsCount) ? $sql_or : "";    //Append OR ?
+
+                    $l++;
+                }
+
+                //Append OR    if there are more $query values
+                if (($k + 1) < $queryCount)
+                {
+                    $sql_order_case_arg1 .= $sql_or;
+                    $sql_order_case_arg2 .= $sql_or;
+                    $sql_order_case_arg3 .= $sql_or;
+                }
+
+                $k++;
+            }
+
 ////       }
 ////        
 ////        /* Execute the Query */
@@ -546,18 +544,18 @@ class ApartmentDB{
 ////        $aprt->description  = $apartmentRecord['description'];
 ////        $aprt->bedroom      = $apartmentRecord['bedroom'];
 ////        $aprt->thumbnail    = $apartmentRecord['thumbnail'];
-//            /*
-//             *  Finalize the SQL ORDER BY arguments
-//             */
-//            if ($queryCount > 0)
-//            {
-//                //Apply ORDER BY arguments via formatting.
-//                $sql_orderby_case = sprintf($sql_orderby_case,  $sql_order_case_arg1,
-//                                                                $sql_order_case_arg2,
-//                                                                $sql_order_case_arg3);
-//
-//                $sql_orderby .= $sql_orderby_case;
-//            }
+            /*
+             *  Finalize the SQL ORDER BY arguments
+             */
+            if ($queryCount > 0)
+            {
+                //Apply ORDER BY arguments via formatting.
+                $sql_orderby_case = sprintf($sql_orderby_case,  $sql_order_case_arg1,
+                                                                $sql_order_case_arg2,
+                                                                $sql_order_case_arg3);
+
+                $sql_orderby .= $sql_orderby_case;
+            }
         }else if($order == 1){
             $sql_orderby = " actual_price ASC"; 
         }else if($order == 2){

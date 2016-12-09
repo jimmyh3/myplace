@@ -251,19 +251,19 @@ class Home extends PageTemplate
 
                                                     <h1> Map </h1>
 
-                                                    <div id="map" style="width:400px;height:400px;background:yellow"></div>
+                                                    <div id="map' . $i . '" style="width:400px;height:400px;background:yellow"></div>
 
                                                     <script>
-                                                        function myMap() {
-                                                            var mapCanvas = document.getElementById("map");
+                                                        function myMap'.$i.'() {
+                                                            var mapCanvas = document.getElementById("map' . $i . '");
                                                             var mapOptions = {
                                                                 center: new google.maps.LatLng(51.5, -0.2), zoom: 10
                                                             };
                                                             var map = new google.maps.Map(mapCanvas, mapOptions);
                                                         }
                                                     </script>
-
-                                                    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+                                                    
+                                                    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap'.$i.'"></script>
 
                                                 </div>
 
