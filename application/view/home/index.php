@@ -289,7 +289,7 @@ End of Corner Ribbon~~!>
             <div class="row" id="results">
                 <div>
                     <h3>Featured Apartments</h3><br>
-                    <?php echo $this->displayApartments( $this->apartment_db->getFeaturedApartments()); ?>
+                    <?php echo $this->formatApartment( $this->apartment_db->getFeaturedApartments()); ?>
                 </div>
                 <div>
                     <h6 style="visibility: hidden;">.</h6>

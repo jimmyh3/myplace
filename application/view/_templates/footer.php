@@ -50,5 +50,8 @@
 
 <!-- our JavaScript -->
 <script src="<?php echo URL; ?>js/application.js"></script>
+
+<script src="<?php echo URL; ?>js/myplace-search.js"></script>
+
 </body>
 </html>

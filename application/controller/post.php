@@ -2,14 +2,7 @@
 
 class Post extends Controller
 {
-       public function index()
-    {
-        // load views
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/post/mypost.php';
-        require APP . 'view/_templates/footer.php';
-    }
-  public function postPage()
+    public function index()
     {
         // load views
         require APP . 'view/_templates/header.php';
@@ -17,7 +10,9 @@ class Post extends Controller
         require APP . 'view/_templates/footer.php';
     }
     
-   
+    public function postPage()
+    {
+        }
     
 }
 
