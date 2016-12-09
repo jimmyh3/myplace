@@ -56,7 +56,7 @@ class Landlord extends PageTemplate{
                 
         
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
-        if ($userType !== 1)
+        if ($userType != 1)
             { throw new Exception("You must be a landlord who's signed in to add a new apartment!"); }
             
         /* Form <input name=""> for quick reference */
