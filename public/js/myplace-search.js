@@ -39,16 +39,13 @@ $(function() {
                    });
                 });
                 
-        }else{
-            $('#search_bar').each(function(){
-               this.setCustomValidity("Only alphanumeric characters allowed!"); 
-            });
         }
         
     }
     
     /**
-     * Checks if all given values are only alphanumeric characters.
+     * Checks if all given values are only alphanumeric characters (including
+     * whitespace).
      * 
      * @param (Array) values - an array of characters.
      * @returns {Boolean} - true if given array holds on valid values.
@@ -77,7 +74,7 @@ $(function() {
         return true;
     }
     
-    
+        
     /**
      * Check if the given value is an alphanumeric character.
      * 
@@ -86,7 +83,7 @@ $(function() {
      */
     function isAlphaNumeric(value)
     {
-        return value.match("^[a-zA-Z0-9.]*$");
+        return value.match("^[a-zA-Z0-9. ]*$");
     }
     
     /**

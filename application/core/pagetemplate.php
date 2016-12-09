@@ -26,20 +26,24 @@ class PageTemplate extends Controller {
         /* parse_str() creates array of key/value pairs based on a URL argument string */
         parse_str(rawurldecode($filters), $filters_array);
         
+        /* Remove empty value elements in array */
+        $query_array   = array_filter($query_array, 'trim');
+        $filters_array = array_filter($filters_array, 'trim');
+        
         /* Minor handling for $filters_array and $query_array */
-        foreach ($filters_array as $f_key=>$f_val)
-        {
-            /* Remove empty value elements in array */
-            if ($f_val === ''){
-                unset($filters_array[$f_key]);
-            }
-            
-            /* Pass any unique values from $filters to $query */
+//        foreach ($filters_array as $f_key=>$f_val)
+//        {
+//            /* Remove empty value elements in array */
+//            if ($f_val === ''){
+//                unset($filters_array[$f_key]);
+//            }
+//            
+//            /* Pass any unique values from $filters to $query */
 //            if ((is_numeric($f_val) || is_string($f_val)) &&
 //                                     (!in_array ($f_val,$query_array))){
 //                array_push($query_array, $f_val);
 //            }
-        }
+//        }
         
         
         if (sizeof($filters_array) > 0)
