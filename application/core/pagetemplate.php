@@ -101,7 +101,7 @@ class PageTemplate extends Controller {
                              <ul class="columns" data-columns="2">';
             if( isset( $apartment->rental_term)) $results .= '<li>Rent term: '.htmlspecialchars( $apartment->rental_term).'</li>';
             if( isset( $apartment->bedroom)) $results .= '<li>Bedrooms: '.htmlspecialchars( $apartment->bedroom).'</li>';
-            if( isset( $apartment->area_code)) $results .= '<li>Area code: '.htmlspecialchars( $apartment->area_code).'</li>';
+            if( isset( $apartment->area_code)) $results .= '<li>Zip code: '.htmlspecialchars( $apartment->area_code).'</li>';
             $results .= '</ul>
                         </div>
                         <div class="ratings">
