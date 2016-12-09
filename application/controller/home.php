@@ -119,6 +119,7 @@ class Home extends PageTemplate
         if( !$apartments) {
             $results = "No Results!";
         } else {
+            $results .= '<div class="pull-right">Total apartments:' . count( $apartments) . ' </div><br><br><div class="row">';
             $results .=  $this->displayApartments( $apartments);   
         }
 
@@ -157,7 +158,7 @@ class Home extends PageTemplate
     
     public function displayApartments( $apartments)
     {
-        $results = '<div class="pull-right">Total apartments:' . count( $apartments) . ' </div><br><br><div class="row">';
+        $results = "";
         $i = 0;
         foreach ( $apartments as $apartment) {
             $results .= '<div class="col-sm-4 col-lg-4 col-md-4">
@@ -169,7 +170,28 @@ class Home extends PageTemplate
             }
             $results .= '<div class="caption">';
             if( isset( $apartment->actual_price)) $results .= '<h4 class="pull-right">$'. htmlspecialchars( $apartment->actual_price).'</h4>';
-            if( isset( $apartment->id))$results .= '<h4><a href="" data-toggle="modal" data-target="#aptModal">'.htmlspecialchars( $apartment->id).'</a></h4>
+            if( isset( $apartment->title)) {
+                $title = htmlspecialchars( $apartment->title);
+                if( strlen( $title) > 13) {
+                    $title_array = explode( " ", $title);
+                    $title = "";
+                    if( strlen( $title_array[ 0]) > 13) {
+                        $title = substr( $title_array[ 0], 0, 13) . "...";
+                    } else {
+                        foreach( $title_array as $word) {
+                            if( strlen( $title) + strlen( $word) > 13) {
+                                $title .= "...";
+                                break;
+                            } else {
+                                $title .= $word . " ";
+                            }    
+                        }
+                    }
+                }
+            } else {
+                $title = title;
+            }
+            $results .= '<h4><a href="" data-toggle="modal" data-target="#aptModal">'.$title.'</a></h4>
                              <ul class="columns" data-columns="2">';
             if( isset( $apartment->rental_term)) $results .= '<li>Rent term: '.htmlspecialchars( $apartment->rental_term).'</li>';
             if( isset( $apartment->bedroom)) $results .= '<li>Bedrooms: '.htmlspecialchars( $apartment->bedroom).'</li>';
@@ -177,8 +199,8 @@ class Home extends PageTemplate
             $results .= '</ul>
                         </div>
                         <div class="ratings">
-                            <!--<button type="button" class="btn btn-success btn-sm pull-right">Rent now</button>-->
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal'.$i.'">See more details</button>
+                            <button type="button" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#contactLandlord">Rent now</button>
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal'.$i.'">Details</button>
                             <div class="modal fade" id="aptModal'.$i.'" role="dialog" style="color: #000">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -239,8 +261,11 @@ class Home extends PageTemplate
                                                             </div>
                                                         </div>
                                                         <div class="col-sm-6 col-height col-top">';
-            if( isset( $apartment->description)) $results .= '<h1> Description </h1>
-                                                            <p align ="justify" style="padding-right: 20px">'
+            if( isset( $apartment->title)) 
+                $results .= '<h1>'. htmlspecialchars( $apartment->title).'</h1>';
+            else
+                $results .= '<h1> Description </h1>';
+            if( isset( $apartment->description)) $results .= '<p align ="justify" style="padding-right: 20px">'
                                                             . htmlspecialchars( $apartment->description) .    
                                                             '</p>';                                                        
             $results .= '</div>
@@ -354,34 +379,33 @@ class Home extends PageTemplate
                                                     </p>
                                                       
                                                     <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#contactLandlord">Contact Landlord</button>
-
-                                                    <div id="contactLandlord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
-                                                        <div class="modal-dialog">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                                                                    <h3 id="myModalLabel">Contact form</h3>
-                                                                </div>
-                                                                <div class="modal-body">
-                                                                    <form class="form-horizontal col-sm-12">
-                                                                        <div class="form-group"><label>Name</label><input class="form-control required" placeholder="Your name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters." type="text"></div>
-                                                                        <div class="form-group"><label>E-Mail</label><input class="form-control email" placeholder="email@you.com (so that we can contact you)" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" type="text"></div>
-                                                                        <div class="form-group"><label>Message</label><textarea class="form-control" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
-                                                                        <div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
-                                                                    </form>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button class="btn" data-dismiss="modal" aria-hidden="true">Cancel</button>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                     </p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="contactLandlord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                                            <h3 id="myModalLabel">Contact form</h3>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal col-sm-12">
+                                                <div class="form-group"><label>Name</label><input class="form-control required" placeholder="Your name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters." type="text"></div>
+                                                <div class="form-group"><label>E-Mail</label><input class="form-control email" placeholder="email@you.com (so that we can contact you)" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" type="text"></div>
+                                                <div class="form-group"><label>Message</label><textarea class="form-control" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
+                                                <div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn" data-dismiss="modal" data-target="#contactLandlord" aria-hidden="true">Cancel</button>
                                         </div>
                                     </div>
                                 </div>

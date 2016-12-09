@@ -130,7 +130,7 @@ End of Corner Ribbon~~!>
         <div class="row">
             <h1>myPlace</h1><br>
             <h3>Apartments for SFSU students</h3><br><br>
-            <p><a href="<?php echo URL; ?>home" class="w3-btn w3-padding-large w3-large">APARTMENTS</a></p>
+            <p><button class="w3-btn w3-padding-large w3-large" id="ajax_view_all_apartments">ALL APARTMENTS</button></p>
             <div class="col-lg-6 col-lg-offset-3">
             </div>
         </div>
@@ -214,7 +214,7 @@ End of Corner Ribbon~~!>
                         <input name="area_code" type="text" class="form-control" id="area_code" placeholder="Any">
                     </div>
 
-                    <label>Availability Term:</label>
+<!--                    <label>Availability Term:</label>
                     <div class="input-group">
                         <select name="begin_term" class="form-control" id="start_term_sel">
                             <option value="">Any</option>
@@ -248,7 +248,7 @@ End of Corner Ribbon~~!>
                             <option value="November">November</option>
                             <option value="December">December</option>
                         </select>
-                    </div>
+                    </div>-->
                 
                     <div class="checkbox" class="list-group-item">
                         <label> <input type="checkbox" name="pet_friendly" value="1">Pet Friendly</label>
@@ -287,18 +287,16 @@ End of Corner Ribbon~~!>
     
         <div class="col-md-9">
             <div class="row" id="results">
-            <h3>Featured Apartments</h3><br>
-                
-                <?php echo $this->search(); ?>
-                <?php
-                //For testing
-                //$results = "";
-                //$users = $this->user_db->getUsers();
-                //foreach( $users as $user) {
-                //    $results .= "Id: " . $user->id . "<br>Name: " . $user->name . "<br>Email: " . $user->email . "<br>Password: " . $user->password . "<br>Type: " . $user->usertype . "<br><br>"; 
-                //}
-                //echo $results; ?>
-
+                <div>
+                    <h3>Featured Apartments</h3><br>
+                    <?php echo $this->displayApartments( $this->apartment_db->getFeaturedApartments()); ?>
+                </div>
+                <div>
+                    <h6 style="visibility: hidden;">.</h6>
+                    <hr>
+                    <h3>All Apartments</h3>
+                    <?php echo $this->search() ?>    
+                </div>
             </div>
         </div>
     </div>

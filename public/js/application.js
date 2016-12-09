@@ -1,5 +1,16 @@
 $(function() {
     
+    if($('#ajax_view_all_apartments').length !== 0) {
+        $('#ajax_view_all_apartments').on('click', function( e) {
+//           alert( "Boop");
+           e.preventDefault();
+           $.ajax( url + '/home/search')
+                .done( function( results) {
+                    $('#results').html( results);
+           });
+        });
+    }
+    
     if($('#ajax_search').length !== 0) {
         $('#ajax_search').on('click', function( e){
             e.preventDefault();
