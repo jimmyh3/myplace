@@ -267,7 +267,7 @@ class ApartmentDB{
         return $stmt->fetchAll();
         
         /*
-         * Resulting $sql EXAMPLE =
+         * Resulting $sql EXAMPLE =;
          * "
          * SELECT * FROM Apartments
          * WHERE 
