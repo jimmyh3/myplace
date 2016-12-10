@@ -12,21 +12,21 @@ class Post extends Controller
         require APP . 'view/_templates/footer.php';
     }
     
-//    public function postPage()
-//    {
-//        // load views
-//        require APP . 'view/_templates/header.php';
-//        require APP . 'view/post/mypost.php';
-//        require APP . 'view/_templates/footer.php';
-//    }
+    public function postPage()
+    {
+        // load views
+        require APP . 'view/_templates/header.php';
+        require APP . 'view/post/mypost.php';
+        require APP . 'view/_templates/footer.php';
+    }
     
    
     public function displayApartments( $user_id )
     {
         // this section is to be moved to mypost.php 
-        if(isset($_COOKIE["myPlace_userID"])){
-            $user_id = $_COOKIE["myPlace_userID"]; 
-        }
+//        if(isset($_COOKIE["myPlace_userID"])){
+//            $user_id = $_COOKIE["myPlace_userID"]; 
+//        }
         $result =""; 
         $apartments = $this->apartment_db->getLandLordApartments($user_id); 
         if(!$apartments){
@@ -54,9 +54,17 @@ class Post extends Controller
                                     <button style="display: inline-block;" type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#aptModal">Edit Post</button>
                                     <a href="////';
                 $result .=  htmlspecialchars (URL).'msg">';
-                $result .= '<button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm">View Messages</button></a>
-                                    <button style="display: inline-block;" type="button" class="btn btn-danger btn-sm pull-right">Delete Post</button>
+//                $result .= '<form method="post"> <button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm" name="apartment_id" value="';
+//                
+//                if (isset( $apartment->id)) $result .= htmlspecialchars ($apartment->id).'" >View Messages</button></form></a>';
+                
+                $result .= '<button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm" name="apartment_id" value="';
+                
+                if (isset( $apartment->id)) $result .= htmlspecialchars ($apartment->id).'" >View Messages</button></a>';
+                
+                $result .='<button style="display: inline-block;" type="button" class="btn btn-danger btn-sm pull-right">Delete Post</button>
                                 </div>';
+                
                 // Form to edit Apartment
                 
                 $result .= '<div class="modal fade" id="aptModal" role="dialog">
