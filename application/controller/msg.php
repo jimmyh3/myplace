@@ -61,7 +61,7 @@ class Msg extends Controller
                 $result .= '<td>'.htmlspecialchars($message->parent_id).'</td>';
                 $result .= '<td>'.htmlspecialchars($message->message_recipient).'</td>';
                 $result .= '<td>'.htmlspecialchars($message->message).'</td>';
-                $users = $this->user_db->getUser($message->idMessages);
+                $users = $this->user_db->getUser($message->parent_id);
 
                 foreach($users as $user) {
                     $result .= '<td>'.htmlspecialchars($user->email).'</td></tr>';
