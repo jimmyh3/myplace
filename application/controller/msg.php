@@ -29,6 +29,10 @@ class Msg extends Controller
     public function displayMsg()
     {
         $result ="";
+        
+        // Using getAllMessages() for testing purposes, 
+        // will use getMessages($aid, $user_id) in final version
+        
         $messages = $this->apartment_db->getAllMessages();
 //        $users = $this->user_db->getUser(1);
 //        print_r($users);
@@ -46,31 +50,25 @@ class Msg extends Controller
             </tr>
         </thead>
         <tbody>';
-        
         foreach($messages as $message) {
-//            $users = $this->user_db->getUser(1);
-            $result .= '<tr><td>'.htmlspecialchars($message->aid).'</td>';
-            $result .= '<td>'.htmlspecialchars($message->idMessages).'</td>';
-            $result .= '<td>'.htmlspecialchars($message->parent_id).'</td>';
-            $result .= '<td>'.htmlspecialchars($message->message_recipient).'</td>';
-            $result .= '<td>'.htmlspecialchars($message->message).'</td>';
-            $message_sender = $message->idMessages;
-            $users = $this->user_db->getUser($message_sender);
-//            print_r($user);
-//            $result .= '<td>'.htmlspecialchars($users->email).'</td></tr>';
             
-            foreach($users as $user) {
-//                $user = getUser($message->message_recipient);
-                $result .= '<td>'.htmlspecialchars($user->email).'</td></tr>';
-            }
+            // Need to figure out how to get the current Apartment ID
+            
+            if ($message->aid == 1)
+            {
+                $result .= '<tr><td>'.htmlspecialchars($message->aid).'</td>';
+                $result .= '<td>'.htmlspecialchars($message->idMessages).'</td>';
+                $result .= '<td>'.htmlspecialchars($message->parent_id).'</td>';
+                $result .= '<td>'.htmlspecialchars($message->message_recipient).'</td>';
+                $result .= '<td>'.htmlspecialchars($message->message).'</td>';
+                $users = $this->user_db->getUser($message->idMessages);
 
+                foreach($users as $user) {
+                    $result .= '<td>'.htmlspecialchars($user->email).'</td></tr>';
+                }
+            }
         }
         
-//        foreach ($users as $user)
-//        {
-//            $user = getUser($message->message_recepient);
-//            $result .= '<td>'.htmlspecialchars($user->email).'</td></tr>';
-//        }
         
         $result .= '</tbody></table>';
         

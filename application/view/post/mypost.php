@@ -23,6 +23,6 @@ $user_id ="";
 if(isset($_COOKIE["myPlace_userID"])){
         $user_id = $_COOKIE["myPlace_userID"];
 }
-echo $this->displayApartments(1);?> 
+echo $this->displayApartments(1); ?> 
     </div>
 </div>
