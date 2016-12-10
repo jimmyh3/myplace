@@ -25,7 +25,7 @@ class Msg extends Controller
         require APP . 'view/msg/mymsg.php';
         require APP . 'view/_templates/footer.php';
     }
-    
+    //
     public function displayMsg()
     {
         $result ="";
@@ -33,6 +33,7 @@ class Msg extends Controller
 //        $users = $this->user_db->getUser(1);
 //        print_r($users);
 //        print_r($users->email);
+//        print_r($messages);
         $result .='<table class="table table-hover">
         <thead>
             <tr>
@@ -53,10 +54,10 @@ class Msg extends Controller
             $result .= '<td>'.htmlspecialchars($message->parent_id).'</td>';
             $result .= '<td>'.htmlspecialchars($message->message_recipient).'</td>';
             $result .= '<td>'.htmlspecialchars($message->message).'</td>';
-            $message_recipient = $message->message_recipient;
-            $users = $this->user_db->getUser($message_recipient);
+            $message_sender = $message->idMessages;
+            $users = $this->user_db->getUser($message_sender);
 //            print_r($user);
-//            $result .= '<td>'.htmlspecialchars($user->email).'</td></tr>';
+//            $result .= '<td>'.htmlspecialchars($users->email).'</td></tr>';
             
             foreach($users as $user) {
 //                $user = getUser($message->message_recipient);
