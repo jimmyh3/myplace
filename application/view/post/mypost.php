@@ -25,6 +25,8 @@ if(isset($_COOKIE["myPlace_userID"])){
     $user_id = $_COOKIE["myPlace_userID"];
 }
 
+//print_r($user_id);
+
 echo $this->displayApartments($user_id); ?> 
 </div>
 

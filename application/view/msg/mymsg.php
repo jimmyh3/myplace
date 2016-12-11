@@ -25,7 +25,8 @@
     <p>Interested students contacted you</p>
     <p>"<"Insert REPLY button later">"</p>  
     <table class="table table-hover">
-        <?php
+        <?php        
+        // default to 1 for testing purposes
         $user_id ="1";
         
         if(isset($_COOKIE["myPlace_userID"])){
@@ -40,7 +41,7 @@
         print_r($user_id);
         
 
-        echo $this->displayMsg($aid); ?>
+        echo $this->displayMsg($aid, $user_id); ?>
 <!--        <thead>
             <tr>
                 <th>Date</th>

@@ -92,6 +92,7 @@ class UserDB {
         
         return ($account) ? $account : false; 
     }
+    
     // get user information for messages table 
     // pass parent_id to function to get information about user 
     public function getUser($user_id){

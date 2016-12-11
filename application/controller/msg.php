@@ -26,7 +26,7 @@ class Msg extends Controller
         require APP . 'view/_templates/footer.php';
     }
     //
-    public function displayMsg($aid)
+    public function displayMsg($aid, $user_id)
     {
         $result ="";
         
@@ -34,7 +34,11 @@ class Msg extends Controller
         // will use getMessages($aid, $user_id) in final version
         
 //        $messages = $this->apartment_db->getAllMessages();
-        $messages = $this->apartment_db->getMessages($aid, 1);
+        $messages = $this->apartment_db->getMessages($aid, $user_id);
+        
+//        $all_useres = $this->user_db->getUsers();
+//        
+//        print_r($all_useres);
 
         
         $result .='<table class="table table-hover">
