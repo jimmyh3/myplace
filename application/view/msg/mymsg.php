@@ -25,7 +25,10 @@
     <p>Interested students contacted you</p>
     <p>"<"Insert REPLY button later">"</p>  
     <table class="table table-hover">
-        <?php echo $this->displayMsg(); ?>
+        <?php
+        $aid = $_GET['apartment_id'];
+        print_r($aid);
+        echo $this->displayMsg($aid); ?>
 <!--        <thead>
             <tr>
                 <th>Date</th>

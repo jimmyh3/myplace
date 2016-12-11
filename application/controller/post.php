@@ -49,18 +49,42 @@ class Post extends Controller
                 if (isset ( $apartment->description)) $result .= '<p>'.htmlspecialchars ($apartment->description).'</p>';
                 
                 $result .= '</div>';
+                
+                // Original Edit post into My Messages Link
                 $result .= '<div class="ratings">
                                 <div style="width:100%;text-align: center;">
                                     <button style="display: inline-block;" type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#aptModal">Edit Post</button>
                                     <a href="////';
-                $result .=  htmlspecialchars (URL).'msg">';
-//                $result .= '<form method="post"> <button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm" name="apartment_id" value="';
+//                $result .=  htmlspecialchars (URL).'msg">';
+  
+                
+                $result .=  htmlspecialchars (URL).'msg?apartment_id=';
+                if (isset( $apartment->id)) $result .= $apartment->id.'">';
+
+                
+
+                
+//                $result .= '<div class="ratings">
+//                                <div style="width:100%;text-align: center;">
+//                                    <button style="display: inline-block;" type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#aptModal">Edit Post</button>';
+                                
+                
+                
+                
+                // Original View Messages Button
+                $result .= '<button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm">View Messages</button></a>';
+                
+                
+                // View Messages button as a form
+//                $result .= '<form method="get" action="////'.htmlspecialchars (URL).'msg" > <button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm" name="apartment_id" value="';
 //                
 //                if (isset( $apartment->id)) $result .= htmlspecialchars ($apartment->id).'" >View Messages</button></form></a>';
+//                
                 
-                $result .= '<button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm" name="apartment_id" value="';
-                
-                if (isset( $apartment->id)) $result .= htmlspecialchars ($apartment->id).'" >View Messages</button></a>';
+                // View Mesasges button to just store value
+//                $result .= '<button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm" name="apartment_id" value="';
+//                
+//                if (isset( $apartment->id)) $result .= htmlspecialchars ($apartment->id).'" >View Messages</button></a>';
                 
                 $result .='<button style="display: inline-block;" type="button" class="btn btn-danger btn-sm pull-right">Delete Post</button>
                                 </div>';
