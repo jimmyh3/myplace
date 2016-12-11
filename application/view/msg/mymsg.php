@@ -26,11 +26,19 @@
     <p>"<"Insert REPLY button later">"</p>  
     <table class="table table-hover">
         <?php
+        $user_id ="1";
+        
+        if(isset($_COOKIE["myPlace_userID"])){
+            $user_id = $_COOKIE["myPlace_userID"];
+        }
+        
         $aid = $_GET['apartment_id'];
         echo "Apartment ID: ";
         print_r($aid);
         echo "\n";
         echo "User ID: ";
+        print_r($user_id);
+        
 
         echo $this->displayMsg($aid); ?>
 <!--        <thead>
