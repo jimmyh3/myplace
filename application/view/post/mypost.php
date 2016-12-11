@@ -19,10 +19,10 @@
         <div class="row">
 
 <?php
-$user_id ="";
+$user_id ="1";
 if(isset($_COOKIE["myPlace_userID"])){
         $user_id = $_COOKIE["myPlace_userID"];
 }
-echo $this->displayApartments(1); ?> 
+echo $this->displayApartments($user_id); ?> 
     </div>
 </div>

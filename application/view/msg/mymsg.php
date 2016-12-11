@@ -29,6 +29,9 @@
         $aid = $_GET['apartment_id'];
         echo "Apartment ID: ";
         print_r($aid);
+        echo "\n";
+        echo "User ID: ";
+
         echo $this->displayMsg($aid); ?>
 <!--        <thead>
             <tr>
