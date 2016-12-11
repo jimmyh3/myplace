@@ -29,6 +29,8 @@ if(isset($_COOKIE["myPlace_userID"])){
 echo $this->displayApartments($user_id); ?> 
 </div>
 
+<!--Form to add new apartments-->
+
 <div class="modal fade" id="addAptModal" role="dialog">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">

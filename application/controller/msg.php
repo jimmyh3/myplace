@@ -18,14 +18,53 @@ class Msg extends Controller
         require APP . 'view/_templates/footer.php';
     }
     
+    
+    /*
+     * aid = apartment id
+     * parent_id = user id
+     * idMessages = ???
+     * message_recipient = apartment user_id
+     * message = message
+     * 
+     * 
+     */
+    
     public function sendMsg()
     {
-        // load views
-        require APP . 'view/_templates/header.php';
-        require APP . 'view/msg/mymsg.php';
-        require APP . 'view/_templates/footer.php';
+        $name_message = "Message";
+        $name_aid = "aid";
+        $name_messageRecipient = "MessageRecipient";
+        
+        $messageForm = array();
+        $message = new Message();
+        
+        if($_POST) {
+            $messageForm = array_filter($_POST);
+        } else {
+            throw new Exception ("Failure: could not send message");
+        }
+
+        if (isset($_COOKIE["myPlace_userID"]))
+                $userID = $_COOKIE["myPlace_userID"];
+        
+        $message->setParentID($userID);
+        if (isset($messageForm[$aid]))
+            $message->setAID ($messageForm[$name_aid]);
+        if (isset($messageForm[$name_messageRecipient]))
+            $message->setMessageRecipient ($messageForm[$name_messageRecipient]);
+        if (isset($messageForm[$name_message]))
+            $message->setMessage ($messageForm[$name_message]);
+        
+        print_r($messageForm);
+        
+        $this->message_db->addMessage($message);
+        
+        return $message;
+        
+//        if (isset $messageForm['aid'])
+        
     }
-    //
+
     public function displayMsg($aid, $user_id)
     {
         $result ="";
@@ -33,8 +72,8 @@ class Msg extends Controller
         // Using getAllMessages() for testing purposes, 
         // will use getMessages($aid, $user_id) in final version
         
-//        $messages = $this->apartment_db->getAllMessages();
-        $messages = $this->apartment_db->getMessages($aid, $user_id);
+//        $messages = $this->message_db->getAllMessages();
+        $messages = $this->message_db->getMessages($aid, $user_id);
         
 //        $all_useres = $this->user_db->getUsers();
 //        

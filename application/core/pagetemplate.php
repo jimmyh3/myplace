@@ -307,11 +307,14 @@ class PageTemplate extends Controller {
                                             <h3 id="myModalLabel">Contact form</h3>
                                         </div>
                                         <div class="modal-body">
-                                            <form class="form-horizontal col-sm-12">
-                                                <div class="form-group"><label>Name</label><input class="form-control required" placeholder="Your name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters." type="text"></div>
-                                                <div class="form-group"><label>E-Mail</label><input class="form-control email" placeholder="email@you.com (so that we can contact you)" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" type="text"></div>
-                                                <div class="form-group"><label>Message</label><textarea class="form-control" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
-                                                <div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
+                                            <form class="form-horizontal col-sm-12" name="send-message-form">
+                                                <div class="form-group"><label>Name</label><input class="form-control required" name="Name" placeholder="Your name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters." type="text"></div>
+                                                <div class="form-group"><label>E-Mail</label><input class="form-control email"name="Email" placeholder="email@you.com (so that we can contact you)" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" type="text"></div>
+                                                <div class="form-group"><label>Message</label><textarea class="form-control"name="Message" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
+                                                <input type="hidden" name="aid" value="';
+                                                if(isset ($apartment->id)) $results .= $apartment->id.'">';
+                                                
+                                        $results .='<div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
                                             </form>
                                         </div>
                                         <div class="modal-footer">

@@ -301,3 +301,4 @@ End of Corner Ribbon~~!>
         </div>
     </div>
 </div>
+<script src="<?php echo URL; ?>js/myplace-message.js"></script>
