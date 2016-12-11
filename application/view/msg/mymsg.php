@@ -27,6 +27,7 @@
     <table class="table table-hover">
         <?php
         $aid = $_GET['apartment_id'];
+        echo "Apartment ID: ";
         print_r($aid);
         echo $this->displayMsg($aid); ?>
 <!--        <thead>

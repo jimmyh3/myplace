@@ -50,11 +50,12 @@ class Post extends Controller
                 
                 $result .= '</div>';
                 
-                // Original Edit post into My Messages Link
+                
                 $result .= '<div class="ratings">
                                 <div style="width:100%;text-align: center;">
                                     <button style="display: inline-block;" type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#aptModal">Edit Post</button>
                                     <a href="////';
+                // OriginalMy Messages Link
 //                $result .=  htmlspecialchars (URL).'msg">';
   
                 
