@@ -114,7 +114,6 @@
                                         <div id="signinForm_errorloc"></div>
                                         <div id="signin_error"></div>
                                         
-                                        
                                         <!-- Button -->
                                         <div class="control-group">
                                             <label class="control-label" for="signin"></label>
@@ -186,7 +185,6 @@
                                                 </label>
                                             </div>
                                         </div>  
-
 
                                         <br>
                                         <div id="registerForm_errorloc"></div>

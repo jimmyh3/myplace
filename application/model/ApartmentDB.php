@@ -21,87 +21,136 @@ class ApartmentDB{
         }
     }
     
-//    /**
-//     * Adds the given Apartment object to the 'Apartments' table of the database.
-//     * 
-//     * @param Apartment $apt - the Apartment object to add to the database.
-//     */
-//    public function addApartment(Apartment $apt)
-//    {
-//        $sql = "";  //SQL query to execute.
-//        $sql_insert     = "INSERT INTO Apartments ";
-//        $sql_values     = " VALUES ";
-//        $sql_openPrn    = " ( ";
-//        $sql_closePrn   = " ) ";
-//        
-//        /* Get mapping of Apartments column names to Apartment object value */
-//        $aptColsValsArray  = $this->apartmentToDBRecord($apt);
-//        
-//        $sqlAptColumns = "";  //stores: ( col1, col2, col3 ...)
-//        $sqlAptValues  = "";  //stores: ( val1, val2, val3 ...)
-//        
-//        $colNames = array_keys($aptColsValsArray);
-//        /* Create Column and Value SQL string for INSERT */
-//        for ($i = 0; $i < count($aptColsValsArray); $i++)
-//        {
-//            /* Append column names together. */
-//            $sqlAptColumns = $sqlAptColumns . $colNames[$i];
-//            /* Append values of specific columns respectively. */
-//            $sqlAptValues  = $sqlAptValues  . $aptColsValsArray[$colNames[$i]];
-//            
-//            /* Append comma for the next value */
-//            if (($i+1) < count($aptColsValsArray)){
-//                $sqlAptColumns = $sqlAptColumns . " , ";
-//                $sqlAptValues  = $sqlAptValues  . " , ";
-//            }
-//        }
-//        
-//        //----------------------------------------------------------------------
-//        /* Create INSERT query with the column and value strings */
-//        
-//        //e.g INSERT INTO Apartments ( <column names> ) VALUES ( <values> )
-//        $sql = $sql_insert . $sql_openPrn . $sqlAptColumns . $sql_closePrn .
-//               $sql_values . $sql_openPrn . $sqlAptValues  . $sql_closePrn ;
-//         
-//        /* Execute the assembled INSERT query */
-//        $stmt = $this->db->prepare($sql);
-//        if ($stmt === false)
-//            {throw new Exception('Could not prepare apartment INSERT query'); }
-//        
-//        $result = $stmt->execute();
-//        if ($result === false)
-//            {throw new Exception('Could not execute apartment INSERT query'); }
-//        
-//        return true ;
-//    }  
+    /**
+     * Adds the given Apartment object to the 'Apartments' table of the database.
+     * 
+     * @throws Exception - throws exception if the SQL query fails.
+     * @param Apartment $apt - the Apartment object to add to the database.
+     * @return boolean - returns true upon success.
+     */
+    public function addApartment(Apartment $apt)
+    {
+        $sql =  " INSERT INTO Apartments 
+                  ( %s )
+                  VALUES
+                  ( %s );
+                  ";
+        
+        $sql_comma = " , ";
+        $sql_colon = ":";
+        
+        $sqlAptColumns = "";  //stores: ( col1, col2, col3 ...)
+        $sqlAptValues  = "";  //stores: ( val1, val2, val3 ...)
+        
+        /* Get mapping of Apartments column names to Apartment object value */
+        $aptColsValsArray  = $this->apartmentToDBRecord($apt);
+        unset($aptColsValsArray['id']);  //Adding new apartment, 'id' unneeded.
+        
+        /* Create Column and Value SQL string for INSERT */
+        $i = 0; //index
+        foreach ($aptColsValsArray as $colName=>$colVal)
+        {
+            /* Append column names */
+            $sqlAptColumns  .= $colName;
+            /* Append values of specific columns respectively. */
+            $sqlAptValues   .= $sql_colon . $colName;
+            
+            /* Append comma for the next value */
+            if (($i+1) < count($aptColsValsArray)){
+                $sqlAptColumns .= $sql_comma;
+                $sqlAptValues  .= $sql_comma;
+            }
+            
+            $i++;
+        }
+        
+        /* Create INSERT query with the column and value strings */
+        $sql = sprintf($sql, $sqlAptColumns,
+                             $sqlAptValues);
+        
+        /* Execute the assembled INSERT query */
+        $stmt = $this->db->prepare($sql);
+        if ($stmt === false)
+            {throw new Exception('Could not prepare apartment INSERT query'); }
+            
+        /* Bind columns names listed in $sql to apartment object values */
+        foreach ($aptColsValsArray as $colName=>$colVal)
+        {
+            $param = 0;
+            if(is_numeric($colVal)) {
+                $param = PDO::PARAM_INT; 
+            } elseif(filter_var($colVal, FILTER_VALIDATE_BOOLEAN)) {
+                $param = PDO::PARAM_BOOL;
+            } elseif(is_null($colVal)) {
+                $param = PDO::PARAM_NULL;
+            } elseif(is_string($colVal)) {
+                $param = PDO::PARAM_STR;
+            } elseif($colName === 'thumbnail') {
+                $param = PDO::PARAM_LOB;
+            } else {
+                $param = FALSE;
+            }
+            
+            $stmt->bindValue(":".$colName, $colVal, $param);
+        }
+        
+        $result = $stmt->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute apartment INSERT query'); }
+
+        /*---------------------------------------------------------------------
+         * Get the new ID attributed to the new Apartment that was just added.
+         * -------------------------------------
+         */    
+        $aptID = $this->getLastInsertID();
+        $apt->setID($aptID);
+        
+        /* Send any Apartment images to the Image database table */
+        foreach ($apt->getImages() as $image)
+        {
+            $this->addToImageDB($apt->getID(), $image);
+        }
+        
+        return true ;
+        
+        /*
+         * Resulting SQL example:
+         * 
+         * INSERT INTO Apartments 
+         * ( <column names> ) 
+         * VALUES 
+         * ( <values> )
+         */
+        
+    }  
     
-//    /**
-//     * Delete the targeted database apartment record with the given id.
-//     * 
-//     * @param int $apt_id - unique apartment ID to target.
-//     * @throws Exception - if the query failed.
-//     * @return boolean - true for success.
-//     */
-//    public function deleteApartment($apt_id)
-//    {
-//        if ($apt_id === NULL){ return false; }  //Need id to target Apartments record
-//        
-//        $sql  = "DELETE FROM Apartments WHERE id = :id";
-//        
-//        /* Create and execute the DELETE Apartment query */
-//        $stmt = $this->db->prepare($sql);
-//        
-//        if ($stmt === false)
-//            {throw new Exception('Could not prepare apartment DELETE query'); }
-//        
-//        /* Execute $sql with the array argument id */
-//        $result = $stmt->execute(array("id" => $apt_id));
-//        
-//        if ($result === false)
-//            {throw new Exception('Could not execute apartment DELETE query'); }
-//        
-//        return true;
-//    }
+    /**
+     * Delete the targeted database apartment record with the given id.
+     * 
+     * @param int $apt_id - unique apartment ID to target.
+     * @throws Exception - if the query failed.
+     * @return boolean - true for success.
+     */
+    public function deleteApartment($apt_id)
+    {
+        if ($apt_id === NULL){ return false; }  //Need id to target Apartments record
+        
+        $sql  = "DELETE FROM Apartments WHERE id = :id";
+        
+        /* Create and execute the DELETE Apartment query */
+        $stmt = $this->db->prepare($sql);
+        
+        if ($stmt === false)
+            {throw new Exception('Could not prepare apartment DELETE query'); }
+        
+        /* Execute $sql with the array argument id */
+        $result = $stmt->execute(array("id" => $apt_id));
+        
+        if ($result === false)
+            {throw new Exception('Could not execute apartment DELETE query'); }
+        
+        return true;
+    }
     
 //    /**
 //     * Update the apartment database record based on the given Apartment object.
@@ -165,11 +214,25 @@ class ApartmentDB{
      * @param associative array $filters - values to look through specific columns.
      * @return array $apartments - an array of Apartments from the database.
      */
-    public function search(array $query, array $filters /*int $order */)
+    
+    public function getFeaturedApartments() {
+        $sql = " SELECT * FROM Apartments";
+        $stmt = $this->db->prepare( $sql);
+        $stmt->execute();
+         
+        $results = array();
+        array_push( $results, $stmt->fetch());
+        array_push( $results, $stmt->fetch());
+        array_push( $results, $stmt->fetch());
+        
+        return $results;
+    }
+    
+
+    public function search(array $query, array $filters, $order)
     {
         //TODO: Delete $order later.
-        $order = 0; //0 = default; will use $query to set ordering of retrieved records.
-        
+
         /* Default SQL statement - get all Apartments */
         $sql                =   " SELECT * FROM Apartments ";
         $sql_where          =   " WHERE ";
@@ -194,7 +257,7 @@ class ApartmentDB{
         $sql .= ($sql_where_filters)    ? "(".$sql_where_filters.")" : "";  
         /* Append ORDER BY with its arguments */
         $sql .= ($sql_orderby_args)     ? $sql_orderby . $sql_orderby_args : "";
-
+        //$sql .= $sql_orderby; 
         
         /* Execute the Query */
         $stmt = $this->db->prepare($sql);
@@ -204,7 +267,7 @@ class ApartmentDB{
         return $stmt->fetchAll();
         
         /*
-         * Resulting $sql EXAMPLE =
+         * Resulting $sql EXAMPLE =;
          * "
          * SELECT * FROM Apartments
          * WHERE 
@@ -228,24 +291,24 @@ class ApartmentDB{
         
     }
     
-//    /**
-//     * Retrieve all Apartments belonging to a landlord of the specified ID.
-//     * @param int $user_id - user landlord ID.
-//     */
-//    public function getLandLordApartments($user_id)
-//    {
-//        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
-//        
-//        $stmt = $this->db->prepare($sql);
-//        $stmt->execute(
-//            array('user_id' => $user_id)
-//        );
-//        
-//        /* Get all applicable apartments */
-//        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//        
-//        return $apartmentRecords;
-//    }
+    /**
+     * Retrieve all Apartments belonging to a landlord of the specified ID.
+     * @param int $user_id - user landlord ID.
+     */
+    public function getLandLordApartments($user_id)
+    {
+        $sql  = "SELECT * FROM Apartments WHERE user_id = :user_id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(
+            array('user_id' => $user_id)
+        );
+        
+        /* Get all applicable apartments */
+        $apartmentRecords = $stmt->fetchAll();
+        
+        return $apartmentRecords;
+    }
     
     
     /*
@@ -263,6 +326,7 @@ class ApartmentDB{
      */
     private function search_create_param_query(array $query)
     {
+//        echo print_r($query);
         /* Return: SQL WHERE clause arguments */
         $sql_where_query = "";
         
@@ -291,17 +355,22 @@ class ApartmentDB{
         $i = 0; //index for $query
         foreach ($query as $query_val)
         {
-            $j = 0;      //index for $aprt_cols
-            foreach ($aprt_cols as $aprt_col)
+            if( $query_val != "")
             {
-                $sql_where_query .= $aprt_col;          //Append apartment_column_name
-                $sql_where_query .= $sql_like;          //Append LIKE
-                $sql_where_query .= "'%".$query_val."%'";         //Append '%value%'
-                $sql_where_query .= (($j + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR
+                $j = 0;      //index for $aprt_cols
+                foreach ($aprt_cols as $aprt_col)
+                {
+                    $sql_where_query .= $aprt_col;          //Append apartment_column_name
+                    $sql_where_query .= $sql_like;          //Append LIKE
+                    $sql_where_query .= "'%".$query_val."%'";         //Append '%value%'
+                    $sql_where_query .= (($j + 1) < $aprt_colsCount) ? $sql_or : ""; //Append OR
+
+                    $j++;
+                }
+                $sql_where_query .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
+            } else {
                 
-                $j++;
             }
-            $sql_where_query .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
             $i++;
         }
         
@@ -331,22 +400,36 @@ class ApartmentDB{
         $sql_equal      = " = ";
         $filtersCount   = count($filters);
         
-        $i = 0;
-        foreach ($filters as $f_key=>$f_val)
+        $i = 1;
+        
+        // Using array_slice to omit the first filter array element 'order'
+        // 'order' is a not being used to query the database, it is used to
+        // determine the type of sorting for the query results
+        
+        foreach (array_slice($filters,1) as $f_key=>$f_val)
         {
             /* Array - will be a range search */
             if (!is_array($f_val))
             {
-                $sql_where_filters .= $f_key;       //Append filter_key
-                $sql_where_filters .= $sql_equal;   //Append " = "
-                $sql_where_filters .= $f_val;       //Append filter_value
+                if( $f_key == "min_price") {
+                    $sql_where_filters .= "actual_price";
+                    $sql_where_filters .= ">=";
+                } else if ( $f_key == "max_price") {
+                    $sql_where_filters .= "actual_price";
+                    $sql_where_filters .= "<=";
+                } else {
+                    $sql_where_filters .= $f_key;       //Append filter_key
+                    $sql_where_filters .= $sql_equal;   //Append " = "
+                }
+                $sql_where_filters .= (is_numeric($f_val)) ? $f_val : "'".$f_val."'"; //Append filter_value
             }else {
                 $sql_where_filters .= $this->search_create_param_range($f_key, $f_val);
             }
             $sql_where_filters .= (($i + 1) < $filtersCount) ? $sql_and : "";
-            
+
             $i++;
         }
+        
         
         return $sql_where_filters;
         
@@ -365,11 +448,10 @@ class ApartmentDB{
      * @param int $order default 0 - indicates which way to use $query/$filter to set the ordering.
      * @return String   - possibly empty string : append this after ORDER BY clause.
      */
-    private function search_create_param_orderby(array $query, array $filters, $order = 0)
+    private function search_create_param_orderby(array $query, array $filters, $order)
     {
         /* Return: SQL ORDER BY clause arguments */
         $sql_orderby = "";  
-        
         /* These are the apartment columns $query will search against. */
         $aprt_cols  = array("area_code",
                             "actual_price",
@@ -382,8 +464,9 @@ class ApartmentDB{
                             "bedroom"
                             );
 
-        if ($order === 0 && !empty($query))
+        if ($order == 0 && !empty($query))
         {
+            //$sql_orderby = " id ASC";
             $sql_orderby_case  =    "   CASE
                                             WHEN %s THEN 1
                                             WHEN %s THEN 2
@@ -448,60 +531,6 @@ class ApartmentDB{
                 $k++;
             }
 
-//       }
-//        
-//        /* Execute the Query */
-//       // $stmt = $this->db->prepare($sql);
-//       // $stmt->execute();
-//
-//        /* Get all applicable apartments */
-//       // return $stmt->fetchAll();
-//
-//        
-//        /* Create and return an array of Apartments */
-////        $apartmentArray = array();
-////        foreach ($apartmentRecords as $apartmentRecord)
-////        {
-////            $aprt = $this->dbRecordToApartment($apartmentRecord);
-////            array_push($apartmentArray, $aprt);
-////        }
-////
-////        return $apartmentArray;
-//        
-//    }
-//    
-//    
-//    /**
-//     * Retrieve all Apartments belonging to a landlord of the specified ID.
-//     * @param int $user_id - user landlord ID.
-//     */
-
-//    
-//    
-//    //--------------------PRIVATE HELPER FUNCTIONS------------------------------
-//    
-//    /**
-//     * Helper method to convert a database apartment record into an Apartment
-//     * object.
-//     * @param array $apartmentRecord - a single database apartment record.
-//     * @return Apartment
-//     */
-//    private function dbRecordToApartment($apartmentRecord)
-//    {
-//        $aprt = new Apartment();
-//        
-//        $aprt->apartment_id = $apartmentRecord['id'];
-//        $aprt->user_id      = $apartmentRecord['user_id'];
-//        $aprt->areaCode     = $apartmentRecord['area_code'];
-//        $aprt->actualPrice  = $apartmentRecord['actual_price'];
-//        $aprt->beginTerm    = $apartmentRecord['begin_term'];
-//        $aprt->endTerm      = $apartmentRecord['end_term'];
-//        $aprt->rentalTerm   = $apartmentRecord['rental_term'];
-//        $aprt->parking      = $apartmentRecord['parking'];
-//        $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
-//        $aprt->description  = $apartmentRecord['description'];
-//        $aprt->bedroom      = $apartmentRecord['bedroom'];
-//        $aprt->thumbnail    = $apartmentRecord['thumbnail'];
             /*
              *  Finalize the SQL ORDER BY arguments
              */
@@ -514,35 +543,13 @@ class ApartmentDB{
 
                 $sql_orderby .= $sql_orderby_case;
             }
+        }else if($order == 1){
+            $sql_orderby = " actual_price ASC"; 
+        }else if($order == 2){
+            $sql_orderby = " actual_price DESC"; 
         }
         
         return $sql_orderby;       
-    }
-    
-    public function getLandLordApartments($user_id)
-    {
-        $sql  = "SELECT * FROM Apartments WHERE user_id = ".$user_id;
-        
-        $query = $this->db->prepare($sql);
-        
-//        $stmt = $this->db->prepare($sql);
-//        $stmt->execute(
-//            array('user_id' => $user_id)
-//        );
-        
-        /* Get all applicable apartments */
-//        $apartmentRecords = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $query->execute();
-        return $query->fetchAll();
-        
-//        $apartmentArray = array();
-//        foreach ($apartmentRecords as $apartmentRecord)
-//        {
-//            $aprt = $this->dbRecordToApartment($apartmentRecord);
-//            array_push($apartmentArray, $aprt);
-//        }
-//        
-//        return $apartmentArray;
     }
     
     /**
@@ -587,121 +594,147 @@ class ApartmentDB{
     }
     
     
-//    /**
-//     * Helper method to convert a database apartment record into an Apartment
-//     * object.
-//     * @param array $apartmentRecord - a single database apartment record.
-//     * @return Apartment
-//     */
-//    private function dbRecordToApartment($apartmentRecord)
-//    {
-//        $aprt = new Apartment();
-//        
-//        $aprt->apartment_id = $apartmentRecord['id'];
-//        $aprt->user_id      = $apartmentRecord['user_id'];
-//        $aprt->areaCode     = $apartmentRecord['area_code'];
-//        $aprt->actualPrice  = $apartmentRecord['actual_price'];
-//        $aprt->beginTerm    = $apartmentRecord['begin_term'];
-//        $aprt->endTerm      = $apartmentRecord['end_term'];
-//        $aprt->rentalTerm   = $apartmentRecord['rental_term'];
-//        $aprt->parking      = $apartmentRecord['parking'];
-//        $aprt->petFriendly  = $apartmentRecord['pet_friendly'];
-//        $aprt->description  = $apartmentRecord['description'];
-//        $aprt->bedroom      = $apartmentRecord['bedroom'];
-//        $aprt->thumbnail    = $apartmentRecord['thumbnail'];
-//
-//        //----------------------------------------------------------------------
-//        /* Parse the 'tags' string into an array of strings */
-//        $tags_tokenized = explode(",", $apartmentRecord['tags']);
-//        
-//        foreach ($tags_tokenized as $tags_token)
-//        {
-//            array_push($aprt->tags, trim($tags_token));
-//        }
-//        
-//        //----------------------------------------------------------------------
-//        /* Get Images of the this Apartment */
-//        $sql_getimages = "SELECT * FROM Image WHERE apartment_id = :apartment_id";
-//        
-//        $stmt=$this->db->prepare($sql_getimages);
-//        $stmt->execute(array("apartment_id" => $aprt->apartment_id));
-//        
-//        //Note, there may be no Images at all.
-//        $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
-//        
-//        foreach ($images as $image)
-//        {
-//            array_push($aprt->image, $image['image']);
-//        }
-//        //----------------------------------------------------------------------
-//        
-//        return $aprt;
-//    }
+    /**
+     * Helper method to convert a database apartment record into an Apartment
+     * object.
+     * @param array $apartmentRecord - a single database apartment record.
+     * @return Apartment
+     */
+    //private function dbRecordToApartment($apartmentRecord)
+    public function dbRecordToApartment($apartmentRecord)
+    {
+        $aprt = new Apartment();
+        
+        $aprt->setID($apartmentRecord->id);
+        $aprt->setTitle($apartmentRecord->title);
+        $aprt->setUserID($apartmentRecord->user_id);
+        $aprt->setAreaCode($apartmentRecord->area_code);
+        $aprt->setActualPrice($apartmentRecord->actual_price);
+        $aprt->setBeginTerm($apartmentRecord->begin_term);
+        $aprt->setEndTerm($apartmentRecord->end_term);
+        $aprt->setParking($apartmentRecord->parking);
+        $aprt->setPetFriendly($apartmentRecord->pet_friendly);
+        $aprt->setDescription($apartmentRecord->description);
+        $aprt->setBedRoomCount($apartmentRecord->bedroom);
+        $aprt->setThumbnail($apartmentRecord->thumbnail);
+        $aprt->setSmoking($apartmentRecord->smoking);
+        $aprt->setLaundry($apartmentRecord->laundry);
+        $aprt->setSharedRoom($apartmentRecord->shared_room);
+        $aprt->setFurnished($apartmentRecord->furnished);
+        $aprt->setWheelChairAccess($apartmentRecord->wheel_chair_access);
+        
+        //----------------------------------------------------------------------
+        /* Get Images of the this Apartment */
+        $images = array();
+        foreach ($this->getImageDB($apartmentRecord->id) as $imageRecord)
+        {
+            array_push($images, $imageRecord->image);
+        }
+        
+        /* Set Apartment's array of images */
+        $aprt->addImages($images);
+        //----------------------------------------------------------------------
+        
+        return $aprt;
+    }
     
-//    /**
-//     * Helper method to convert an Apartment object to an array that maps the
-//     * actual apartment column name to the value stored in the Apartment object.
-//     * 
-//     * @param Apartment $apt - the Apartment object to be converted.
-//     * @return array - key values of column names with values paired.
-//     */
-//    private function apartmentToDBRecord(Apartment $apt)
-//    {
-//        /*
-//         * TODO: Apartment->thumbnail and Apartment->image  need implementing.
-//         * Blob values which are string seems to be causing issues. I assume it
-//         * may have to do with the fact that the blob consist of commas and
-//         * apostrophes which may cause SQL to believe they're new arguments.
-//         */
-//        
-//        $aptColsArray = array(  "user_id"       => $apt->user_id,
-//                                "area_code"     => $apt->areaCode,
-//                                "actual_price"  => $apt->actualPrice,
-//                                "begin_term"    => "'" . $apt->beginTerm   . "'",
-//                                "end_term"      => "'" . $apt->endTerm     . "'",
-//                                "rental_term"   => "'" . $apt->rentalTerm  . "'", 
-//                                "parking"       => $apt->parking,
-//                                "pet_friendly"  => $apt->petFriendly,
-//                                "description"   => "'" . $apt->description . "'",
-//                                "bedroom"       => $apt->bedroom,
-//                                //"thumbnail"     => "'" . $apt->thumbnail   . "'",
-//                                );
-//        
-//        /* Convert Apartment->tags array to a single string with comma separation */  
-//        $tagStr = "";
-//        
-//        for ($i = 0; $i < count($apt->tags); $i++)
-//        {
-//            $tagStr = $tagStr . $apt->tags[$i];
-//            
-//            if (($i + 1) < count($apt->tags)) { //Append comma for next tag.
-//                $tagStr = $tagStr . ",";
-//            }
-//        }
-//        
-//        /* Add the newly converted tag string to the array */
-//        $aptColsArray['tags'] = "'" . $tagStr . "'";
-//        
-//        return $aptColsArray;
-//    }
+    /**
+     * Helper method to convert an Apartment object to an array that maps the
+     * actual apartment column name to the value stored in the Apartment object.
+     * 
+     * @param Apartment $apt - the Apartment object to be converted.
+     * @return array - key values of column names with values paired.
+     */
+    private function apartmentToDBRecord(Apartment $apt)
+    {
+        //TODO: fix begin_term and end_term
+        $aptColsArray = array(  "id"                    => $apt->getID(),
+                                "title"                 => $apt->getTitle(),
+                                "user_id"               => $apt->getUserID(),
+                                "area_code"             => $apt->getAreaCode(),
+                                "actual_price"          => $apt->getActualPrice(),
+                                "begin_term"            => $apt->getBeginTerm(),
+                                "end_term"              => $apt->getEndTerm(), 
+                                "parking"               => $apt->hasParking(),
+                                "pet_friendly"          => $apt->isPetFriendly(),
+                                "description"           => $apt->getDescription(),
+                                "bedroom"               => $apt->getBedRoomCount(),
+                                "thumbnail"             => $apt->getThumbnail(),
+                                "smoking"               => $apt->hasSmoking(),
+                                "laundry"               => $apt->hasLaundry(),
+                                "shared_room"           => $apt->isSharedRoom(),
+                                "furnished"             => $apt->isFurnished(),
+                                "wheel_chair_access"    => $apt->hasWheelChairAccess(),
+                                //"tags"                  => $apt->tags
+                                //"rental_term"   => "'" . $apt->rentalTerm  . "'",
+                                );
+        
+        return $aptColsArray;
+    }
     
     public function getImageDB( $id) {
-        $sql = "SELECT * FROM Image WHERE apartment_id = " . $id;
+        $sql = "SELECT * FROM Image WHERE apartment_id = :apartment_id ";
         $query = $this->db->prepare( $sql);
-        $query->execute();
+        $query->execute(array("apartment_id" => $id));
         
         return $query->fetchAll();
     }
     
-    public function getApartmentDB()
+    /**
+     * Retrieve the last ID belonging to <strong>whatever</strong> record that
+     * was inserted into the database.
+     * 
+     * @return int - id
+     * @throws Exception - if query fails to execute.
+     */
+    private function getLastInsertID()
     {
-        $sql = "SELECT * FROM Apartments";
-        $query = $this->db->prepare( $sql);
-        $query->execute();
+        /* Now get the autoincremented ID just made for the new Apartment */    
+        $sql = " SELECT * FROM Apartments WHERE id = LAST_INSERT_ID() ";
         
-        return $query->fetchAll();
+        /* Create INSERT query with the column and value strings */
+        $stmt = $this->db->prepare($sql);
+        if ($stmt === false)
+            {throw new Exception('Could not prepare apartment ID SELECT query'); }
+            
+        /* Execute the assembled INSERT query */    
+        $result = $stmt->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute apartment ID SELECT query'); }
+            
+        return $stmt->fetch()->id;
     }
     
+    /**
+     * Add the given BLOB image to the Image table. Each image must be
+     * associated with an Apartment, thus the apartment's ID is required.
+     * 
+     * @param type $aparmentID - the apartment's ID.
+     * @param type $blob - the BLOB data image.
+     * @return boolean - true
+     * @throws Exception - thrown if the INSERT query fails.
+     */
+    public function addToImageDB($aparmentID, $blob)
+    {
+        $sql = " INSERT INTO Image 
+                 ( apartment_id , image ) 
+                 VALUES 
+                 (:apartment_id , :image ) ";
+        
+        $query = $this->db->prepare( $sql);
+        if ($query === false)
+            {throw new Exception('Could not prepare Image INSERT query'); }
+        
+        $query->bindValue(":apartment_id", $aparmentID, PDO::PARAM_INT);
+        $query->bindValue(":image", $blob, PDO::PARAM_LOB);
+        
+        $result = $query->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute Image INSERT query'); }
+          
+        return true;
+    }
+
     // function will pass apartment_id and "landlord" id to 
     // pull data from Messages table, messages should be passed to 
     // msg and dispay each of them in a table.
@@ -726,4 +759,5 @@ class ApartmentDB{
         $query->execute(); 
         return $query->fetchAll(); 
     }
+    
 }

@@ -16,13 +16,14 @@
 
 <br>
 <br>
-        <div class="row">
 
+<div class="row">
 <?php
 $user_id ="1";
 if(isset($_COOKIE["myPlace_userID"])){
         $user_id = $_COOKIE["myPlace_userID"];
 }
 echo $this->displayApartments($user_id); ?> 
-    </div>
 </div>
+
+<script src="<?php echo URL; ?>js/myplace-apartment_listing.js"></script>
