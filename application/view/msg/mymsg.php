@@ -26,7 +26,7 @@
     <p>"<"Insert REPLY button later">"</p>  
     <table class="table table-hover">
         <?php        
-        // default to 1 for testing purposes
+        // default $user_id to 1 for testing purposes
         $user_id ="1";
         
         if(isset($_COOKIE["myPlace_userID"])){
