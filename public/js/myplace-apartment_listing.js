@@ -17,33 +17,24 @@ $(function() {
                 var serverResp = xmlHttpReq.responseText;
                 
                 if (serverResp) {
+                    
                     var errorMsgs = JSON.parse(serverResp);
                     
-                    for (var name in errorMsgs){
-                        var targetID = '#add-aprt-form input[name=' + name + ']';
+                    /* $.each() as JQUery function closure */
+                    $.each(errorMsgs, function(name, errMsg) {
+                        var targetID = '#add-aprt-form *[name=' + name + ']';
                         var inputElement = $(targetID);
-                        
+                        console.log(name + " " + errMsg);
                         inputElement.css('border', "5px solid red");
                         
-                        inputElement.after("<p id='" + name + "-error' style='color:red;font-style: italic;'>" + errorMsgs[name] + "</p>");
+                        inputElement.after("<p id='" + name + "-error' style='color:red;font-style: italic;'>"
+                                                     + errMsg + "</p>");
                         
-                        /* Closure issue inside loop fix */
-                        inputElement.on('input', {temp: name}, function (e) {
-                            var name = e.data.temp;
-                            /*
-                             * TODO: this submit portion doesn't work.
-                             */
-//                            $('form#add-aprt-form').on('submit', {temp2:name}, function(e){
-//                                var name = e.data.temp2;
-//                                $('#'+name+'-error').remove();
-//                                console.log(e.data.temp2);
-//                            });
-                            
-                            _removeAprtErrMsg(name);
-                            console.log(name);
+                        $('#add-aprt-form').on('submit', function(e){
+                            $('#'+name+"-error").remove();
                         });
-//                        console.log("Key: " + name + " Value: " + errorMsgs[name] );
-                    }
+                        
+                    });
                     
                 }
                 
@@ -65,13 +56,6 @@ $(function() {
         });
     }
     
-    function _deleteAprtErrMsgOnSubmit(input_name){
-        $('#add-aprt-form').on('submit', _removeAprtErrMsg(input_name));
-    }
-    
-    function _removeAprtErrMsg(input_name){
-        $('#'+input_name+'-error').remove();
-    };
 });
 
 
