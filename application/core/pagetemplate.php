@@ -314,7 +314,9 @@ class PageTemplate extends Controller {
                                                 <input type="hidden" name="aid" value="';
                                                 if(isset ($apartment->id)) $results .= $apartment->id.'">';
                                                 
-                                        $results .='<div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
+                                        $results .='<input type="hidden" name="messageRecipient value="';
+                                                if(isset ($apartment->user_id)) $results .= $apartment->user_id.'">'; 
+                                                $results .='<div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
                                             </form>
                                         </div>
                                         <div class="modal-footer">
