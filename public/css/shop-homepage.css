@@ -93,8 +93,25 @@ footer {
 }
 
 .myLogo { 
-width: 150px;
-height: 85px;
-border: 4px;
-padding: 50px;
-background-image: url('../img/648logo.png') no-repeat 0 0; }
+    width: 150px;
+    height: 85px;
+    border: 4px;
+    padding: 50px;
+    background-image: url('../img/648logo.png') no-repeat 0 0;
+}
+
+@media  (min-width: 961px) {
+    #sidebar.affix-top {
+        position: static;
+        margin-top:0px; 
+    }
+
+    #sidebar.affix {
+        position: fixed;
+        top: 100px;
+    }
+
+    #sidebar.affix-bottom { 
+        position: absolute; 
+    }
+}

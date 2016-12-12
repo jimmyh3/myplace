@@ -160,7 +160,7 @@ End of Corner Ribbon~~!>
             
             <form id="ajax_filter_form" method="POST">
 
-                <div class="panel panel-footer clearfix">
+                <div class="panel panel-footer clearfix" id="sidebar">
                     <p class="lead">Filters</p>
 
                     <form>
