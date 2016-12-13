@@ -99,7 +99,7 @@ h1 {
 
 <script>
 // Google Map Location
-var myCenter = new google.maps.LatLng(37.7219, 122.4782);
+var myCenter = new google.maps.LatLng(37.7219, -122.4782);
 
 function initialize() {
 var mapProp = {
