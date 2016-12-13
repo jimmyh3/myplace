@@ -307,10 +307,8 @@ class PageTemplate extends Controller {
                                             <h3 id="myModalLabel">Contact form</h3>
                                         </div>
                                         <div class="modal-body">
-                                            <form class="form-horizontal col-sm-12" name="send-message-form">
-                                                <div class="form-group"><label>Name</label><input class="form-control required" name="Name" placeholder="Your name" data-placement="top" data-trigger="manual" data-content="Must be at least 3 characters long, and must only contain letters." type="text"></div>
-                                                <div class="form-group"><label>E-Mail</label><input class="form-control email"name="Email" placeholder="email@you.com (so that we can contact you)" data-placement="top" data-trigger="manual" data-content="Must be a valid e-mail address (user@gmail.com)" type="text"></div>
-                                                <div class="form-group"><label>Message</label><textarea class="form-control"name="Message" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
+                                            <form method="post" class="form-horizontal col-sm-12" id="send-message-form" name="send-message-form" enctype="multipart/form-data">
+                                                <div class="form-group"><label>Message</label><textarea class="form-control" name="Message" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
                                                 <input type="hidden" name="aid" value="';
                                                 if(isset ($apartment->id)) $results .= $apartment->id.'">';
                                                 
