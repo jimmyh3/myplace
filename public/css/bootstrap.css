@@ -6540,9 +6540,9 @@ button.close {
 .hidden {
   display: none !important;
 }
-.affix {
+/*.affix {
   position: fixed;
-}
+}*/
 @-ms-viewport {
   width: device-width;
 }
