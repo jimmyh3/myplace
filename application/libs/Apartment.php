@@ -121,6 +121,7 @@ class Apartment {
             $result = true;
         } elseif (is_null($title)) {
             $this->title = "";
+            $result = true;
         } else {
             throw new Exception("The given title is not a string!");
         }
@@ -194,11 +195,14 @@ class Apartment {
      */
     public function setActualPrice($actualPrice){
         $result = false;
-        if (filter_var($actualPrice, FILTER_VALIDATE_FLOAT)) {
+        if (filter_var($actualPrice, FILTER_VALIDATE_FLOAT) 
+                                && preg_match("/^(\d*)\.?\d{0,2}$/", $actualPrice)) {
+            
             $this->actualPrice = $actualPrice;
             $result = true;
         } else {
-            throw new Exception("The given price is not a valid decimal!");
+            throw new Exception("Enter a price following any of these "
+                              . "number formats: ## or (many #).## or .## ");
         }
         return $result;
     }
@@ -217,12 +221,15 @@ class Apartment {
      * @throws Exception
      */
     public function setBeginTerm($year_month_day){
+        $result = false;
         $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
         if ($date) {
             $this->beginTerm = $date->format('Y-m-d');
+            $result = true;
         } else {
             throw new Exception("The starting term is not a valid date!");
         }
+        return $result;
     }
     
     /**
@@ -239,12 +246,15 @@ class Apartment {
      * @throws Exception
      */
     public function setEndTerm($year_month_day){
+        $result = false;
         $date = DateTime::createFromFormat('Y-m-d', $year_month_day);
         if ($date) {
             $this->endTerm = $date->format('Y-m-d');
+            $result = true;
         } else {
             throw new Exception("The ending term is not a valid date!");
         }
+        return $result;
     }
     
     /**
@@ -268,6 +278,7 @@ class Apartment {
             $result = true;
         } elseif (is_null($description)) {
             $this->description = "";
+            $result = true;
         } else {
             throw new Exception("The given description is not a string!");
         }
