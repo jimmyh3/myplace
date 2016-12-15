@@ -19,14 +19,22 @@
 
 <div class="row">
 <?php
-// default $user_id to 1 for testing purposes
-$user_id ="1";
 
-if(isset($_COOKIE["myPlace_userID"])){
-    $user_id = $_COOKIE["myPlace_userID"];
-}
+    if(isset($_COOKIE["myPlace_userID"])){
+        $user_id = $_COOKIE["myPlace_userID"];
+        
+        echo $this->displayApartments($user_id); 
+        
+    } else {
+        //TODO: some simple output, perhaps change to something better later.
+        echo "<div class='col-sm-4 col-lg-4 col-md-4'>
+                <p> Please log in to view mypost </p>
+              </div>";
+        
+    }
+    
+?> 
 
-echo $this->displayApartments($user_id); ?> 
 </div>
 
 <!--Form to add new apartments-->
@@ -159,7 +167,7 @@ echo $this->displayApartments($user_id); ?>
                                             
                                             
                                         <br>
-                                        <div id="aptInfoForm_errorloc"></div>
+                                        <div id="editInfoForm_errorloc"></div>
 
                                     <button type="submit" class="btn btn-success pull-right"><span class="glyphicon glyphicon-pencil"></span> Post</button>
                                       </fieldset>
