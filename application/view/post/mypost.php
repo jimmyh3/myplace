@@ -167,7 +167,7 @@
                                             
                                             
                                         <br>
-                                        <div id="editInfoForm_errorloc"></div>
+                                        <div id="aprtInfoForm_errorloc"></div>
 
                                     <button type="submit" class="btn btn-success pull-right"><span class="glyphicon glyphicon-pencil"></span> Post</button>
                                       </fieldset>
