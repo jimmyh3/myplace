@@ -42,16 +42,20 @@
                 <div class="navbar-collapse collapse" id="searchbar">
 
                     <ul class="nav navbar-nav navbar-right">
-                        <li><a href="<?php echo URL; ?>post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a></li> 
-                        <li id="login_logout_button">
-                            <?php
-                                if( isset($_COOKIE["myPlace_user"])) {
-                                    echo '<a id="ajax_logout" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-log-out"></span> Welcome ' . $_COOKIE["myPlace_user"] . '</a>';
-                                } else {
-                                    echo '<a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a>';
-                                }
-                            ?>
-                        </li>
+                        <?php if(isset($_COOKIE["myPlace_userType"]) && $_COOKIE["myPlace_userType"] == 1){
+                            echo '<li><a href="'; 
+                            echo URL; 
+                            echo 'post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a></li>';
+                            echo '<li id="login_logout_button">'; 
+                            echo '<a id="ajax_logout" onclick="logout()" data-toggle="tooltip" data-placement="bottom" title="Logout"><span class="glyphicon glyphicon-log-out"></span> Welcome ' . $_COOKIE["myPlace_user"] . '</a>';
+                            echo '</li>'; 
+                        }else{
+                            echo '<li><a data-toggle="tooltip" data-placement="bottom" title="MUST BE LANDLORD!"><span class="glyphicon glyphicon-home"></span> myPost</a></li>';
+                            echo '<li id="login_logout_button">'; 
+                            echo '<a href="#signup" data-toggle="modal" data-target=".bs-modal-sm" ><span class="glyphicon glyphicon-log-in"></span> Log in/Sign up</a>';
+                            echo '</li>'; 
+                        }
+                        ?>
                     </ul>
 
                     <form class="navbar-form">
