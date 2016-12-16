@@ -5,7 +5,7 @@
     <hr>
 
     <!-- Footer -->
-    <footer>
+    <footer id="footer">
         <div class="row">
             <div class="col-md-3">
                 <p> <a href="<?php echo URL; ?>about">About Us</a></p>
@@ -54,6 +54,17 @@
 <script src="<?php echo URL; ?>js/myplace-search.js"></script>
 
 <script src="<?php echo URL; ?>js/myplace-apartment_listing.js"></script>
+
+
+<script>
+    // affixed filter
+    $('#sidebar').affix({
+        offset: {
+        top: $('#headerwrap').height() + 50,
+        bottom: $('#footer').outerHeight(true) + 60
+      }
+});
+</script>
 
 </body>
 </html>
