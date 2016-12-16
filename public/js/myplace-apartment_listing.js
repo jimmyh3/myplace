@@ -55,6 +55,15 @@ $(function() {
             });
         });
     }
+    
+    if ($('#edit-aprt-form').length !== 0){
+        $('form#edit-aprt-form :input').each(function(){
+            $(this).on('input', function(input){
+               $(this).css('border', ""); 
+            });
+        });
+    }
+    
     /**
      * Declare AJAX function to send the #add_aprt_form form object to 
      * landlord->addApartment() to add a new Apartment to the database.
@@ -68,7 +77,30 @@ $(function() {
         xmlHttpReq.open("POST", url + "landlord/editApartment", true);
         xmlHttpReq.onload = function(oEvent) { //onload == request completed
             if (xmlHttpReq.status == 200) {
-                alert(xmlHttpReq.responseText);
+                var serverResp = xmlHttpReq.responseText;
+                console.log(serverResp);
+                if (serverResp) {
+                    
+                    var errorMsgs = JSON.parse(serverResp);
+                    
+                    /* $.each() as JQUery function closure */
+                    $.each(errorMsgs, function(name, errMsg) {
+                        var targetID = '#edit-aprt-form *[name=' + name + ']';
+                        var inputElement = $(targetID);
+                        
+                        inputElement.css('border', "5px solid red");
+                        
+                        inputElement.after("<p id='" + name + "-error' style='color:red;font-style: italic;'>"
+                                                     + errMsg + "</p>");
+                        
+                        $('#edit-aprt-form').on('submit', function(e){
+                            $('#'+name+"-error").remove();
+                        });
+                        
+                    });
+                    
+                }
+                
             } else {
                 alert ("Error " + xmlHttpReq.status);
             }
