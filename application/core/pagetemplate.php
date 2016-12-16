@@ -109,7 +109,7 @@ class PageTemplate extends Controller {
             $results .= '</ul>
                         </div>
                         <div class="ratings">
-                            <button type="button" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#contactLandlord">Rent now</button>
+                            <button type="button" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#contactLandlord'.$i.'">Rent now</button>
                             <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal'.$i.'">Details</button>
                             <div class="modal fade" id="aptModal'.$i.'" role="dialog" style="color: #000">
                                 <div class="modal-dialog modal-lg">
@@ -188,7 +188,7 @@ class PageTemplate extends Controller {
 
                                                     <div id="map" style="width:400px;height:400px;background:yellow"></div>
 
-                                                    <script>
+                                                    <!--<script>
                                                         function myMap() {
                                                             var mapCanvas = document.getElementById("map");
                                                             var mapOptions = {
@@ -198,7 +198,7 @@ class PageTemplate extends Controller {
                                                         }
                                                     </script>
 
-                                                    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>
+                                                    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>-->
 
                                                 </div>
 
@@ -288,7 +288,7 @@ class PageTemplate extends Controller {
                                                         <br>
                                                     </p>
                                                       
-                                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#contactLandlord">Contact Landlord</button>
+                                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#contactLandlord'.$i.'">Contact Landlord</button>
                                                     </p>
                                                 </div>
                                             </div>
@@ -299,23 +299,29 @@ class PageTemplate extends Controller {
                                     </div>
                                 </div>
                             </div>
-                            <div id="contactLandlord" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
+                            <div id="contactLandlord'.$i.'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="contactLandlordLabel" aria-hidden="true">
                                 <div class="modal-dialog">
                                     <div class="modal-content">
                                         <div class="modal-header">
                                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
                                             <h3 id="myModalLabel">Contact form</h3>
                                         </div>
-                                        <div class="modal-body">
-                                            <form method="post" class="form-horizontal col-sm-12" id="send-message-form" name="send-message-form" enctype="multipart/form-data">
-                                                <div class="form-group"><label>Message</label><textarea class="form-control" name="Message" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea></div>
-                                                <input type="hidden" name="aid" value="';
-                                                if(isset ($apartment->id)) $results .= $apartment->id.'">';
-                                                
-                                        $results .='<input type="hidden" name="messageRecipient value="';
-                                                if(isset ($apartment->user_id)) $results .= $apartment->user_id.'">'; 
-                                                $results .='<div class="form-group"><button type="submit" class="btn btn-success pull-right">Send It!</button> <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p></div>
-                                            </form>
+                                        <div class="modal-body">';
+            $results .= '<form method="POST" onsubmit="sendMessage( event,'.$i.')" class="form-horizontal col-sm-12" id="send-message-form'.$i.'">
+                            <div class="form-group">
+                                <label>Message</label>
+                                <textarea class="form-control" name="Message" placeholder="Your message here.." data-placement="top" data-trigger="manual" rows="5"></textarea>
+                            </div>';
+            
+            if(isset ($apartment->id)) $results .= '<div class="form-group">
+                     <input type="hidden" name="aid" value="' . $apartment->id . '"></div>';
+            if(isset ($apartment->user_id)) $results .= '<div class="form-group">
+                    <input type="hidden" name="messageRecipient" value="' . $apartment->user_id.'"></div>'; 
+                     
+            $results .= '<input type="submit" class="btn btn-success pull-right" value="Send It!">
+                <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p>';
+
+            $results .= '</form>
                                         </div>
                                         <div class="modal-footer">
                                             <button class="btn" data-dismiss="modal" data-target="#contactLandlord" aria-hidden="true">Cancel</button>

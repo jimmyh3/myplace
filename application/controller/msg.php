@@ -31,38 +31,36 @@ class Msg extends Controller
     
     public function sendMsg()
     {
-        $name_message = "Message";
-        $name_aid = "aid";
-        $name_messageRecipient = "MessageRecipient";
+        $form = "no results";
+        if( isset( $_POST['message']))
+            $form = $_POST['message'];
         
-        $messageForm = array();
-        $message = new Message();
+        // form[ 0] = message
+        // form[ 1] = apartment id
+        // form[ 2] = recipient id
+        $values = explode( "&",$form);
         
-        if($_POST) {
-            $messageForm = array_filter($_POST);
-        } else {
-            throw new Exception ("Failure: could not send message");
+        $form = array();
+        foreach( $values as $entry) {
+            $keyval = explode( "=", $entry);
+            $form[$keyval[ 0]] = $keyval[ 1];
         }
-
+        
+        $message = explode( "+" ,$form[ "Message"]);
+        $form[ "Message"] = implode( " ", $message);
+        
+        // default to admin
+        $userID = 1;
+        
         if (isset($_COOKIE["myPlace_userID"]))
                 $userID = $_COOKIE["myPlace_userID"];
+
+        // apartment ID, message ID, user ID, recipient ID, message  
+        $message = new Message( $form[ "aid"], 0, $userID, $form[ "messageRecipient"], $form[ "Message"]);
         
-        $message->setParentID($userID);
-        if (isset($messageForm[$aid]))
-            $message->setAID ($messageForm[$name_aid]);
-        if (isset($messageForm[$name_messageRecipient]))
-            $message->setMessageRecipient ($messageForm[$name_messageRecipient]);
-        if (isset($messageForm[$name_message]))
-            $message->setMessage ($messageForm[$name_message]);
+        $this->message_db->addMessage( $message);
         
-        print_r($messageForm);
-        
-        $this->message_db->addMessage($message);
-        
-        return $message;
-        
-//        if (isset $messageForm['aid'])
-        
+        //TODO echo whatever results should be
     }
 
     public function displayMsg($aid, $user_id)

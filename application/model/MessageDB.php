@@ -43,16 +43,14 @@ class MessageDB {
     public function addMessage(Message $message) {
         
         $sql = " INSERT INTO Messages
-                ( aid, idMessages, parent_id, message_recipient, message)
+                ( aid, parent_id, message_recipient, message)
                 VALUES
-                ( :aid, :idMessages, :parent_id, :message_recipient, :message) ";
+                ( :aid, :pid, :rid, :message)";
         
         $stmt = $this->db->prepare($sql);
-        $result = $stmt->execute(array( "aid" => $message->getAID(),
-                                        "idMessages" => $message->getIdMessages(),
-                                        "parent_id" => $message->getParentID(),
-                                        "message_recipient" => $message->getMessageRecipient(),
-                                        "message" => $message->getMessage()));
-        
+        $result = $stmt->execute( array( "aid" => $message->getAID(),
+                                         "pid" => $message->getParentID(),
+                                         "rid" => $message->getMessageRecipient(),
+                                         "message" => $message->getMessage()));
     }
 }

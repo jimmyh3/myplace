@@ -19,7 +19,7 @@ class Message {
         $this->aid = $aid;
         $this->idMessages = $idMessages;
         $this->parent_id = $parent_id;
-        $this->message_recipient = $message_recipientl;
+        $this->message_recipient = $message_recipient;
         $this->message = $message;
     }
     
@@ -60,7 +60,7 @@ class Message {
     
     public function getMessageRecipient()
     {
-        $this->message_recipient;
+        return $this->message_recipient;
     }     
     public function setMessage($message)
     {
