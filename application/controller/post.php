@@ -51,52 +51,17 @@ class Post extends Controller
                 $formZipCode            = htmlspecialchars($apartment->getAreaCode(), ENT_QUOTES, 'UTF-8');         
                 $formDescription        = htmlspecialchars($apartment->getDescription(), ENT_QUOTES, 'UTF-8');
                 
-                if ($apartment->isPetFriendly()){
-                    $formPetFriendly    = htmlspecialchars("checked='checked'", ENT_QUOTES, 'UTF-8');
-                } else {
-                    $formPetFriendly    = "";
-                }
+                $checkedbox = htmlspecialchars("checked='checked'", ENT_QUOTES, 'UTF-8');
                 
-                if ($apartment->hasParking()){
-                    $formParking    = htmlspecialchars("checked='checked'", ENT_QUOTES, 'UTF-8');
-                } else {
-                    $formParking    = "";
-                }
-                
-                if ($apartment->hasLaundry()){
-                    $formLaundry    = htmlspecialchars("checked='checked'", ENT_QUOTES, 'UTF-8');
-                } else {
-                    $formLaundry    = "";
-                }
-                
-                if ($apartment->hasSmoking()){
-                    $formSmoking    = htmlspecialchars("checked='checked'", ENT_QUOTES, 'UTF-8');
-                } else {
-                    $formSmoking    = "";
-                }
-                
-                if ($apartment->isSharedRoom()){
-                    $formSharedRoom    = htmlspecialchars("checked='checked'", ENT_QUOTES, 'UTF-8');
-                } else {
-                    $formSharedRoom    = "";
-                }
-                
-                if ($apartment->isFurnished()){
-                    $formFurnished    = htmlspecialchars("checked='checked'", ENT_QUOTES, 'UTF-8');
-                } else {
-                    $formFurnished    = "";
-                } 
-                
-                if ($apartment->hasWheelChairAccess()){
-                    $formWheelChairsAcc    = htmlspecialchars("checked='checked'", ENT_QUOTES, 'UTF-8');
-                } else {
-                    $formWheelChairsAcc    = "";
-                } 
-                
-                /**
-                 * Handle images with names
-                 */
-                $formImage;            
+                /* checked='checked' == HTML attribute to select checkbox */
+                $formPetFriendly    = ($apartment->isPetFriendly()) ? $checkedbox : "";
+                $formParking        = ($apartment->hasParking()) ? $checkedbox : "";
+                $formLaundry        = ($apartment->hasLaundry()) ? $checkedbox : "";
+                $formSmoking        = ($apartment->hasSmoking()) ? $checkedbox : "";
+                $formSharedRoom     = ($apartment->isSharedRoom()) ? $checkedbox : "";
+                $formFurnished      = ($apartment->isFurnished()) ? $checkedbox : "";
+                $formWheelChairsAcc = ($apartment->hasWheelChairAccess()) ? $checkedbox : "";
+                         
                 
                // Get images belong to the current apartment
                $images = $this->apartment_db->getImageDB($apartmentRecord->id);
@@ -261,21 +226,35 @@ class Post extends Controller
                 $result .= '                    <div class="control-group multiple-form-group" data-max=10>
                                                     <label>Upload Images (max 10):</label>
                                                 ';
-                                                    
+                $image_index = 0;                                  
                 foreach ($images as $image) {
                     $imageId        = htmlspecialchars($image->id, ENT_QUOTES, 'UTF-8');
                     $imageInputId   = htmlspecialchars("image".$image->id, ENT_QUOTES, 'UTF-8');
                     $imageInputName = htmlspecialchars($image->name, ENT_QUOTES, 'UTF-8');
                     
-                    $result    .=                  '<div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
-                                                        <input type="hidden" name="image_id" value="' . $imageId . '">   
-                                                        <input type="file" hidden="true" id="'.$imageInputId.'" accept="image/*" name="images[]" class="form-control">
-                                                        <span class="input-group-btn">
-                                                            <button type="button" class="btn btn-success btn-add">+</button>
-                                                        </span>
-                                                    </div>';                            
                     
+                    if (($image_index + 1) < count($images)) {
+                    
+                        $result    .=                  '<div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                            <input type="hidden" name="image_id[]" value="' . $imageId . '">   
+                                                            <input type="file" accept="image/*" name="images[]" class="form-control">
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-success btn-default btn-danger btn-remove">–</button>
+                                                            </span>
+                                                        </div>';                            
+                    } else {
+                        $result    .=                  '<div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                            <input type="hidden" name="image_id[]" value="' . $imageId . '">
+                                                            <input type="file" accept="image/*" name="images[]" class="form-control">
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-success btn-add">+</button>
+                                                            </span>
+                                                        </div>';
+                    }
+                    //<input type="file" style="z-index:-1; display:none;" accept="image/*" name="images[]" class="form-control">
+                    $image_index++;
                 }
+                
                                   
                 //Append the rest of the edit-form.
                 $result .= '                    </div>
@@ -306,3 +285,4 @@ class Post extends Controller
     }
 }
 
+?>
