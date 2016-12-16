@@ -54,10 +54,11 @@ class Landlord extends PageTemplate{
          * ---------------------------------------------------------------------
          */
                 
-        
+        $apartImgNames  = array();          //holds the names of images sent.
+            
         /* Variables */
         $apartForm      = array();          //holds the 'Add Apartment Form' data. 
-        $apartImages    = array();          //holds the images sent from the form.
+        $apartImgData   = array();          //holds the images sent from the form.
         $errorMsgs      = array();          //holds validation response messages.
         $apartment      = new Apartment();  //Apartment object to add to database.
         
@@ -96,7 +97,8 @@ class Landlord extends PageTemplate{
         /* Have $apartForm['image'] set to image files array passed over */
         if (isset($_FILES[$name_images]['tmp_name']) && (!empty($_FILES[$name_images]['tmp_name']))) 
         {
-            $apartImages = array_filter($_FILES[$name_images]['tmp_name']);
+            $apartImgNames  = $_FILES[$name_images]['name'];
+            $apartImgData = array_filter($_FILES[$name_images]['tmp_name']);
         }
         
         /* Create new Apartment object acccording to the form values */
@@ -168,16 +170,32 @@ class Landlord extends PageTemplate{
             if (isset($apartForm[$name_furnished]))     { $apartment->setFurnished  ($apartForm[$name_furnished]);  }
             if (isset($apartForm[$name_wheelChairAcc])) { $apartment->setWheelChairAccess($apartForm[$name_wheelChairAcc]); }
             
-            foreach ($apartImages as $filename){
-                if (!empty(trim($filename))){
-                    if ($apartment->getImagesCount() === 10) {
-                        $errorMsgs[$name_images] = "The number of images exceeded 10";
-                        break;
-                    } else {
-                        $apartment->addImage(file_get_contents($filename));
-                    }
-                } 
+            
+            /* Set the image data to Image objects */
+            for ($index = 0; $index < count($apartImgData); $index++)
+            {
+                if ($apartment->getImagesCount() === 10) {
+                    $errorMsgs[$name_images] = "The number of images exceeded 10";
+                    break;
+                } else {
+                    $imageObj = new Image();
+                    $imageObj->setName($apartImgNames[$index]);
+                    $imageObj->setImage($apartImgData[$index]);
+                    
+                    $apartment->addImage($imageObj);
+                }
             }
+            
+//            foreach ($apartImages as $filename){
+//                if (!empty(trim($filename))){
+//                    if ($apartment->getImagesCount() === 10) {
+//                        $errorMsgs[$name_images] = "The number of images exceeded 10";
+//                        break;
+//                    } else {
+//                        $apartment->addImage(file_get_contents($filename));
+//                    }
+//                } 
+//            }
             
             /* If not error messages thus far then add Apartment to database */
             if (empty($errorMsgs)) {
@@ -199,15 +217,23 @@ class Landlord extends PageTemplate{
     }
     
     
+    /**
+     * This method corresponds to the 'Edit Apartment Form' from mypost.php. This
+     * method is called via POST and will edit this given Apartment record on the
+     * database based on the POST-ed data.
+     * 
+     * <p>The apartment ID is identified by $_POST['apartment_id']</p>
+     * 
+     * @return \Apartment - Apartment object made from the POST-ed data.
+     * @throws Exception - if the query/upload fails.
+     */
     public function editApartment()
     {
         
         /* ---------------------------------------------------------------------
          * TODO: Refactoring - put common validation logic between edit/add
-         *       in another function.
-         * 
-         *       Every unique piece here has '---------Edit Apartment' appended
-         *       up top. 
+         *       in another function if possible. A bit of too much entanglement
+         *       but unsure of how to separate them well.
          * vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
          */
         $userType = 0;
@@ -222,12 +248,14 @@ class Landlord extends PageTemplate{
          */
         $name_apartmentId   = "apartment_id";   //Apartment ID
         $name_imageIds      = "image_id";       //ARRAY of image IDs
-        $image_ids          = array();
+        $apartImgIDs        = array();
+        $apartImgNames      = array();          //holds the names of images sent.
+        //-------------------------------------------------------
         
         
         /* Variables */
         $apartForm      = array();          //holds the 'Add Apartment Form' data. 
-        $apartImages    = array();          //holds the images sent from the form.
+        $apartImgData   = array();          //holds the images sent from the form.
         $errorMsgs      = array();          //holds validation response messages.
         $apartment      = new Apartment();  //Apartment object to add to database.
         
@@ -267,7 +295,8 @@ class Landlord extends PageTemplate{
         /* Have $apartForm['image'] set to image files array passed over */
         if (isset($_FILES[$name_images]['tmp_name']) && (!empty($_FILES[$name_images]['tmp_name']))) 
         {
-            $apartImages = array_filter($_FILES[$name_images]['tmp_name']);
+            $apartImgNames  = $_FILES[$name_images]['name'];
+            $apartImgData   = array_filter($_FILES[$name_images]['tmp_name']);
         }
         
         /* Create new Apartment object acccording to the form values */
@@ -287,13 +316,6 @@ class Landlord extends PageTemplate{
                 echo json_encode($errorMsgs);
                 return;
             }
-            
-            /*
-             * ---------Edit Apartment : set these images ID-------------- 
-             */
-            if ((isset($apartForm[$name_imageIds]))){
-                $image_ids = $apartForm[$name_imageIds];
-            } 
             
             /* ---------Set number of bedrooms in this Apartment------------ */
             if ((isset($apartForm[$name_bedroom])) 
@@ -358,15 +380,29 @@ class Landlord extends PageTemplate{
             if (isset($apartForm[$name_furnished]))     { $apartment->setFurnished  ($apartForm[$name_furnished]);  }
             if (isset($apartForm[$name_wheelChairAcc])) { $apartment->setWheelChairAccess($apartForm[$name_wheelChairAcc]); }
             
-            foreach ($apartImages as $filename){
-                if (!empty(trim($filename))){
-                    if ($apartment->getImagesCount() === 10) {
-                        $errorMsgs[$name_images] = "The number of images exceeded 10";
-                        break;
-                    } else {
-                        $apartment->addImage(file_get_contents($filename));
+            if ((isset($apartForm[$name_imageIds]))){
+                $apartImgIDs = array_filter($apartForm[$name_imageIds], 'trim');
+            } 
+            
+            /* Set the image data to Image objects */
+            for ($index = 0; $index < count($apartImgData); $index++)
+            {
+                if ($apartment->getImagesCount() === 10) {
+                    $errorMsgs[$name_images] = "The number of images exceeded 10";
+                    break;
+                } else {
+                    $imageObj = new Image();
+                    $imageObj->setName($apartImgNames[$index]);
+                    $imageObj->setImage($apartImgData[$index]);
+                    
+                    /* set ID if this is landlord is swapping an existing image */
+                    if (count($apartImgIDs) > 0) {
+                        $imageObj->setID($apartImgIDs[$index]);
+                        unset($apartImgIDs[$index]);
                     }
-                } 
+                    
+                    $apartment->addImage($imageObj);
+                }
             }
             
             /* If not error messages thus far then add Apartment to database */
