@@ -699,6 +699,12 @@ class ApartmentDB{
         return $aptColsArray;
     }
     
+    /**
+     * Get the images of an Apartment.
+     * 
+     * @param int $id
+     * @return Image records.
+     */
     public function getImageDB( $id) {
         $sql = "SELECT * FROM Image WHERE apartment_id = :apartment_id ";
         $query = $this->db->prepare( $sql);
