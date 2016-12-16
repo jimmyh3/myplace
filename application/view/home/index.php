@@ -300,6 +300,7 @@ End of Corner Ribbon~~!>
             </div>
         </div>
         
-        <script src="https://maps.googleapis.com/maps/api/js?callback=mapsReady"></script>
+        <script src ="<?php echo URL; ?>js/myplace-maps.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?callback=initMaps"></script>
     </div>
 </div>
