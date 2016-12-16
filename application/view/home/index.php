@@ -295,10 +295,20 @@ End of Corner Ribbon~~!>
                     <h6 style="visibility: hidden;">.</h6>
                     <hr>
                     <h3>All Apartments</h3>
-                    <?php echo $this->search() ?>    
+                    <?php //echo $this->search() ?>    
                 </div>
+                <?php 
+                    foreach( $this->message_db->getAllMessages() as $message) {
+                        echo "Message ID: " . htmlspecialchars($message->idMessages) . "<br>";
+                        echo "Apartment ID: " . htmlspecialchars($message->aid) . "<br>";
+                        echo "Sender ID: " . htmlspecialchars($message->parent_id) . "<br>";
+                        echo "Recipient ID: " . htmlspecialchars($message->message_recipient) . "<br>";
+                        echo "Message: " . htmlspecialchars($message->message) . "<br>" . "<br>";   
+                    }
+                ?>
             </div>
         </div>
     </div>
 </div>
+ 
 <script src="<?php echo URL; ?>js/myplace-message.js"></script>

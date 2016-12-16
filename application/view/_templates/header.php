@@ -41,7 +41,7 @@
                     
                 <div class="navbar-collapse collapse" id="searchbar">
 
-                    <ul class="nav navbar-nav navbar-right">
+                    <ul class="nav navbar-nav navbar-right"> ><!-- TODO fix bug with welcome button not rendering if not landlord-->
                         <?php if(isset($_COOKIE["myPlace_userType"]) && $_COOKIE["myPlace_userType"] == 1){
                             echo '<li><a href="'; 
                             echo URL; 
