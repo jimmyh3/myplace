@@ -26,35 +26,13 @@ class Landlord extends PageTemplate{
     public function addApartment()
     {
         
-        /* ---------------------------------------------------------------------
-         * TODO: DELETE Dummy landlord user in place of actual implemented user.
-         * vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
-         */
-                require_once APP . 'test/TEST.php';
-                $user       = TEST::getLocalDummyLandlordUser();
-                $userType = 0;
-                if( isset($_COOKIE["myPlace_userType"]))
-                    $userType = $_COOKIE["myPlace_userType"];
-                if( isset($_COOKIE["myPlace_userID"]))
-                    $userID = $_COOKIE["myPlace_userID"];
+        $userType = 0;
+        if( isset($_COOKIE["myPlace_userType"]))
+            $userType = $_COOKIE["myPlace_userType"];
+        if( isset($_COOKIE["myPlace_userID"]))
+            $userID = $_COOKIE["myPlace_userID"];
                 
-                //['Name'] ['Email'] ['Number'] from <form> should be set automatically..
-                //
-                // <UNTESTED possible alternative for if $user object is not persistent? ....>
-                // session_start(); //required at top of every page or put in Parent page.
-                // if (isset($_SESSION['login_id'])  //=== true ...
-                //      $user_id     = $_SESSION['login_id'];
-                //      $userObject  = $this->user_db->hasUser($user_id); //get valid user.
-                //      
-                // if (is_a($userObject, 'User') && ($userObject->getType() === 1))
-                //      ... perform $this->addApartment() ...
                 
-        /* ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-         * TODO: DELETE Dummy landlord user in place of actual implemented user.
-         * ---------------------------------------------------------------------
-         */
-                
-        
         /* Variables */
         $apartForm      = array();          //holds the 'Add Apartment Form' data. 
         $apartImgNames  = array();          //holds the image names sent from the form.
@@ -263,6 +241,16 @@ class Landlord extends PageTemplate{
             return;
         }
         
+        /* Verify that the landlord owns the Apartment he/she wants to edit */
+        if (isset($apartForm[$name_apartmentId])) {
+            $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
+            if ($apartmentRecord->user_id != $userID){
+                $errorMsgs['Error'] = "This apartment doesn't belong to you!";
+                echo json_encode($errorMsgs);
+                return;
+            }
+        }
+        
         /* Return if no form data was sent over */
         if ($_POST){ 
             $apartForm = array_filter($_POST);
@@ -397,7 +385,7 @@ class Landlord extends PageTemplate{
             
             /*
              * NOTE:
-             * All images that were already in the database is listed first. 
+             * All images that were already in the database are listed first. 
              * Thus, we can determine that each ID and initial set of image 
              * elements are sequentially linked.
              */
@@ -438,7 +426,7 @@ class Landlord extends PageTemplate{
             
         } catch (Exception $exception) {
             $errorMsgs['Error']  = $exception->getMessage();
-            $errorMsgs['Result'] = "Failure: cannot add new apartment at this time!";
+            $errorMsgs['Result'] = "Failure: cannot edit apartment at this time!";
             echo json_encode($errorMsgs);
             return;
         }
@@ -446,6 +434,63 @@ class Landlord extends PageTemplate{
         echo json_encode($errorMsgs);
         
         return $apartment;
+    }
+    
+    /**
+     * Delete the specified Apartment.
+     * 
+     * <strong>The apartment ID is passed in via the URL since deletion is
+     * not done through a HTML form element.</strong>
+     * 
+     * @param int $apartmentId
+     */
+    public function deleteApartment()
+    {
+        $userType = 0;
+        if( isset($_COOKIE["myPlace_userType"]))
+            $userType = $_COOKIE["myPlace_userType"];
+        if( isset($_COOKIE["myPlace_userID"]))
+            $userID = $_COOKIE["myPlace_userID"];
+        
+        $errorMsgs = array();
+        
+        /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
+        if ($userType != 1) {
+            $errorMsgs['Error'] = "You must be a landlord who's signed in to add a new apartment!";
+            echo json_encode($errorMsgs);
+            return;
+        }
+        
+        /* Verify that the landlord owns the Apartment he/she wants to edit */
+        if (isset($apartForm[$name_apartmentId])) {
+            $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
+            if ($apartmentRecord->user_id != $userID){
+                $errorMsgs['Error'] = "This apartment doesn't belong to you!";
+                echo json_encode($errorMsgs);
+                return;
+            }
+        }
+        
+        try {
+            
+            /* If not error messages thus far then add Apartment to database */
+            if (empty($errorMsgs)) {
+                /* delete Apartment from database */
+                $this->apartment_db->deleteApartment($apartForm[$name_apartmentId]);
+                $errorMsgs['Result'] = "Apartment has been successfully deleted!";
+            }
+            
+        } catch (Exception $ex) {
+            
+            $errorMsgs['Error']  = $exception->getMessage();
+            $errorMsgs['Result'] = "Failure: cannot delete apartment at this time!";
+            echo json_encode($errorMsgs);
+            return;
+        }
+        
+        echo json_encode($errorMsgs);
+        
+        return;
     }
     
 }
