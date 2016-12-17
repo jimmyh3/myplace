@@ -337,6 +337,26 @@ class ApartmentDB{
         return $apartmentRecords;
     }
     
+    /**
+     * Retrieve a single Apartment given the apartment ID.
+     * @param type $apartment_id
+     * @return type
+     */
+    public function getApartment($apartment_id)
+    {
+        $sql = "SELECT * FROM Apartments WHERE id = :id ";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(
+            array('id' => $apartment_id)
+        );
+        
+        /* Get all applicable apartments */
+        $apartmentRecord = $stmt->fetch();
+        
+        return $apartmentRecord;
+    }
+    
     
     /*
      * --------------------PRIVATE HELPER FUNCTIONS-----------------------------
@@ -675,7 +695,6 @@ class ApartmentDB{
      */
     private function apartmentToDBRecord(Apartment $apt)
     {
-        //TODO: fix begin_term and end_term
         $aptColsArray = array(  "id"                    => $apt->getID(),
                                 "title"                 => $apt->getTitle(),
                                 "user_id"               => $apt->getUserID(),
