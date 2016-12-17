@@ -106,9 +106,9 @@ class ApartmentDB{
         $apt->setID($aptID);
         
         /* Send any Apartment images to the Image database table */
-        foreach ($apt->getImages() as $image)
+        foreach ($apt->getImages() as $imageName=>$imageBlob)
         {
-            $this->addToImageDB($apt->getID(), $image);
+            $this->addToImageDB($apt->getID(), $imageName, $imageBlob);
         }
         
         return true ;
@@ -655,7 +655,8 @@ class ApartmentDB{
         $images = array();
         foreach ($this->getImageDB($apartmentRecord->id) as $imageRecord)
         {
-            array_push($images, $imageRecord->image);
+            $images[$imageRecord->name] = $imageRecord->image;
+            //array_push($images, $imageRecord->image);
         }
         
         /* Set Apartment's array of images */
@@ -700,20 +701,6 @@ class ApartmentDB{
     }
     
     /**
-     * Get the images of an Apartment.
-     * 
-     * @param int $id
-     * @return Image records.
-     */
-    public function getImageDB( $id) {
-        $sql = "SELECT * FROM Image WHERE apartment_id = :apartment_id ";
-        $query = $this->db->prepare( $sql);
-        $query->execute(array("apartment_id" => $id));
-        
-        return $query->fetchAll();
-    }
-    
-    /**
      * Retrieve the last ID belonging to <strong>whatever</strong> record that
      * was inserted into the database.
      * 
@@ -739,32 +726,101 @@ class ApartmentDB{
     }
     
     /**
+     * Get the images of an Apartment.
+     * 
+     * @param int $id
+     * @return Image records.
+     */
+    public function getImageDB( $id) {
+        $sql = "SELECT * FROM Image WHERE apartment_id = :apartment_id ";
+        $query = $this->db->prepare( $sql);
+        $query->execute(array("apartment_id" => $id));
+        
+        return $query->fetchAll();
+    }
+    
+    /**
      * Add the given BLOB image to the Image table. Each image must be
      * associated with an Apartment, thus the apartment's ID is required.
      * 
-     * @param type $apartmentID - the apartment's ID.
-     * @param type $blob - the BLOB data image.
+     * @param int $apartmentID - the apartment's ID.
+     * @param String $imageName - name of the file.
+     * @param String $imageBlob - the BLOB data image.
      * @return boolean - true
      * @throws Exception - thrown if the INSERT query fails.
      */
-    public function addToImageDB($apartmentID, $blob)
+    public function addToImageDB($apartmentID, $imageName, $imageBlob)
     {
         $sql = " INSERT INTO Image 
-                 ( apartment_id , image ) 
+                 ( apartment_id , name,  image ) 
                  VALUES 
-                 (:apartment_id , :image ) ";
+                 (:apartment_id , :name, :image ) ";
         
         $query = $this->db->prepare( $sql);
         if ($query === false)
             {throw new Exception('Could not prepare Image INSERT query'); }
         
         $query->bindValue(":apartment_id", $apartmentID, PDO::PARAM_INT);
-        $query->bindValue(":image", $blob, PDO::PARAM_LOB);
+        $query->bindValue(":name", $imageName, PDO::PARAM_STR);
+        $query->bindValue(":image", $imageBlob, PDO::PARAM_LOB);
         
         $result = $query->execute();
         if ($result === false)
             {throw new Exception('Could not execute Image INSERT query'); }
           
+        return true;
+    }
+    
+    /**
+     * Update a specific Image in the Image database.
+     * 
+     * @param int $imageId - the Image to update.
+     * @param String $imageBlob
+     * @return boolean - true
+     * @throws Exception - throws if query fails.
+     */
+    public function editImageDB($imageId, $imageName, $imageBlob)
+    {
+        //SQL query to execute;
+        $sql = " UPDATE Image SET  
+                 image = :image , name = :name
+                 WHERE
+                 id = :id ";
+        
+        $query = $this->db->prepare( $sql);
+        if ($query === false)
+            {throw new Exception('Could not prepare Image UPDATE query'); }
+        
+        $query->bindValue(":id", $imageId, PDO::PARAM_INT);
+        $query->bindValue(":name", $imageName, PDO::PARAM_STR);
+        $query->bindValue(":image", $imageBlob, PDO::PARAM_LOB);
+        
+        $result = $query->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute Image UPDATE query'); }
+            
+        return true;
+    }
+    
+    /**
+     * Delete a specific Image from the Image database.
+     * 
+     * @param int $imageId - target ID of Image to delete.
+     * @return boolean
+     * @throws Exception
+     */
+    public function deleteImage($imageId)
+    {
+        $sql = "DELETE FROM Image WHERE id = :id ";
+        
+        $query = $this->db->prepare( $sql);
+        if ($query === false)
+            {throw new Exception('Could not prepare Image DELETE query'); }
+        
+        $result = $query->execute(array("id" => $imageId));
+        if ($result === false)
+            {throw new Exception('Could not execute Image DELETE query'); }
+            
         return true;
     }
     

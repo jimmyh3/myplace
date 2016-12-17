@@ -538,12 +538,13 @@ class Apartment {
      * @return boolean
      * @throws Exception - if the given is not a string.
      */
-    public function addImage($image)
+    public function addImage($imageName, $imageBlob)
     {
         if ($this->getImagesCount() === 10){
             return false;
-        } elseif (is_string($image) || is_null($image)) {
-            array_push($this->images, $image);
+        } elseif (is_string($imageBlob) || is_null($imageBlob)) {
+            $this->images[$imageName] = $imageBlob;
+            //array_push($this->images, $image);
         } else {
             throw new Exception("Failed to add images!");
         }
@@ -562,11 +563,12 @@ class Apartment {
      */
     public function addImages(array $images)
     {
-        foreach ($images as $image){
+        foreach ($images as $imageName=>$imageBlob){
             if ($this->getImagesCount() === 10){
                 return false;
-            } elseif (is_string($image) || is_null($image)) {
-                array_push($this->images, $image);
+            } elseif (is_string($imageBlob) || is_null($imageBlob)) {
+                $this->images[$imageName] = $imageBlob;
+                //array_push($this->images, $image);
             } else {
                 throw new Exception("Failed to add images!");
             }

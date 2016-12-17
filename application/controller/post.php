@@ -35,7 +35,6 @@ class Post extends Controller
             $result .= 'No Apartments Listed'; 
         }
         else{
-            
             foreach ($apartmentRecords as $apartmentRecord){
                 
                 $apartment = $this->apartment_db->dbRecordToApartment($apartmentRecord);
@@ -84,7 +83,7 @@ class Post extends Controller
                 $result .= '</div>';
                 $result .= '<div class="ratings">
                                 <div style="width:100%;text-align: center;">
-                                    <button style="display: inline-block;" type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#editAptModal">Edit Post</button>
+                                    <button style="display: inline-block;" type="button" class="btn btn-info btn-sm pull-left" data-toggle="modal" data-target="#editAptModal'.$formApartmentID.'">Edit Post</button>
                                     <a href="////';
                 // Original My Messages Link
 //                $result .=  htmlspecialchars (URL).'msg">';
@@ -97,7 +96,7 @@ class Post extends Controller
                 
                 // Form to edit Apartment
                 
-                $result .= '<div class="modal fade" id="editAptModal" role="dialog">
+                $result .= '<div class="modal fade" id="editAptModal'.$formApartmentID.'" role="dialog">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -232,9 +231,16 @@ class Post extends Controller
                     $imageInputId   = htmlspecialchars("image".$image->id, ENT_QUOTES, 'UTF-8');
                     $imageInputName = htmlspecialchars($image->name, ENT_QUOTES, 'UTF-8');
                     
-                    
-                    if (($image_index + 1) < count($images)) {
-                    
+                    //true = display button with plus, false = minus.
+                    if ($image_index == 10) {
+                        $result    .=                  '<div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
+                                                            <input type="hidden" name="image_id[]" value="' . $imageId . '">   
+                                                            <input type="file" accept="image/*" name="images[]" class="form-control">
+                                                            <span class="input-group-btn">
+                                                                <button type="button" class="btn btn-success btn-add" disabled="disabled">+</button>
+                                                            </span>
+                                                        </div>';     
+                    } else if (($image_index + 1) < count($images)) {
                         $result    .=                  '<div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
                                                             <input type="hidden" name="image_id[]" value="' . $imageId . '">   
                                                             <input type="file" accept="image/*" name="images[]" class="form-control">

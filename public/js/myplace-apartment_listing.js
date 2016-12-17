@@ -15,26 +15,30 @@ $(function() {
         xmlHttpReq.onload = function(oEvent) { //onload == request completed
             if (xmlHttpReq.status == 200) {
                 var serverResp = xmlHttpReq.responseText;
-                
-                if (serverResp) {
+                console.log(serverResp);
+                try {
+                    if (serverResp) {
                     
-                    var errorMsgs = JSON.parse(serverResp);
-                    
-                    /* $.each() as JQUery function closure */
-                    $.each(errorMsgs, function(name, errMsg) {
-                        var targetID = '#add-aprt-form *[name=' + name + ']';
-                        var inputElement = $(targetID);
-                        
-                        inputElement.css('border', "5px solid red");
-                        
-                        inputElement.after("<p id='" + name + "-error' style='color:red;font-style: italic;'>"
-                                                     + errMsg + "</p>");
-                        
-                        $('#add-aprt-form').on('submit', function(e){
-                            $('#'+name+"-error").remove();
+                        var errorMsgs = JSON.parse(serverResp);
+
+                        /* $.each() as JQUery function closure */
+                        $.each(errorMsgs, function(name, errMsg) {
+                            var targetID = '#add-aprt-form *[name=' + name + ']';
+                            var inputElement = $(targetID);
+
+                            inputElement.css('border', "5px solid red");
+
+                            inputElement.after("<p id='" + name + "-error' style='color:red;font-style: italic;'>"
+                                                         + errMsg + "</p>");
+
+                            $('#add-aprt-form').on('submit', function(e){
+                                $('#'+name+"-error").remove();
+                            });
+
                         });
-                        
-                    });
+
+                    }
+                }catch(error){
                     
                 }
                 
@@ -79,27 +83,33 @@ $(function() {
             if (xmlHttpReq.status == 200) {
                 var serverResp = xmlHttpReq.responseText;
                 console.log(serverResp);
-                if (serverResp) {
+                
+                try {
+                    if (serverResp) {
                     
-                    var errorMsgs = JSON.parse(serverResp);
-                    
-                    /* $.each() as JQUery function closure */
-                    $.each(errorMsgs, function(name, errMsg) {
-                        var targetID = '#edit-aprt-form *[name=' + name + ']';
-                        var inputElement = $(targetID);
-                        
-                        inputElement.css('border', "5px solid red");
-                        
-                        inputElement.after("<p id='" + name + "-error' style='color:red;font-style: italic;'>"
-                                                     + errMsg + "</p>");
-                        
-                        $('#edit-aprt-form').on('submit', function(e){
-                            $('#'+name+"-error").remove();
+                        var errorMsgs = JSON.parse(serverResp);
+
+                        /* $.each() as JQUery function closure */
+                        $.each(errorMsgs, function(name, errMsg) {
+                            var targetID = '#edit-aprt-form *[name=' + name + ']';
+                            var inputElement = $(targetID);
+
+                            inputElement.css('border', "5px solid red");
+
+                            inputElement.after("<p id='" + name + "-error' style='color:red;font-style: italic;'>"
+                                                         + errMsg + "</p>");
+
+                            $('#edit-aprt-form').on('submit', function(e){
+                                $('#'+name+"-error").remove();
+                            });
+
                         });
-                        
-                    });
+
+                    }
+                } catch (error) {
                     
                 }
+                
                 
             } else {
                 alert ("Error " + xmlHttpReq.status);
