@@ -23,8 +23,8 @@
     if(isset($_COOKIE["myPlace_userID"])){
         $user_id = $_COOKIE["myPlace_userID"];
         
-        echo $this->displayApartments($user_id); 
-        
+//        echo $this->displayApartments($user_id); 
+        $this->displayApartments($user_id);
     } else {
         //TODO: some simple output, perhaps change to something better later.
         echo "<div class='col-sm-4 col-lg-4 col-md-4'>
