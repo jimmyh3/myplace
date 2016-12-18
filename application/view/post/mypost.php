@@ -77,7 +77,7 @@
                                             </div>
 
                                             <!-- Bedrooms input-->
-                                            <div class="control-group">
+<!--                                            <div class="control-group">
                                                 <label class="control-label" for="Bedroom">*Bedrooms:</label>
                                                 <select class="form-control" id="Bedroom" name="Bedroom">
                                                     <option value="-1">Any</option>
@@ -85,8 +85,13 @@
                                                     <option value="2">2</option>
                                                     <option value="3">3+</option>
                                                 </select>
-                                            </div>
+                                            </div>-->
 
+                                            <!-- Bedrooms input-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="Bedroom">*Bedrooms:</label>
+                                                <input id="Bedroom" name="Bedroom" value="" class="form-control" type="text" placeholder="0" class="input-lg">
+                                            </div>    
 
                                             <!-- Price input-->
                                             <div class="control-group">

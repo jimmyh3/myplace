@@ -66,7 +66,7 @@ class Post extends Controller
                $images = $this->apartment_db->getImageDB($apartmentRecord->id);
                 
                 
-               $result .= '<div class="col-sm-4 col-lg-4 col-md-4">
+               $result .= '<div id="aprt-thumbnail-'. $formApartmentID.'" class="col-sm-4 col-lg-4 col-md-4">
                 <div class="thumbnail">';
                if(isset($apartmentRecord->thumbnail)){
                    $result .= '<img src="data:image/jpeg;base64,'.base64_encode( $apartmentRecord->thumbnail).'" alt="" style="cursor: pointer;height:150px;width:320px;" alt="">';
@@ -91,7 +91,7 @@ class Post extends Controller
                 $result .=  htmlspecialchars (URL).'msg?apartment_id=';
                 if (isset( $apartmentRecord->id)) $result .= $apartmentRecord->id.'">';
                 $result .= '<button style="display: inline-block;" type="button" class="btn btn-primary btn-sm  btn-sm">View Messages</button></a>';
-                $result .= '<button style="display: inline-block;" type="button" class="btn btn-danger btn-sm pull-right">Delete Post</button>
+                $result .= '<button id="delete-aprt-btn-'.$formApartmentID.'" data-id="'.$formApartmentID.'" style="display: inline-block;" type="button" class="btn btn-danger btn-sm pull-right">Delete Post</button>
                                 </div>';
                 
                 // Form to edit Apartment
@@ -231,7 +231,7 @@ class Post extends Controller
                     $imageInputId   = htmlspecialchars("image".$image->id, ENT_QUOTES, 'UTF-8');
                     $imageInputName = htmlspecialchars($image->name, ENT_QUOTES, 'UTF-8');
                     
-                    //true = display button with plus, false = minus.
+                    //== 10 display button with disabled + icon || display - icon enabled || display - icon enabled.
                     if ($image_index == 10) {
                         $result    .=                  '<div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
                                                             <input type="hidden" name="image_id[]" value="' . $imageId . '">   

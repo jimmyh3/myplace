@@ -51,7 +51,7 @@ $(function() {
         ev.preventDefault();
     }, false);
     
-    
+    /* add-aprt-form handling - reset invalid red bars to none upon input. */
     if ($('#add-aprt-form').length !== 0){
         $('form#add-aprt-form :input').each(function(){
             $(this).on('input', function(input){
@@ -60,6 +60,7 @@ $(function() {
         });
     }
     
+    /* edit-aprt-form handling - reset invalid red bars to none upon input. */
     if ($('#edit-aprt-form').length !== 0){
         $('form#edit-aprt-form :input').each(function(){
             $(this).on('input', function(input){
@@ -120,6 +121,40 @@ $(function() {
         ev.preventDefault();
     }, false);
     
+    /*
+     * Applies to all myPost 'Delete Post' buttons. This will delete the targeted
+     * apartment and remove the thumbnail. 
+     */
+    if ($('[id^=delete-aprt-btn]').length !== 0) {
+        $('[id^=delete-aprt-btn]').on('click', function(e){
+            
+            var formData    = new FormData();
+            var apartmentId = $(this).attr("data-id");
+            
+            formData.append("apartment_id", apartmentId);
+            
+            var xmlHttpReq = new XMLHttpRequest();
+            xmlHttpReq.open("POST", url + 'landlord/deleteApartment');
+            xmlHttpReq.onload = function(event) {
+                if (xmlHttpReq.status == 200) {
+                    var serverResp = xmlHttpReq.responseText;
+                    var errorMsgs;
+                    try {
+                        if (serverResp) {
+                            errorMsgs = JSON.parse(serverResp);
+                        }
+                    } catch (error) {
+                        alert("FAILURE: couldn't delete Apartment! ");
+                    }
+                }
+            }
+            
+            xmlHttpReq.send(formData);
+
+            $('#aprt-thumbnail-'+apartmentId).remove();
+            
+        });
+    }
 });
 
 

@@ -98,13 +98,15 @@ class Landlord extends PageTemplate{
             $priceRegex = "/^(\d*)\.?\d{0,2}$/";
             if ((isset($apartForm[$name_price])) 
                             && (is_numeric($apartForm[$name_price]))
+                            && ($apartForm[$name_price] < 99999999)
                             && (preg_match($priceRegex, $apartForm[$name_price]))
                                                    && !($apartForm[$name_price] < 0)) {
                 
                 $apartment->setActualPrice($apartForm[$name_price]);
             } else {
                 $errorMsgs[$name_price] = "Enter a price following any of these "
-                                        . "number formats: ## or (many #).## or .## ";
+                                        . "number formats: ## or (many #).## or .## "
+                                        . "(AT MOST 8 digits)";
             }
 
             /* ---------Set the starting renting term of this Apartment------ */
@@ -241,16 +243,6 @@ class Landlord extends PageTemplate{
             return;
         }
         
-        /* Verify that the landlord owns the Apartment he/she wants to edit */
-        if (isset($apartForm[$name_apartmentId])) {
-            $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
-            if ($apartmentRecord->user_id != $userID){
-                $errorMsgs['Error'] = "This apartment doesn't belong to you!";
-                echo json_encode($errorMsgs);
-                return;
-            }
-        }
-        
         /* Return if no form data was sent over */
         if ($_POST){ 
             $apartForm = array_filter($_POST);
@@ -266,6 +258,16 @@ class Landlord extends PageTemplate{
         {
             $apartImgNames  = $_FILES[$name_images]['name'];
             $apartImgFiles   = $_FILES[$name_images]['tmp_name'];
+        }
+        
+        /* Verify that the landlord owns the Apartment he/she wants to edit */
+        if (isset($apartForm[$name_apartmentId])) {
+            $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
+            if ($apartmentRecord->user_id != $userID){
+                $errorMsgs['Error'] = "This apartment doesn't belong to you!";
+                echo json_encode($errorMsgs);
+                return;
+            }
         }
         
         /* Create new Apartment object acccording to the form values */
@@ -306,13 +308,15 @@ class Landlord extends PageTemplate{
             $priceRegex = "/^(\d*)\.?\d{0,2}$/";
             if ((isset($apartForm[$name_price])) 
                             && (is_numeric($apartForm[$name_price]))
+                            && ($apartForm[$name_price] < 99999999)
                             && (preg_match($priceRegex, $apartForm[$name_price]))
                                                    && !($apartForm[$name_price] < 0)) {
                 
                 $apartment->setActualPrice($apartForm[$name_price]);
             } else {
                 $errorMsgs[$name_price] = "Enter a price following any of these "
-                                        . "number formats: ## or (many #).## or .## ";
+                                        . "number formats: ## or (many #).## or .## "
+                                        . "(AT MOST 8 digits)";
             }
 
             /* ---------Set the starting renting term of this Apartment------ */
@@ -360,14 +364,12 @@ class Landlord extends PageTemplate{
              * 
              *                  Image Handling
              * ----------------------------------------------------------------
-             * The idea: 
-             * Every image this Apartment has is listed in the form where
-             * their Image IDs are stored inside a hidden <input>. This means for example,
-             * <input images[3]> === <input hidden image_id[3]>, therefore we can
-             * check each image listing sequentially for any changes. Any new additional
-             * images will have a hidden value of empty ''. Any manual input of over
-             * existing images[] will take on the accompanied image_id[], thus
-             * implying the edit since $_FILES['tmp_name'][?] will not be empty.
+             * 
+             * NOTE:
+             * All images that were already in the database are listed first. 
+             * Thus, we can determine that each ID and initial set of image 
+             * elements are sequentially linked.
+             *
              * ----------------------------------------------------------------
              */
             
@@ -382,13 +384,6 @@ class Landlord extends PageTemplate{
                     $this->apartment_db->deleteImage($imageRecord->id);
                 }
             }
-            
-            /*
-             * NOTE:
-             * All images that were already in the database are listed first. 
-             * Thus, we can determine that each ID and initial set of image 
-             * elements are sequentially linked.
-             */
             
             /* 
              * Update/swap any images the landlord has decided to. Any updating
@@ -452,7 +447,11 @@ class Landlord extends PageTemplate{
         if( isset($_COOKIE["myPlace_userID"]))
             $userID = $_COOKIE["myPlace_userID"];
         
+        /* Variables */
         $errorMsgs = array();
+        
+        /* Form names */
+        $name_apartmentId = "apartment_id";
         
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
         if ($userType != 1) {
@@ -461,18 +460,27 @@ class Landlord extends PageTemplate{
             return;
         }
         
-        /* Verify that the landlord owns the Apartment he/she wants to edit */
+        /* Return if no form data was sent over */
+        if ($_POST){ 
+            $apartForm = array_filter($_POST);
+        } else {
+            $errorMsgs['Error']  = "Error: form data was not received!";
+            $errorMsgs['Result'] = "Failure: cannot delete apartment at this time!";
+            echo json_encode($errorMsgs);
+            return;
+        }
+        
+        /* Verify that the landlord owns the Apartment he/she wants to delete */
         if (isset($apartForm[$name_apartmentId])) {
             $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
             if ($apartmentRecord->user_id != $userID){
-                $errorMsgs['Error'] = "This apartment doesn't belong to you!";
+                $errorMsgs['Error'] = "You are not allowed to delete this apartment!";
                 echo json_encode($errorMsgs);
                 return;
             }
         }
         
         try {
-            
             /* If not error messages thus far then add Apartment to database */
             if (empty($errorMsgs)) {
                 /* delete Apartment from database */
