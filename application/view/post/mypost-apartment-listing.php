@@ -222,9 +222,7 @@
                                                       rows="5" 
                                                       id="desc" 
                                                       name="Description"
-                                            >
-                                            <?php echo $apartDescription; ?>
-                                            </textarea>
+                                            ><?php echo $apartDescription; ?></textarea>
                                         </div> 
                                     </div>
                                     
@@ -309,8 +307,7 @@
                                     <div class="control-group multiple-form-group" data-max=10>
                                         <label>Upload Images (max 10):</label>
                                           
-                                    <?php for ( $keys = array_keys($apartImages), $index = 0;
-                                                $index < count($apartImages);     $index++) : ?>
+                                    <?php for ( $keys = array_keys($apartImages), $index = 0; $index < count($apartImages); $index++) : ?>
                                         <div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
                                             <input type="hidden" 
                                                    name="image_id[]" 

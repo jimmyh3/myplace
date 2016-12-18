@@ -164,6 +164,14 @@ class Landlord extends PageTemplate{
                 }
             }
             
+            /* Set the Apartment thumbnail to the first image of image files */
+            if (!empty($apartImgFiles)){
+                $thumbnail = reset($apartImgFiles);
+                if ($thumbnail) {
+                    $apartment->setThumbnail(file_get_contents($thumbnail));
+                }
+            }
+            
             /* If not error messages thus far then add Apartment to database */
             if (empty($returnMsgs)) {
                 /* Add apartment to Apartment database */
@@ -411,6 +419,13 @@ class Landlord extends PageTemplate{
                 }
             }
             
+            /* Set the Apartment thumbnail to the first image of image files */
+            if (!empty($apartImgFiles)){
+                $thumbnail = reset($apartImgFiles);
+                if ($thumbnail) {
+                    $apartment->setThumbnail(file_get_contents($thumbnail));
+                }
+            }
             
             /* If not error messages thus far then add Apartment to database */
             if (empty($returnMsgs)) {
