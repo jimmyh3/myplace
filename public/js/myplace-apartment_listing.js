@@ -42,6 +42,7 @@ $(function() {
 
                         _apartmentFormActionOutput(errorMsgs);
                         
+                        location.reload();  //Refreshes page to display new Apartment
                     }
                 }catch(error){
                     
