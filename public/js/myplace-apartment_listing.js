@@ -14,18 +14,18 @@ $(function() {
         xmlHttpReq.onload = function(oEvent) { //onload == request completed
             if (xmlHttpReq.status == 200) {
                 var serverResp = xmlHttpReq.responseText;
-                console.log(serverResp);
+                
                 try {
                     if (serverResp) {
                     
-                        var errorMsgs = JSON.parse(serverResp);
+                        var serverMsgs = JSON.parse(serverResp);
 
                         /*
                          *  $.each() as JQUery function closure.
                          *  Dynamically create and apply Jquery function to
                          *  display red borders + text for validation.
                          */
-                        $.each(errorMsgs, function(name, errMsg) {
+                        $.each(serverMsgs, function(name, errMsg) {
                             var targetID = '#add-aprt-form *[name=' + name + ']';
                             var inputElement = $(targetID);
 
@@ -40,9 +40,17 @@ $(function() {
 
                         });
 
-                        _apartmentFormActionOutput(errorMsgs);
+                        _apartmentFormActionOutput(serverMsgs);
                         
-                        location.reload();  //Refreshes page to display new Apartment
+                        /*
+                         * Refresh the page to show updated changes.
+                         */
+                        if (serverMsgs.hasOwnProperty('Success')
+                                    && !isEmptyOrSpaces(serverMsgs['Success'])) {
+                            
+                            location.reload();  //Refreshes page to display new Apartment
+                        }
+                        
                     }
                 }catch(error){
                     
@@ -86,10 +94,10 @@ $(function() {
                     try {
                         if (serverResp) {
 
-                            var errorMsgs = JSON.parse(serverResp);
+                            var serverMsgs = JSON.parse(serverResp);
 
                             /* $.each() as JQUery function closure */
-                            $.each(errorMsgs, function(name, errMsg) {
+                            $.each(serverMsgs, function(name, errMsg) {
                                 var targetID = '#edit-aprt-form'+apartmentId+' *[name=' + name + ']';
                                 var inputElement = $(targetID);
 
@@ -104,8 +112,16 @@ $(function() {
 
                             });
 
-                            _apartmentFormActionOutput(errorMsgs);
+                            _apartmentFormActionOutput(serverMsgs);
                             
+                            /*
+                             * Refresh the page to show updated changes.
+                             */
+                            if (serverMsgs.hasOwnProperty('Success')
+                                        && !isEmptyOrSpaces(serverMsgs['Success'])) {
+
+                                location.reload();  //Refreshes page to display new Apartment
+                            }
                         }
                     } catch (error) {
 
@@ -147,12 +163,12 @@ $(function() {
             xmlHttpReq.onload = function(event) {
                 if (xmlHttpReq.status == 200) {
                     var serverResp = xmlHttpReq.responseText;
-                    var errorMsgs;
+                    var serverMsgs;
                     try {
                         if (serverResp) {
-                            errorMsgs = JSON.parse(serverResp);
+                            serverMsgs = JSON.parse(serverResp);
                             
-                            _apartmentFormActionOutput(errorMsgs);
+                            _apartmentFormActionOutput(serverMsgs);
                         }
                     } catch (error) {
                         alert("FAILURE: couldn't delete Apartment! ");
@@ -171,19 +187,24 @@ $(function() {
      * Function to display Apartment form processing result message and close 
      * the modal.
      * 
-     * @param {array/object} errorMsgs - error messages from the server side.
+     * @param {array/object} serverMsgs - error messages from the server side.
      * @returns {void}
      */
-    function _apartmentFormActionOutput(errorMsgs){
-        if (errorMsgs.hasOwnProperty('Result')
-                && !isEmptyOrSpaces(errorMsgs['Result'])) {
-            alert(errorMsgs['Result']);
+    function _apartmentFormActionOutput(serverMsgs){
+        if (serverMsgs.hasOwnProperty('Success')
+                && !isEmptyOrSpaces(serverMsgs['Success'])) {
+            alert(serverMsgs['Success']);
             $('button.close').click();  //closes the Modal.
         }
+        
+        if (serverMsgs.hasOwnProperty('Failure')
+                && !isEmptyOrSpaces(serverMsgs['Failure'])) {
+            alert(serverMsgs['Failure']);
+        }
 
-        if (errorMsgs.hasOwnProperty('Error')
-                && !isEmptyOrSpaces(errorMsgs['Error'])) {
-            console.log(errorMsgs['Error']);
+        if (serverMsgs.hasOwnProperty('Error')
+                && !isEmptyOrSpaces(serverMsgs['Error'])) {
+            console.log(serverMsgs['Error']);
         }
     }
     

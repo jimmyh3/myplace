@@ -37,7 +37,7 @@ class Landlord extends PageTemplate{
         $apartForm      = array();          //holds the 'Add Apartment Form' data. 
         $apartImgNames  = array();          //holds the image names sent from the form.
         $apartImgFiles  = array();          //holds the images sent from the form.
-        $errorMsgs      = array();          //holds validation response messages.
+        $returnMsgs      = array();          //holds validation response messages.
         $apartment      = new Apartment();  //Apartment object to add to database.
         
         /* Form <input name=""> for quick reference */
@@ -58,7 +58,7 @@ class Landlord extends PageTemplate{
         
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
         if ($userType != 1) {
-            $errorMsgs['Result'] = "You must be a landlord who's signed in to add a new apartment!";
+            $returnMsgs['Failure'] = "You must be a landlord who's signed in to add a new apartment!";
             return;
         }
         
@@ -66,9 +66,9 @@ class Landlord extends PageTemplate{
         if ($_POST){ 
             $apartForm = array_filter($_POST);
         } else {
-            $errorMsgs['Error']  = "Error: form data was not received!";
-            $errorMsgs['Result'] = "Failure: cannot add new apartment at this time!";
-            echo json_encode($errorMsgs);
+            $returnMsgs['Error']   = "Error: form data was not received!";
+            $returnMsgs['Failure'] = "Failure: cannot add new apartment at this time!";
+            echo json_encode($returnMsgs);
             return;
         }
         
@@ -91,7 +91,7 @@ class Landlord extends PageTemplate{
                                               && !($apartForm[$name_bedroom] < 0)) {
                 $apartment->setBedRoomCount($apartForm[$name_bedroom]);
             } else {
-                $errorMsgs[$name_bedroom] = "Enter a positive number of bedrooms";
+                $returnMsgs[$name_bedroom] = "Enter a positive number of bedrooms";
             }
 
             /* ----------Set the price of this Apartment--------------------- */
@@ -104,7 +104,7 @@ class Landlord extends PageTemplate{
                 
                 $apartment->setActualPrice($apartForm[$name_price]);
             } else {
-                $errorMsgs[$name_price] = "Enter a price following any of these "
+                $returnMsgs[$name_price] = "Enter a price following any of these "
                                         . "number formats: ## or (many #).## or .## "
                                         . "(AT MOST 8 digits)";
             }
@@ -115,7 +115,7 @@ class Landlord extends PageTemplate{
 
                 $apartment->setBeginTerm($apartForm[$name_startTerm]);
             } else {
-                $errorMsgs[$name_startTerm] = "Enter a valid date in the format:"
+                $returnMsgs[$name_startTerm] = "Enter a valid date in the format:"
                                             . " mm/dd/yyyy";
             }
 
@@ -125,7 +125,7 @@ class Landlord extends PageTemplate{
 
                 $apartment->setEndTerm($apartForm[$name_endTerm]);
             } else {
-                $errorMsgs[$name_endTerm] = "Enter a valid date in the format:"
+                $returnMsgs[$name_endTerm] = "Enter a valid date in the format:"
                                           . " mm/dd/yyyy";
             }
 
@@ -137,7 +137,7 @@ class Landlord extends PageTemplate{
 
                 $apartment->setAreaCode($apartForm[$name_zipcode]);
             } else {
-                $errorMsgs[$name_zipcode] = "Enter a valid 5 digit zipcode";
+                $returnMsgs[$name_zipcode] = "Enter a valid 5 digit zipcode";
             }
 
             /* ---------Set the rest of the form data------------------------ */
@@ -165,20 +165,20 @@ class Landlord extends PageTemplate{
             }
             
             /* If not error messages thus far then add Apartment to database */
-            if (empty($errorMsgs)) {
+            if (empty($returnMsgs)) {
                 /* Add apartment to Apartment database */
                 $this->apartment_db->addApartment($apartment);
-                $errorMsgs['Result'] = "Apartment has been successfully added!";
+                $returnMsgs['Success'] = "Apartment has been successfully added!";
             }
             
         } catch (Exception $exception) {
-            $errorMsgs['Error']  = $exception->getMessage();
-            $errorMsgs['Result'] = "Failure: cannot add new apartment at this time!";
-            echo json_encode($errorMsgs);
+            $returnMsgs['Error']   = $exception->getMessage();
+            $returnMsgs['Failure'] = "Failure: cannot add new apartment at this time!";
+            echo json_encode($returnMsgs);
             return;
         }
         
-        echo json_encode($errorMsgs);
+        echo json_encode($returnMsgs);
         
         return $apartment;
     }
@@ -217,7 +217,7 @@ class Landlord extends PageTemplate{
         /* Variables */
         $apartForm      = array();          //holds the 'Add Apartment Form' data. 
         $apartImgFiles   = array();          //holds the images sent from the form.
-        $errorMsgs      = array();          //holds validation response messages.
+        $returnMsgs      = array();          //holds validation response messages.
         $apartment      = new Apartment();  //Apartment object to add to database.
         
         /* Form <input name=""> for quick reference */
@@ -238,8 +238,8 @@ class Landlord extends PageTemplate{
         
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
         if ($userType != 1) {
-            $errorMsgs['Error'] = "You must be a landlord who's signed in to add a new apartment!";
-            echo json_encode($errorMsgs);
+            $returnMsgs['Error'] = "You must be a landlord who's signed in to add a new apartment!";
+            echo json_encode($returnMsgs);
             return;
         }
         
@@ -247,9 +247,9 @@ class Landlord extends PageTemplate{
         if ($_POST){ 
             $apartForm = array_filter($_POST);
         } else {
-            $errorMsgs['Error']  = "Error: form data was not received!";
-            $errorMsgs['Result'] = "Failure: cannot add new apartment at this time!";
-            echo json_encode($errorMsgs);
+            $returnMsgs['Error']   = "Error: form data was not received!";
+            $returnMsgs['Failure'] = "Failure: cannot add new apartment at this time!";
+            echo json_encode($returnMsgs);
             return;
         }
         
@@ -264,8 +264,8 @@ class Landlord extends PageTemplate{
         if (isset($apartForm[$name_apartmentId])) {
             $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
             if ($apartmentRecord->user_id != $userID){
-                $errorMsgs['Error'] = "This apartment doesn't belong to you!";
-                echo json_encode($errorMsgs);
+                $returnMsgs['Error'] = "This apartment doesn't belong to you!";
+                echo json_encode($returnMsgs);
                 return;
             }
         }
@@ -282,9 +282,9 @@ class Landlord extends PageTemplate{
             if ((isset($apartForm[$name_apartmentId]))){
                 $apartment->setID($apartForm[$name_apartmentId]);
             } else {
-                $errorMsgs['Error']  = "Failure: ApartmentID for editing is missing!";
-                $errorMsgs['Result'] = "Failure: ApartmentID for editing is missing!";
-                echo json_encode($errorMsgs);
+                $returnMsgs['Error']   = "Failure: target Apartment ID for editing is missing!";
+                $returnMsgs['Failure'] = "Failure: target Apartment ID for editing is missing!";
+                echo json_encode($returnMsgs);
                 return;
             }
             
@@ -301,7 +301,7 @@ class Landlord extends PageTemplate{
                                               && !($apartForm[$name_bedroom] < 0)) {
                 $apartment->setBedRoomCount($apartForm[$name_bedroom]);
             } else {
-                $errorMsgs[$name_bedroom] = "Enter a positive number of bedrooms";
+                $returnMsgs[$name_bedroom] = "Enter a positive number of bedrooms";
             }
 
             /* ----------Set the price of this Apartment--------------------- */
@@ -314,7 +314,7 @@ class Landlord extends PageTemplate{
                 
                 $apartment->setActualPrice($apartForm[$name_price]);
             } else {
-                $errorMsgs[$name_price] = "Enter a price following any of these "
+                $returnMsgs[$name_price] = "Enter a price following any of these "
                                         . "number formats: ## or (many #).## or .## "
                                         . "(AT MOST 8 digits)";
             }
@@ -325,7 +325,7 @@ class Landlord extends PageTemplate{
 
                 $apartment->setBeginTerm($apartForm[$name_startTerm]);
             } else {
-                $errorMsgs[$name_startTerm] = "Enter a valid date in the format:"
+                $returnMsgs[$name_startTerm] = "Enter a valid date in the format:"
                                             . " mm/dd/yyyy";
             }
 
@@ -335,7 +335,7 @@ class Landlord extends PageTemplate{
 
                 $apartment->setEndTerm($apartForm[$name_endTerm]);
             } else {
-                $errorMsgs[$name_endTerm] = "Enter a valid date in the format:"
+                $returnMsgs[$name_endTerm] = "Enter a valid date in the format:"
                                           . " mm/dd/yyyy";
             }
 
@@ -347,7 +347,7 @@ class Landlord extends PageTemplate{
 
                 $apartment->setAreaCode($apartForm[$name_zipcode]);
             } else {
-                $errorMsgs[$name_zipcode] = "Enter a valid 5 digit zipcode";
+                $returnMsgs[$name_zipcode] = "Enter a valid 5 digit zipcode";
             }
 
             /* ---------Set the rest of the form data------------------------ */
@@ -413,20 +413,20 @@ class Landlord extends PageTemplate{
             
             
             /* If not error messages thus far then add Apartment to database */
-            if (empty($errorMsgs)) {
+            if (empty($returnMsgs)) {
                 /* Add apartment to Apartment database */
                 $this->apartment_db->editApartment($apartment);
-                $errorMsgs['Result'] = "Apartment has been successfully edited!";
+                $returnMsgs['Success'] = "Apartment has been successfully edited!";
             }
             
         } catch (Exception $exception) {
-            $errorMsgs['Error']  = $exception->getMessage();
-            $errorMsgs['Result'] = "Failure: cannot edit apartment at this time!";
-            echo json_encode($errorMsgs);
+            $returnMsgs['Error']  = $exception->getMessage();
+            $returnMsgs['Failure'] = "Failure: cannot edit apartment at this time!";
+            echo json_encode($returnMsgs);
             return;
         }
         
-        echo json_encode($errorMsgs);
+        echo json_encode($returnMsgs);
         
         return $apartment;
     }
@@ -448,15 +448,15 @@ class Landlord extends PageTemplate{
             $userID = $_COOKIE["myPlace_userID"];
         
         /* Variables */
-        $errorMsgs = array();
+        $returnMsgs = array();
         
         /* Form names */
         $name_apartmentId = "apartment_id";
         
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
         if ($userType != 1) {
-            $errorMsgs['Error'] = "You must be a landlord who's signed in to add a new apartment!";
-            echo json_encode($errorMsgs);
+            $returnMsgs['Error'] = "You must be a landlord who's signed in to add a new apartment!";
+            echo json_encode($returnMsgs);
             return;
         }
         
@@ -464,9 +464,9 @@ class Landlord extends PageTemplate{
         if ($_POST){ 
             $apartForm = array_filter($_POST);
         } else {
-            $errorMsgs['Error']  = "Error: form data was not received!";
-            $errorMsgs['Result'] = "Failure: cannot delete apartment at this time!";
-            echo json_encode($errorMsgs);
+            $returnMsgs['Error']  = "Error: form data was not received!";
+            $returnMsgs['Failure'] = "Failure: cannot delete apartment at this time!";
+            echo json_encode($returnMsgs);
             return;
         }
         
@@ -474,29 +474,29 @@ class Landlord extends PageTemplate{
         if (isset($apartForm[$name_apartmentId])) {
             $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
             if ($apartmentRecord->user_id != $userID){
-                $errorMsgs['Error'] = "You are not allowed to delete this apartment!";
-                echo json_encode($errorMsgs);
+                $returnMsgs['Error'] = "You are not allowed to delete this apartment!";
+                echo json_encode($returnMsgs);
                 return;
             }
         }
         
         try {
             /* If not error messages thus far then add Apartment to database */
-            if (empty($errorMsgs)) {
+            if (empty($returnMsgs)) {
                 /* delete Apartment from database */
                 $this->apartment_db->deleteApartment($apartForm[$name_apartmentId]);
-                $errorMsgs['Result'] = "Apartment has been successfully deleted!";
+                $returnMsgs['Success'] = "Apartment has been successfully deleted!";
             }
             
         } catch (Exception $ex) {
             
-            $errorMsgs['Error']  = $exception->getMessage();
-            $errorMsgs['Result'] = "Failure: cannot delete apartment at this time!";
-            echo json_encode($errorMsgs);
+            $returnMsgs['Error']  = $exception->getMessage();
+            $returnMsgs['Failure'] = "Failure: cannot delete apartment at this time!";
+            echo json_encode($returnMsgs);
             return;
         }
         
-        echo json_encode($errorMsgs);
+        echo json_encode($returnMsgs);
         
         return;
     }
