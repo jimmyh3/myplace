@@ -89,8 +89,11 @@
                                 <span class="error">* required field.</span>
                             </p>
                             
-                            <form class="form-horizontal"   name="edit-aprt-form" 
-                                  id="edit-aprt-form"       enctype="multipart/form-data"
+                            <form class="form-horizontal"   
+                                  name= "edit-aprt-form<?php echo $apartID; ?>" 
+                                  id=   "edit-aprt-form<?php echo $apartID; ?>"
+                                  data-id="<?php echo $apartID; ?>"
+                                  enctype="multipart/form-data"
                             >
                             
                                 <input type="hidden" name="apartment_id" value="<?php echo $apartID; ?>">

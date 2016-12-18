@@ -61,8 +61,8 @@ $(function() {
     }
     
     /* edit-aprt-form handling - reset invalid red bars to none upon input. */
-    if ($('#edit-aprt-form').length !== 0){
-        $('form#edit-aprt-form :input').each(function(){
+    if ($('[id^=edit-aprt-form]').length !== 0){
+        $('[id^=edit-aprt-form] :input').each(function(){
             $(this).on('input', function(input){
                $(this).css('border', ""); 
             });
@@ -73,53 +73,54 @@ $(function() {
      * Declare AJAX function to send the #add_aprt_form form object to 
      * landlord->addApartment() to add a new Apartment to the database.
      */
-    var editform = document.forms.namedItem('edit-aprt-form');
-    editform.addEventListener('submit', function(ev) {
+    if ($('[id^=edit-aprt-form]').length !== 0) {
+        $('[id^=edit-aprt-form]').on('submit', function(event){
+            
+            var apartmentId = $(this).attr("data-id");
+            var editData = new FormData(this);
+            
+            var xmlHttpReq  = new XMLHttpRequest();
+            xmlHttpReq.open("POST", url + "landlord/editApartment", true);
+            xmlHttpReq.onload = function(oEvent) { //onload == request completed
+                if (xmlHttpReq.status == 200) {
+                    var serverResp = xmlHttpReq.responseText;
+                    console.log(serverResp);
 
-        var editData = new FormData(editform);
+                    try {
+                        if (serverResp) {
 
-        var xmlHttpReq  = new XMLHttpRequest();
-        xmlHttpReq.open("POST", url + "landlord/editApartment", true);
-        xmlHttpReq.onload = function(oEvent) { //onload == request completed
-            if (xmlHttpReq.status == 200) {
-                var serverResp = xmlHttpReq.responseText;
-                console.log(serverResp);
-                
-                try {
-                    if (serverResp) {
-                    
-                        var errorMsgs = JSON.parse(serverResp);
+                            var errorMsgs = JSON.parse(serverResp);
 
-                        /* $.each() as JQUery function closure */
-                        $.each(errorMsgs, function(name, errMsg) {
-                            var targetID = '#edit-aprt-form *[name=' + name + ']';
-                            var inputElement = $(targetID);
+                            /* $.each() as JQUery function closure */
+                            $.each(errorMsgs, function(name, errMsg) {
+                                var targetID = '#edit-aprt-form'+apartmentId+' *[name=' + name + ']';
+                                var inputElement = $(targetID);
 
-                            inputElement.css('border', "5px solid red");
+                                inputElement.css('border', "5px solid red");
 
-                            inputElement.after("<p id='" + name + "-error' style='color:red;font-style: italic;'>"
-                                                         + errMsg + "</p>");
+                                inputElement.after("<p id='" + name + apartmentId + "-error' style='color:red;font-style: italic;'>"
+                                                             + errMsg + "</p>");
 
-                            $('#edit-aprt-form').on('submit', function(e){
-                                $('#'+name+"-error").remove();
+                                $('#edit-aprt-form'+apartmentId).on('submit', function(e){
+                                    $('#'+name+apartmentId+"-error").remove();
+                                });
+
                             });
 
-                        });
+                        }
+                    } catch (error) {
 
                     }
-                } catch (error) {
-                    
-                }
-                
-                
-            } else {
-                alert ("Error " + xmlHttpReq.status);
-            }
-        };
 
-        xmlHttpReq.send(editData);
-        ev.preventDefault();
-    }, false);
+                } else {
+                    alert ("Error " + xmlHttpReq.status);
+                }
+            };
+
+            xmlHttpReq.send(editData);
+            event.preventDefault();
+        });
+    }
     
     /*
      * Applies to all myPost 'Delete Post' buttons. This will delete the targeted
