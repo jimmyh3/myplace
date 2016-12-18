@@ -58,7 +58,7 @@ class Landlord extends PageTemplate{
         
         /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
         if ($userType != 1) {
-            $errorMsgs['Failure'] = "You must be a landlord who's signed in to add a new apartment!";
+            $errorMsgs['Result'] = "You must be a landlord who's signed in to add a new apartment!";
             return;
         }
         

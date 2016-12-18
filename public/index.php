@@ -31,7 +31,7 @@ require APP . 'config/config.php';
 require APP . 'libs/helper.php';
 
 // load google analytics 
-//require APP . 'libs/analyticstracking.php'; 
+require APP . 'libs/analyticstracking.php'; 
 
 // load application class
 require APP . 'core/application.php';

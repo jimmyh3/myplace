@@ -1,6 +1,5 @@
 $(function() {
-    
-    
+
     /**
      * Declare AJAX function to send the #add_aprt_form form object to 
      * landlord->addApartment() to add a new Apartment to the database.
@@ -21,7 +20,11 @@ $(function() {
                     
                         var errorMsgs = JSON.parse(serverResp);
 
-                        /* $.each() as JQUery function closure */
+                        /*
+                         *  $.each() as JQUery function closure.
+                         *  Dynamically create and apply Jquery function to
+                         *  display red borders + text for validation.
+                         */
                         $.each(errorMsgs, function(name, errMsg) {
                             var targetID = '#add-aprt-form *[name=' + name + ']';
                             var inputElement = $(targetID);
@@ -37,6 +40,8 @@ $(function() {
 
                         });
 
+                        _apartmentFormActionOutput(errorMsgs);
+                        
                     }
                 }catch(error){
                     
@@ -54,15 +59,6 @@ $(function() {
     /* add-aprt-form handling - reset invalid red bars to none upon input. */
     if ($('#add-aprt-form').length !== 0){
         $('form#add-aprt-form :input').each(function(){
-            $(this).on('input', function(input){
-               $(this).css('border', ""); 
-            });
-        });
-    }
-    
-    /* edit-aprt-form handling - reset invalid red bars to none upon input. */
-    if ($('[id^=edit-aprt-form]').length !== 0){
-        $('[id^=edit-aprt-form] :input').each(function(){
             $(this).on('input', function(input){
                $(this).css('border', ""); 
             });
@@ -107,6 +103,8 @@ $(function() {
 
                             });
 
+                            _apartmentFormActionOutput(errorMsgs);
+                            
                         }
                     } catch (error) {
 
@@ -119,6 +117,15 @@ $(function() {
 
             xmlHttpReq.send(editData);
             event.preventDefault();
+        });
+    }
+    
+    /* edit-aprt-form handling - reset invalid red bars to none upon input. */
+    if ($('[id^=edit-aprt-form]').length !== 0){
+        $('[id^=edit-aprt-form] :input').each(function(){
+            $(this).on('input', function(input){
+               $(this).css('border', ""); 
+            });
         });
     }
     
@@ -143,6 +150,8 @@ $(function() {
                     try {
                         if (serverResp) {
                             errorMsgs = JSON.parse(serverResp);
+                            
+                            _apartmentFormActionOutput(errorMsgs);
                         }
                     } catch (error) {
                         alert("FAILURE: couldn't delete Apartment! ");
@@ -156,6 +165,31 @@ $(function() {
             
         });
     }
+    
+    /**
+     * Function to display Apartment form processing result message and close 
+     * the modal.
+     * 
+     * @param {array/object} errorMsgs - error messages from the server side.
+     * @returns {void}
+     */
+    function _apartmentFormActionOutput(errorMsgs){
+        if (errorMsgs.hasOwnProperty('Result')
+                && !isEmptyOrSpaces(errorMsgs['Result'])) {
+            alert(errorMsgs['Result']);
+            $('button.close').click();  //closes the Modal.
+        }
+
+        if (errorMsgs.hasOwnProperty('Error')
+                && !isEmptyOrSpaces(errorMsgs['Error'])) {
+            console.log(errorMsgs['Error']);
+        }
+    }
+    
+    function isEmptyOrSpaces(str){
+        return str === null || str.match(/^\s*$/) !== null;
+    }
+    
 });
 
 
