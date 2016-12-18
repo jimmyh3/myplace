@@ -165,10 +165,10 @@ class Landlord extends PageTemplate{
             }
             
             /* Set the Apartment thumbnail to the first image of image files */
-            if (!empty($apartImgFiles)){
-                $thumbnail = reset($apartImgFiles);
-                if ($thumbnail) {
-                    $apartment->setThumbnail(file_get_contents($thumbnail));
+            for ($index = 0; $index < count($apartImgFiles); $index++){
+                if (!empty(trim($apartImgFiles[$index]))) {
+                    $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                    break;
                 }
             }
             
@@ -223,10 +223,10 @@ class Landlord extends PageTemplate{
         
         
         /* Variables */
-        $apartForm      = array();          //holds the 'Add Apartment Form' data. 
+        $apartForm       = array();          //holds the 'Add Apartment Form' data. 
         $apartImgFiles   = array();          //holds the images sent from the form.
         $returnMsgs      = array();          //holds validation response messages.
-        $apartment      = new Apartment();  //Apartment object to add to database.
+        $apartment       = new Apartment();  //Apartment object to add to database.
         
         /* Form <input name=""> for quick reference */
         $name_bedroom       = "Bedroom";
@@ -424,6 +424,9 @@ class Landlord extends PageTemplate{
                 $thumbnail = reset($apartImgFiles);
                 if ($thumbnail) {
                     $apartment->setThumbnail(file_get_contents($thumbnail));
+                } else {
+                    $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
+                    $apartment->setThumbnail($apartmentRecord->thumbnail);
                 }
             }
             
