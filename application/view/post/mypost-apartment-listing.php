@@ -309,11 +309,12 @@
                                     <div class="control-group multiple-form-group" data-max=10>
                                         <label>Upload Images (max 10):</label>
                                           
-                                    <?php foreach($apartImages as $index=>$apartImage) : ?>
+                                    <?php for ( $keys = array_keys($apartImages), $index = 0;
+                                                $index < count($apartImages);     $index++) : ?>
                                         <div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
                                             <input type="hidden" 
                                                    name="image_id[]" 
-                                                   value="<?php echo htmlspecialchars($apartImage->id, ENT_QUOTES, 'UTF-8'); ?>"
+                                                   value="<?php echo htmlspecialchars($apartImages[$keys[$index]]->id, ENT_QUOTES, 'UTF-8'); ?>"
                                             >   
                                             <input type="file" 
                                                    accept="image/*" 
@@ -324,7 +325,7 @@
                                                 <?php 
                                                 if ($index == 10) {
                                                     echo '<button type="button" class="btn btn-success btn-add" disabled="disabled">+</button>';
-                                                } else if (($image_index + 1) < count($images)) {
+                                                } else if (($index + 1) < count($apartImages)) {
                                                     echo '<button type="button" class="btn btn-success btn-default btn-danger btn-remove">-</button>';
                                                 } else {
                                                     echo '<button type="button" class="btn btn-success btn-add">+</button>';
@@ -333,7 +334,7 @@
                                             </span>
                                         </div>
                                     
-                                    <?php endforeach; ?>
+                                    <?php endfor;  ?>
                                     
                                     <?php if (count($apartImages) == 0) :?>
                                         <div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
