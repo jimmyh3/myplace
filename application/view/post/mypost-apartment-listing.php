@@ -335,7 +335,7 @@
                                     
                                     <?php if (count($apartImages) == 0) :?>
                                         <div class="form-group input-group" style="padding-left: 15px; padding-right: 15px;">
-                                            <input type="hidden" name="image_id[]" value="' . $imageId . '">
+                                            <input type="hidden" name="image_id[]" value="">
                                             <input type="file" accept="image/*" name="images[]" class="form-control">
                                             <span class="input-group-btn">
                                                 <button type="button" class="btn btn-success btn-add">+</button>

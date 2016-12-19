@@ -219,6 +219,7 @@ class Landlord extends PageTemplate{
         $name_imageIds      = "image_id";       //ARRAY of image IDs
         $apartImgIDs        = array();
         $apartImgNames      = array();          //holds the names of images sent.
+        $apartImgsCount     = 0;                //total image inputs received (blank or not)
         //-------------------------------------------------------
         
         
@@ -264,8 +265,9 @@ class Landlord extends PageTemplate{
         /* Extract User input file data */
         if (isset($_FILES[$name_images]['tmp_name']) && (!empty($_FILES[$name_images]['tmp_name']))) 
         {
-            $apartImgNames  = $_FILES[$name_images]['name'];
+            $apartImgNames   = $_FILES[$name_images]['name'];
             $apartImgFiles   = $_FILES[$name_images]['tmp_name'];
+            $apartImgsCount  = count($apartImgFiles);
         }
         
         /* Verify that the landlord owns the Apartment he/she wants to edit */
@@ -300,7 +302,7 @@ class Landlord extends PageTemplate{
              * ---------Edit Apartment : set this Apartment ID-------------- 
              */
             if ((isset($apartForm[$name_imageIds]))){
-                $apartImgIDs = array_filter($apartForm[$name_imageIds], 'trim');
+                $apartImgIDs = $apartForm[$name_imageIds];
             } 
             
             /* ---------Set number of bedrooms in this Apartment------------ */
@@ -381,12 +383,13 @@ class Landlord extends PageTemplate{
              * ----------------------------------------------------------------
              */
             
+            $imageRecords = $this->apartment_db->getImageDB($apartForm[$name_apartmentId]);
+            
             /*
              * Cross check current images of this Apartment with any IDs unfounded 
              * in $apartForm. If a record is not found then in $apartForm then delete it
              * from the database (means the user manually deselected it in form).
              */
-            $imageRecords = $this->apartment_db->getImageDB($apartForm[$name_apartmentId]);
             foreach ($imageRecords as $imageRecord){
                 if (!in_array($imageRecord->id, $apartImgIDs)){
                     $this->apartment_db->deleteImage($imageRecord->id);
@@ -394,40 +397,52 @@ class Landlord extends PageTemplate{
             }
             
             /* 
-             * Update/swap any images the landlord has decided to. Any updating
+             * Swap/Add any images the landlord has decided to. Any updating
              * images should already have their determined ID, which is in the
              * <input type="hidden"> element.
              */
-            for ($index = 0; $index < count($apartImgIDs); $index++){
+            for ($index = 0; $index < $apartImgsCount; $index++){
                 if (!empty(trim($apartImgFiles[$index]))){
-                    $this->apartment_db->editImageDB( $apartImgIDs[$index],
-                                                      $apartImgNames[$index],
-                                                      file_get_contents($apartImgFiles[$index]));
+                    /* If accompanied ID is not blank and is numeric, edit Image record. */
+                    if (!empty(trim($apartImgIDs[$index])) && (is_numeric($apartImgIDs[$index]))) {
+                        
+                        $this->apartment_db->editImageDB(   $apartImgIDs[$index],
+                                                            $apartImgNames[$index],
+                                                            file_get_contents($apartImgFiles[$index]));
+                        
+                    /* If the file is given but not recognized ID, then add new image. */
+                    } else {
+                        $this->apartment_db->addToImageDB(  $apartForm[$name_apartmentId],
+                                                            $apartImgNames[$index],
+                                                            file_get_contents($apartImgFiles[$index]));
+                    }
                 }
             }
             
-            /* 
-             * Add any new images the landlord given. Notice that index start
-             * with the value of image ID array since none of the remaining images
-             * should have a pre-existing ID.
+            /*
+             * Set the Apartment thumbnail to the first image of image files.
              */
-            for ($index = count($apartImgIDs); $index < count($apartImgFiles); $index++){
+            for ($index = 0; $index < $apartImgsCount; $index++){
+                
+                /* If an existing ID is found first, set thumbnail to that image. */
+                if (!empty(trim($apartImgIDs[$index]) && (is_numeric ($apartImgIDs[$index])))) {
+                    if (!empty(trim($apartImgFiles[$index]))){
+                        $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                        break;  //thumbnail is NULL by default.
+                    } else {
+                        /* Need to get the image since the existing BLOB is not a file */
+                        $imageBlob = $this->apartment_db->getImage($apartImgIDs[$index])->image;
+                        $apartment->setThumbnail($imageBlob);
+                        break;
+                    }
+                }
+                
+                /* If a newly uploaded image is found first, then thumbnail is set to it. */
                 if (!empty(trim($apartImgFiles[$index]))){
-                    $this->apartment_db->addToImageDB(  $apartForm[$name_apartmentId],
-                                                        $apartImgNames[$index],
-                                                        file_get_contents($apartImgFiles[$index]));
+                    $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                    break;  //thumbnail is NULL by default.
                 }
-            }
-            
-            /* Set the Apartment thumbnail to the first image of image files */
-            if (!empty($apartImgFiles)){
-                $thumbnail = reset($apartImgFiles);
-                if ($thumbnail) {
-                    $apartment->setThumbnail(file_get_contents($thumbnail));
-                } else {
-                    $apartmentRecord = $this->apartment_db->getApartment($apartForm[$name_apartmentId]);
-                    $apartment->setThumbnail($apartmentRecord->thumbnail);
-                }
+                
             }
             
             /* If not error messages thus far then add Apartment to database */

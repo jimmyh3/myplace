@@ -515,7 +515,7 @@ class Apartment {
             $this->thumbnail = $blob;
             $result = true;
         } else {
-            throw new Exception("Failed to add thumbnail!");
+            throw new Exception("Failed to set thumbnail!");
         }
         return $result;
     }

@@ -759,6 +759,20 @@ class ApartmentDB{
     }
     
     /**
+     * Get the single image of an apartment.
+     * 
+     * @param int Image ID
+     * @return Image Record
+     */
+    public function getImage( $id) {
+        $sql = "SELECT * FROM Image WHERE id = :id ";
+        $query = $this->db->prepare( $sql);
+        $query->execute(array("id" => $id));
+        
+        return $query->fetch();
+    }
+    
+    /**
      * Add the given BLOB image to the Image table. Each image must be
      * associated with an Apartment, thus the apartment's ID is required.
      * 
