@@ -8,8 +8,19 @@ $(function() {
                 .done( function( filters) {
                    $.post(url + "/home/search", {"query" : $('#search_bar').val(), "filters" : filters})
                    .done( function ( result) {
-                       //alert( result);
-                       $('#results').html( result);
+                        //alert( result);
+                        $('#results').html( result);
+                       
+                        var userType = getCookie( "myPlace_userType");
+                        if( parseInt( userType) == 0) { 
+                            $('.contact-button').each( function() {
+                                $( this).show();
+                            });
+                        } else {
+                            $('.contact-button').each( function() {
+                                $( this).hide();
+                            });
+                        }
                    });
                 });
         });
@@ -24,6 +35,17 @@ $(function() {
                    $.post(url + "/home/search", {"query" : $('#search_bar').val(), "filters" : filters})
                    .done( function ( result) {
                        $('#results').html( result);
+                      
+                       var userType = getCookie( "myPlace_userType");
+                            if( parseInt( userType) == 0) { 
+                                $('.contact-button').each( function() {
+                                    $( this).show();
+                                });
+                            } else {
+                                $('.contact-button').each( function() {
+                                    $( this).hide();
+                                });
+                            }
                    });
                 });
         });
@@ -57,7 +79,15 @@ $(function() {
                             $('#login_logout_button').html( results);
                             
                             var userType = getCookie( "myPlace_userType");
-                            if( parseInt( userType) = 1) {
+                            if( parseInt( userType) == 0) { 
+                                $('.contact-button').each( function() {
+                                    $( this).show();
+                                });
+                            } else {
+                                $('.contact-button').each( function() {
+                                    $( this).hide();
+                                });
+                            }
                         }
                     });
             }
@@ -92,7 +122,15 @@ $(function() {
                             $('#login_logout_button').html( results);
                             
                             var userType = getCookie( "myPlace_userType");
-                            alert( userType);
+                            if( parseInt( userType) == 0) { 
+                                $('.contact-button').each( function() {
+                                    $( this).show();
+                                });
+                            } else {
+                                $('.contact-button').each( function() {
+                                    $( this).hide();
+                                });
+                            }
                         }
                     });
             }
