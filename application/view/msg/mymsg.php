@@ -25,7 +25,24 @@
     <p>Interested students contacted you</p>
     <p>"<"Insert REPLY button later">"</p>  
     <table class="table table-hover">
-        <thead>
+        <?php        
+        // default $user_id to 1 for testing purposes
+        $user_id ="1";
+        
+        if(isset($_COOKIE["myPlace_userID"])){
+            $user_id = $_COOKIE["myPlace_userID"];
+        }
+        
+        $aid = $_GET['apartment_id'];
+        echo "Apartment ID: ";
+        print_r($aid);
+        echo "\n";
+        echo "User ID: ";
+        print_r($user_id);
+        
+
+        echo $this->displayMsg($aid, $user_id); ?>
+<!--        <thead>
             <tr>
                 <th>Date</th>
                 <th>Name</th>
@@ -53,5 +70,5 @@
                 <td>july@example.com</td>
             </tr>
         </tbody>
-    </table>
+    </table>-->
 </div>

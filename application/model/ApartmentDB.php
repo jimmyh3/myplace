@@ -106,9 +106,9 @@ class ApartmentDB{
         $apt->setID($aptID);
         
         /* Send any Apartment images to the Image database table */
-        foreach ($apt->getImages() as $image)
+        foreach ($apt->getImages() as $imageName=>$imageBlob)
         {
-            $this->addToImageDB($apt->getID(), $image);
+            $this->addToImageDB($apt->getID(), $imageName, $imageBlob);
         }
         
         return true ;
@@ -152,59 +152,86 @@ class ApartmentDB{
         return true;
     }
     
-//    /**
-//     * Update the apartment database record based on the given Apartment object.
-//     * 
-//     * @throws Exception if query somehow failed.
-//     * @param Apartment $apt
-//     * @return boolean - 0 for failure, 1 for success.
-//     */
-//    public function editApartment(Apartment $apt)
-//    {
-//        if ($apt->apartment_id === NULL) return false;  //Need apartment_id to UPDATE
-//        
-//        $sql = "";  //SQL query to execute;
-//        $sql_update_set = "UPDATE Apartments SET ";
-//        $sql_where      = " WHERE ";
-//        
-//        /* Get array mapping of column names to the Apartment object values */
-//        $aptColsArray = $this->apartmentToDBRecord($apt);
-//        
-//        /* This is for SET-ting values of this apartment */
-//        $sqlSETValues = "";
-//        
-//        /* Append all apartment table columns with their values for SET */
-//        $colKeys = array_keys($aptColsArray);
-//        for ($i = 0; $i < count($colKeys); $i++)
-//        {
-//            $sqlSETValues = $sqlSETValues . 
-//                            $colKeys[$i]  . " = " . $aptColsArray[$colKeys[$i]];
-//            
-//            if (($i + 1) < count($colKeys))
-//            {
-//                $sqlSETValues = $sqlSETValues . " , "; //Append comma for set value
-//            }
-//        }
-//        
-//        //---------------------------------------------------------------------
-//        
-//        /* Create UPDATE query */
-//        $sql = $sql . $sql_update_set;  /* UPDATE Apartments SET */
-//        $sql = $sql . $sqlSETValues;    /* Append SET [col = val ...] */
-//        $sql = $sql . $sql_where;       /* Append WHERE */
-//        $sql = $sql . " id = :id ";     /* Append 'id' as target with parameter */
-//
-//        /* Prepare and Execute the UPDATE Statement */
-//        $stmt = $this->db->prepare($sql);
-//        if ($stmt === false)
-//            {throw new Exception('Could not prepare apartment UPDATE query'); }
-//        
-//        $result = $stmt->execute(array("id" => $apt->apartment_id));
-//        if ($result === false)
-//            {throw new Exception('Could not execute apartment UPDATE query'); }
-//        
-//        return true;
-//    }
+    /**
+     * Update the apartment database record based on the given Apartment object.
+     * 
+     * @throws Exception if query somehow failed.
+     * @param Apartment $aprt
+     * @return boolean - 0 for failure, 1 for success.
+     */
+    public function editApartment(Apartment $aprt)
+    {
+        if ($aprt->getID() === NULL) return false;  //Need apartment_id to UPDATE
+        
+        //SQL query to execute;
+        $sql = " UPDATE Apartments SET  
+                 %s
+                 WHERE
+                 id = :_id ";
+        
+        $sql_equal = " = ";
+        $sql_comma = " , ";
+        $sql_colon = ":";
+        $sql_setValues = "";
+        
+        /* Get array mapping of column names to the Apartment object values */
+        $aptColsArray = $this->apartmentToDBRecord($aprt);
+        
+        /* Append all apartment table columns with their values for SET */
+        $i = 0;
+        foreach ($aptColsArray as $colName=>$aptVal)
+        {
+            $sql_setValues .= $colName;             //Append Apartment column name
+            $sql_setValues .= $sql_equal;           //Append =
+            $sql_setValues .= $sql_colon . $colName;//Append Apartment new(?) value.
+            
+            if (($i+1) < count($aptColsArray)) { $sql_setValues .= $sql_comma; }
+            $i++;
+        }
+        
+        /* Append the SET values to the UPDATE query string */
+        $sql = sprintf($sql, $sql_setValues);
+
+        /* Prepare and Execute the UPDATE Statement */
+        $stmt = $this->db->prepare($sql);
+        if ($stmt === false)
+            {throw new Exception('Could not prepare apartment UPDATE query'); }
+        
+        /* Bind columns names listed in $sql to apartment object values */
+        foreach ($aptColsArray as $colName=>$aptVal)
+        {
+            $param = 0;
+            if(is_numeric($aptVal)) {
+                $param = PDO::PARAM_INT; 
+            } elseif(filter_var($aptVal, FILTER_VALIDATE_BOOLEAN)) {
+                $param = PDO::PARAM_BOOL;
+            } elseif(is_null($aptVal)) {
+                $param = PDO::PARAM_NULL;
+            } elseif(is_string($aptVal)) {
+                $param = PDO::PARAM_STR;
+            } elseif($colName === 'thumbnail') {
+                $param = PDO::PARAM_LOB;
+            } else {
+                $param = FALSE;
+            }
+            
+            $stmt->bindValue($sql_colon.$colName, $aptVal, $param);
+        }
+        
+        $stmt->bindValue(":_id", $aprt->getID(), PDO::PARAM_INT);
+        
+        $result = $stmt->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute apartment UPDATE query'); }
+        
+        /* Send any Apartment images to the Image database table */
+        foreach ($aprt->getImages() as $image)
+        {
+            $this->addToImageDB($aprt->getID(), $image);
+        }
+        
+        return true;
+    }
     
     /**
      * Search the database and return apartments that contains at least some of 
@@ -308,6 +335,26 @@ class ApartmentDB{
         $apartmentRecords = $stmt->fetchAll();
         
         return $apartmentRecords;
+    }
+    
+    /**
+     * Retrieve a single Apartment given the apartment ID.
+     * @param type $apartment_id
+     * @return type
+     */
+    public function getApartment($apartment_id)
+    {
+        $sql = "SELECT * FROM Apartments WHERE id = :id ";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(
+            array('id' => $apartment_id)
+        );
+        
+        /* Get all applicable apartments */
+        $apartmentRecord = $stmt->fetch();
+        
+        return $apartmentRecord;
     }
     
     
@@ -628,7 +675,8 @@ class ApartmentDB{
         $images = array();
         foreach ($this->getImageDB($apartmentRecord->id) as $imageRecord)
         {
-            array_push($images, $imageRecord->image);
+            $images[$imageRecord->name] = $imageRecord->image;
+            //array_push($images, $imageRecord->image);
         }
         
         /* Set Apartment's array of images */
@@ -647,7 +695,6 @@ class ApartmentDB{
      */
     private function apartmentToDBRecord(Apartment $apt)
     {
-        //TODO: fix begin_term and end_term
         $aptColsArray = array(  "id"                    => $apt->getID(),
                                 "title"                 => $apt->getTitle(),
                                 "user_id"               => $apt->getUserID(),
@@ -670,14 +717,6 @@ class ApartmentDB{
                                 );
         
         return $aptColsArray;
-    }
-    
-    public function getImageDB( $id) {
-        $sql = "SELECT * FROM Image WHERE apartment_id = :apartment_id ";
-        $query = $this->db->prepare( $sql);
-        $query->execute(array("apartment_id" => $id));
-        
-        return $query->fetchAll();
     }
     
     /**
@@ -706,32 +745,115 @@ class ApartmentDB{
     }
     
     /**
+     * Get the images of an Apartment.
+     * 
+     * @param int $id
+     * @return Image records.
+     */
+    public function getImageDB( $id) {
+        $sql = "SELECT * FROM Image WHERE apartment_id = :apartment_id ";
+        $query = $this->db->prepare( $sql);
+        $query->execute(array("apartment_id" => $id));
+        
+        return $query->fetchAll();
+    }
+    
+    /**
+     * Get the single image of an apartment.
+     * 
+     * @param int Image ID
+     * @return Image Record
+     */
+    public function getImage( $id) {
+        $sql = "SELECT * FROM Image WHERE id = :id ";
+        $query = $this->db->prepare( $sql);
+        $query->execute(array("id" => $id));
+        
+        return $query->fetch();
+    }
+    
+    /**
      * Add the given BLOB image to the Image table. Each image must be
      * associated with an Apartment, thus the apartment's ID is required.
      * 
-     * @param type $aparmentID - the apartment's ID.
-     * @param type $blob - the BLOB data image.
+     * @param int $apartmentID - the apartment's ID.
+     * @param String $imageName - name of the file.
+     * @param String $imageBlob - the BLOB data image.
      * @return boolean - true
      * @throws Exception - thrown if the INSERT query fails.
      */
-    public function addToImageDB($aparmentID, $blob)
+    public function addToImageDB($apartmentID, $imageName, $imageBlob)
     {
         $sql = " INSERT INTO Image 
-                 ( apartment_id , image ) 
+                 ( apartment_id , name,  image ) 
                  VALUES 
-                 (:apartment_id , :image ) ";
+                 (:apartment_id , :name, :image ) ";
         
         $query = $this->db->prepare( $sql);
         if ($query === false)
             {throw new Exception('Could not prepare Image INSERT query'); }
         
-        $query->bindValue(":apartment_id", $aparmentID, PDO::PARAM_INT);
-        $query->bindValue(":image", $blob, PDO::PARAM_LOB);
+        $query->bindValue(":apartment_id", $apartmentID, PDO::PARAM_INT);
+        $query->bindValue(":name", $imageName, PDO::PARAM_STR);
+        $query->bindValue(":image", $imageBlob, PDO::PARAM_LOB);
         
         $result = $query->execute();
         if ($result === false)
             {throw new Exception('Could not execute Image INSERT query'); }
           
+        return true;
+    }
+    
+    /**
+     * Update a specific Image in the Image database.
+     * 
+     * @param int $imageId - the Image to update.
+     * @param String $imageBlob
+     * @return boolean - true
+     * @throws Exception - throws if query fails.
+     */
+    public function editImageDB($imageId, $imageName, $imageBlob)
+    {
+        //SQL query to execute;
+        $sql = " UPDATE Image SET  
+                 image = :image , name = :name
+                 WHERE
+                 id = :id ";
+        
+        $query = $this->db->prepare( $sql);
+        if ($query === false)
+            {throw new Exception('Could not prepare Image UPDATE query'); }
+        
+        $query->bindValue(":id", $imageId, PDO::PARAM_INT);
+        $query->bindValue(":name", $imageName, PDO::PARAM_STR);
+        $query->bindValue(":image", $imageBlob, PDO::PARAM_LOB);
+        
+        $result = $query->execute();
+        if ($result === false)
+            {throw new Exception('Could not execute Image UPDATE query'); }
+            
+        return true;
+    }
+    
+    /**
+     * Delete a specific Image from the Image database.
+     * 
+     * @param int $imageId - target ID of Image to delete.
+     * @return boolean
+     * @throws Exception
+     */
+    public function deleteImage($imageId)
+    {
+        $sql = "DELETE FROM Image WHERE id = :id ";
+        
+        $query = $this->db->prepare( $sql);
+        if ($query === false)
+            {throw new Exception('Could not prepare Image DELETE query'); }
+        
+        $result = $query->execute(array("id" => $imageId));
+        if ($result === false)
+            {throw new Exception('Could not execute Image DELETE query'); }
+            
         return true;
     }
     

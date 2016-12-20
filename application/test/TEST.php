@@ -78,4 +78,16 @@ class TEST {
         
         echo "Query was..." .  $result;
     }
+    
+    public static function getApartmentAndEditDescription()
+    {
+        self::openConnection();
+        $apartmentRecords = self::$apartment_db->search(array(),array(), 0);
+        
+        $apartment = self::$apartment_db->dbRecordToApartment($apartmentRecords[0]);
+        
+        $apartment->setDescription("TEST: edited via from TEST.php");
+        
+        return self::$apartment_db->editApartment($apartment);  //true
+    }
 }

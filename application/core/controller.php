@@ -16,6 +16,11 @@ class Controller
      * @var null UserDB
      */
     public $user_db = null;
+    
+    /**
+     * @var null UserDB
+     */
+    public $message_db = null;
 
     /**
      * Whenever controller is created, open a database connection too and load "the model".
@@ -50,8 +55,11 @@ class Controller
     {
         require APP . 'model/ApartmentDB.php';
         require APP . 'model/UserDB.php';
+        require APP . 'model/MessageDB.php';
+        
         // create new "model" (and pass the database connection)
         $this->apartment_db = new ApartmentDB($this->db);
         $this->user_db      = new UserDB($this->db);
+        $this->message_db   = new MessageDB($this->db);
     }
 }
