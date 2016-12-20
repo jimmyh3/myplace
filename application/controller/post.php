@@ -45,6 +45,7 @@ class Post extends Controller
                 //$landlordNumber;
                 
                 $apartID            = htmlspecialchars($apartment->getID(), ENT_QUOTES, 'UTF-8');
+                $apartTitle         = htmlspecialchars($apartment->getTitle(), ENT_QUOTES, 'UTF-8');
                 $apartBedrooms      = htmlspecialchars($apartment->getBedRoomCount(), ENT_QUOTES, 'UTF-8');
                 $apartPrice         = htmlspecialchars($apartment->getActualPrice(), ENT_QUOTES, 'UTF-8');
                 $apartStartTerm     = htmlspecialchars($apartment->getBeginTerm(), ENT_QUOTES, 'UTF-8');

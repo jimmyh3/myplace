@@ -52,6 +52,15 @@
                                    
                                     <form class="form-horizontal" name="add-aprt-form" id="add-aprt-form" enctype="multipart/form-data">
                                         <fieldset>
+                                            
+                                            <!-- Text input-->
+                                            <div class="control-group">
+                                                <label class="control-label" for="Title">Apartment Title:</label>
+                                                <div class="controls">
+                                                    <input id="Title" name="Title" class="form-control" type="text" placeholder="Title" class="input-large">
+                                                </div>
+                                            </div>
+                                            
                                             <!-- Text input-->
                                             <div class="control-group">
                                                 <label class="control-label" for="Name">Contact name:</label>
