@@ -309,12 +309,12 @@ class PageTemplate extends Controller {
                     <input type="hidden" name="messageRecipient" value="' . $apartment->user_id.'"></div>'; 
                      
             $results .= '<input type="submit" class="btn btn-success pull-right" value="Send It!">
-                <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p>';
+                <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p>                            
+                <button class="btn pull-left" data-dismiss="modal" data-target="#contactLandlord" aria-hidden="true">Cancel</button>';
 
             $results .= '</form>
                                         </div>
                                         <div class="modal-footer">
-                                            <button class="btn" data-dismiss="modal" data-target="#contactLandlord" aria-hidden="true">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
