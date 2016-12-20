@@ -38,14 +38,14 @@ function createMap( id, zipcode) {
                         google.maps.event.trigger( map, "resize"); 
                      });
                 } else {
-                    alert( "No results");
+                    console.log( "No results");
                 }
             } else {
-                alert( "Geocode error: " + status);
+                console.log( "Geocode error: " + status);
             }
         });
     } else { // geocoder not initialized
-        alert( "Geocoder not initilized");
+        console.log( "Geocoder not initilized");
     }
     
     //$('#openApt'+id).unbind('click');
