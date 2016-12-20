@@ -1,5 +1,3 @@
-var map_ready = false;
-
 $(function() {
     
     if($('#ajax_search').length !== 0) {
@@ -56,7 +54,10 @@ $(function() {
                             $('#signin_error').html( "");
                             $('#loginModal').modal('hide');
                             //login_logout_button
-                            $('#login_logout_button').html( results); 
+                            $('#login_logout_button').html( results);
+                            
+                            var userType = getCookie( "myPlace_userType");
+                            if( parseInt( userType) = 1) {
                         }
                     });
             }
@@ -88,8 +89,10 @@ $(function() {
                         } else {
                             $('#register_error').html( "");
                             $('#loginModal').modal('hide');
-                            //$('#login_logout_button').html( ""); // TODO Logout button to be displayed
                             $('#login_logout_button').html( results);
+                            
+                            var userType = getCookie( "myPlace_userType");
+                            alert( userType);
                         }
                     });
             }
@@ -102,4 +105,19 @@ function logout( ) {
                .done( function( results) {
                    $('#login_logout_button').html( results);
            });
+}
+
+function getCookie(cname) {
+    var name = cname + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i <ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') {
+            c = c.substring(1);
+        }
+        if (c.indexOf(name) == 0) {
+            return c.substring(name.length, c.length);
+        }
+    }
+    return "";
 }

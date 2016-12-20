@@ -11,7 +11,7 @@
             <h1>myMessages</h1>
             <br>
             <h3>Messages from interested SFSU students</h3>
-            <p><a href="<?php echo URL; ?>home" class="w3-btn w3-padding-large w3-large">APARTMENTS</a></p>
+            <p><a href="<?php echo URL; ?>post" class="w3-btn w3-padding-large w3-large">MyPost</a></p>
             <br>
             <br>
             <div class="col-lg-6 col-lg-offset-3">
@@ -21,9 +21,15 @@
 </div><!-- /headerwrap -->   
 
 <div class="container">
-    <h2>myMessages</h2>
-    <p>Interested students contacted you</p>
-    <p>"<"Insert REPLY button later">"</p>  
+    <h2>MyMessages for:</h2>
+    <?php 
+        $apartment = $this->apartment_db->getApartment( $_GET['apartment_id']); 
+        if( isset($apartmen->title))
+            echo $apartment->title;
+        else
+            echo "Apartment id: ".$apartment->id;
+    ?>
+    <!--<p>"<"Insert REPLY button later">"</p>-->  
     <table class="table table-hover">
         <?php        
         // default $user_id to 1 for testing purposes
@@ -34,12 +40,11 @@
         }
         
         $aid = $_GET['apartment_id'];
-        echo "Apartment ID: ";
-        print_r($aid);
-        echo "\n";
-        echo "User ID: ";
-        print_r($user_id);
-        
+//        echo "Apartment ID: ";
+//        print_r($aid);
+//        echo "\n";
+//        echo "User ID: ";
+//        print_r($user_id);  
 
         echo $this->displayMsg($aid, $user_id); ?>
 <!--        <thead>

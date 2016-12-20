@@ -109,9 +109,11 @@ class PageTemplate extends Controller {
             if( isset( $apartment->area_code)) $results .= '<li>Zip code: '.htmlspecialchars( $apartment->area_code).'</li>';
             $results .= '</ul>
                         </div>
-                        <div class="ratings">
-                            <button type="button" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#contactLandlord'.$i.'">Rent now</button>
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal'.$i.'" onclick="createMap('.$i.','.$apartment->area_code.')" id="openApt'.$i.'">Details</button>
+                        <div class="ratings">';
+            if( isset($_COOKIE["myPlace_userType"]) && $_COOKIE["myPlace_userType"] == 0) {
+                $results .= '<button type="button" class="btn btn-success btn-sm pull-right contact-button" data-toggle="modal" data-target="#contactLandlord'.$i.'">Rent now</button>';
+            }            
+            $results .= '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal'.$i.'" onclick="createMap('.$i.','.$apartment->area_code.')" id="openApt'.$i.'">Details</button>
                             <div class="modal fade" id="aptModal'.$i.'" role="dialog" style="color: #000">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -266,16 +268,18 @@ class PageTemplate extends Controller {
 //            if( isset( $apartment->actual_price)) $results .= '<li> <strong>Tags: </strong>Spacious, comfy, inviting</li';>
             $results .= '</ul>
 
-                                                    <!--<button type="button" class="btn btn-success btn-lg">Rent now</button>-->
-
+                                                    
                                                     <p>
                                                         <br>
                                                         Or need more information before renting apartment? Contact landlord below.
                                                         <br>
-                                                    </p>
-                                                      
-                                                    <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#contactLandlord'.$i.'">Contact Landlord</button>
-                                                    </p>
+                                                    </p>';
+                                             
+            if( isset($_COOKIE["myPlace_userType"]) && $_COOKIE["myPlace_userType"] == 0) {
+                $results .= '<button type="button" class="btn btn-info btn-sm contact-button" data-toggle="modal" data-target="#contactLandlord'.$i.'">Contact Landlord</button>';
+            }
+                                                    
+            $results .= '</p>
                                                 </div>
                                             </div>
                                         </div>

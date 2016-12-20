@@ -29,7 +29,7 @@ function createMap( id, zipcode) {
                     
                     var circle = new google.maps.Circle({
                         map: map,
-                        radius: 1414, // 1.5 miles
+                        radius: 2414, // 1.5 miles
                         fillColor: '#b300b3', // maybe change color
                         center: results[ 0].geometry.location
                     });
