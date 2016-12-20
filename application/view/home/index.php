@@ -299,6 +299,9 @@ End of Corner Ribbon~~!>
                 </div>
             </div>
         </div>
+        
+        <script src ="<?php echo URL; ?>js/myplace-maps.js"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?callback=initMaps"></script>
     </div>
 </div>
  

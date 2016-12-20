@@ -1,22 +1,42 @@
+var map_ready = false;
+
 $(function() {
     
-    if($('#ajax_view_all_apartments').length !== 0) {//
-        $('#ajax_view_all_apartments').on('click', function( e) {
-//           alert( "Boop");
-           e.preventDefault();
-           $.ajax( url + '/home/search')
-                .done( function( results) {
-                    $('#results').html( results);
-           });
+    if($('#ajax_search').length !== 0) {
+        $('#ajax_search').on('click', function( e){
+            e.preventDefault();
+            //alert( "Search clicked");
+            $.post(url + '/home/getFilters', {"filters": $('#ajax_filter_form').serialize()})
+                .done( function( filters) {
+                   $.post(url + "/home/search", {"query" : $('#search_bar').val(), "filters" : filters})
+                   .done( function ( result) {
+                       //alert( result);
+                       $('#results').html( result);
+                   });
+                });
         });
     }
-        
+    
+    if($('#ajax_filter_form') !== 0) { 
+        $('#ajax_filter_form').on('submit', function( e){
+            e.preventDefault();
+            //alert( "Filter clicked");
+            $.post(url + '/home/getFilters', {"filters": $('#ajax_filter_form').serialize()})
+                .done( function( filters) {
+                   $.post(url + "/home/search", {"query" : $('#search_bar').val(), "filters" : filters})
+                   .done( function ( result) {
+                       $('#results').html( result);
+                   });
+                });
+        });
+    }
+    
     if($('#ajax_signin_form') !== 0) {
         $('#ajax_signin_form').on('submit', function( e) {
             e.preventDefault();
+            //alert( "signin clicked");
             // makes sure login info is valid 
-            if( document.getElementById( "signinForm_errorloc").innerHTML === "") {
-                
+            if( document.getElementById( "signinForm_errorloc").innerHTML == "") {
                 $.post( url + '/home/login', {"userinfo": $('#ajax_signin_form').serialize()})
                     .done( function( results) {
                         //alert( results);
@@ -32,8 +52,10 @@ $(function() {
                             }
                             $('#signin_error').html( error);
                         } else { // successful login
+                            //alert( results);
                             $('#signin_error').html( "");
                             $('#loginModal').modal('hide');
+                            //login_logout_button
                             $('#login_logout_button').html( results); 
                         }
                     });
@@ -44,7 +66,8 @@ $(function() {
     if($('#ajax_signup_form') !== 0) {
         $('#ajax_signup_form').on('submit', function( e) {
             e.preventDefault();
-            // makes sure registration infro is valid
+            //alert( "register clicked");
+            // makes sure registration info is valid
             if( document.getElementById( "registerForm_errorloc").innerHTML == "") {
                 $.post( url + '/home/register', {"userinfo": $('#ajax_signup_form').serialize()})
                     .done( function( results) {
@@ -65,15 +88,16 @@ $(function() {
                         } else {
                             $('#register_error').html( "");
                             $('#loginModal').modal('hide');
+                            //$('#login_logout_button').html( ""); // TODO Logout button to be displayed
                             $('#login_logout_button').html( results);
                         }
                     });
             }
         });
-    }    
+    }
 });
 
-function logout( e) {
+function logout( ) {
     $.ajax( url + '/home/logout')
                .done( function( results) {
                    $('#login_logout_button').html( results);

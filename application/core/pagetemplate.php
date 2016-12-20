@@ -69,6 +69,7 @@ class PageTemplate extends Controller {
         $results = "";
         $i = 0; 
         foreach ( $apartments as $apartment) {
+            $i = $apartment->id;
             $results .= '<div class="col-sm-4 col-lg-4 col-md-4">
                     <div class="thumbnail">';
             if( isset( $apartment->thumbnail)){
@@ -110,7 +111,7 @@ class PageTemplate extends Controller {
                         </div>
                         <div class="ratings">
                             <button type="button" class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#contactLandlord'.$i.'">Rent now</button>
-                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal'.$i.'">Details</button>
+                            <button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal'.$i.'" onclick="createMap('.$i.','.$apartment->area_code.')" id="openApt'.$i.'">Details</button>
                             <div class="modal fade" id="aptModal'.$i.'" role="dialog" style="color: #000">
                                 <div class="modal-dialog modal-lg">
                                     <div class="modal-content">
@@ -183,23 +184,8 @@ class PageTemplate extends Controller {
                                                 </div>
 
                                                 <div class="col-sm-6 col-height">
-
                                                     <h1> Map </h1>
-
-                                                    <div id="map" style="width:400px;height:400px;background:yellow"></div>
-
-                                                    <!--<script>
-                                                        function myMap() {
-                                                            var mapCanvas = document.getElementById("map");
-                                                            var mapOptions = {
-                                                                center: new google.maps.LatLng(51.5, -0.2), zoom: 10
-                                                            };
-                                                            var map = new google.maps.Map(mapCanvas, mapOptions);
-                                                        }
-                                                    </script>
-
-                                                    <script src="https://maps.googleapis.com/maps/api/js?callback=myMap"></script>-->
-
+                                                    <div id="map'.$i.'" style="width:400px;height:400px;background:yellow"></div>
                                                 </div>
 
                                                 <div class="col-sm-6 col-height">
@@ -332,7 +318,7 @@ class PageTemplate extends Controller {
                         </div>
                     </div>
                 </div>'; 
-            $i++;
+//            $i++;
         }
         
 //        $results .= '<div class="col-sm-4 col-lg-4 col-md-4">

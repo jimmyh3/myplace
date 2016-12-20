@@ -415,8 +415,6 @@ class ApartmentDB{
                     $j++;
                 }
                 $sql_where_query .= (($i + 1) < $queryCount) ? $sql_or : ""; //Append OR
-            } else {
-                
             }
             $i++;
         }
