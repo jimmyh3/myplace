@@ -37,10 +37,11 @@ class Landlord extends PageTemplate{
         $apartForm      = array();          //holds the 'Add Apartment Form' data. 
         $apartImgNames  = array();          //holds the image names sent from the form.
         $apartImgFiles  = array();          //holds the images sent from the form.
-        $returnMsgs      = array();          //holds validation response messages.
+        $returnMsgs     = array();          //holds validation response messages.
         $apartment      = new Apartment();  //Apartment object to add to database.
         
         /* Form <input name=""> for quick reference */
+        $name_title         = "Title";
         $name_bedroom       = "Bedroom";
         $name_price         = "Price";
         $name_startTerm     = "StartTerm";
@@ -84,6 +85,11 @@ class Landlord extends PageTemplate{
             
             /* Set the user ID of this Apartment to this logged in landlord's ID */
             $apartment->setUserID($userID);
+            
+            /* ---------Set the title of this apartment------------ */
+            if ((isset($apartForm[$name_title]))) {
+                $apartment->setTitle($apartForm[$name_title]);
+            }
             
             /* ---------Set number of bedrooms in this Apartment------------ */
             if ((isset($apartForm[$name_bedroom])) 
@@ -230,6 +236,7 @@ class Landlord extends PageTemplate{
         $apartment       = new Apartment();  //Apartment object to add to database.
         
         /* Form <input name=""> for quick reference */
+        $name_title         = "Title";
         $name_bedroom       = "Bedroom";
         $name_price         = "Price";
         $name_startTerm     = "StartTerm";
@@ -303,7 +310,12 @@ class Landlord extends PageTemplate{
              */
             if ((isset($apartForm[$name_imageIds]))){
                 $apartImgIDs = $apartForm[$name_imageIds];
-            } 
+            }
+            
+            /* ---------Set the title of this apartment------------ */
+            if ((isset($apartForm[$name_title]))) {
+                $apartment->setTitle($apartForm[$name_title]);
+            }
             
             /* ---------Set number of bedrooms in this Apartment------------ */
             if ((isset($apartForm[$name_bedroom])) 

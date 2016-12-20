@@ -224,11 +224,13 @@ class ApartmentDB{
         if ($result === false)
             {throw new Exception('Could not execute apartment UPDATE query'); }
         
-        /* Send any Apartment images to the Image database table */
-        foreach ($aprt->getImages() as $image)
-        {
-            $this->addToImageDB($aprt->getID(), $image);
-        }
+//        This is unused - decided to just add the images directly in landord->editApartment
+//        /* Send any Apartment images to the Image database table */
+//        foreach ($aprt->getImages() as $image)
+//        {
+//            //TODO: method signature has been updated but not accounted for in Apartment.php
+//            $this->addToImageDB($aprt->getID(), $image);
+//        }
         
         return true;
     }

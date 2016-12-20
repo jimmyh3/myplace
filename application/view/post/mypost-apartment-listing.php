@@ -102,6 +102,21 @@
                                     
                                     <!-- Text input-->
                                     <div class="control-group">
+                                        <label class="control-label" for="Title">Apartment Title:</label>
+                                        <div class="controls">
+                                            <input id="Title" 
+                                                   name="Title"
+                                                   value="<?php echo $apartTitle; ?>"
+                                                   class="form-control" 
+                                                   type="text" 
+                                                   placeholder="Title" 
+                                                   class="input-large"
+                                            >
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Text input-->
+                                    <div class="control-group">
                                         <label class="control-label" for="Name">Contact name:</label>
                                         <div class="controls">
                                             <input id=  "Name" 
