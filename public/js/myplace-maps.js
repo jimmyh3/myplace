@@ -29,8 +29,8 @@ function createMap( id, zipcode) {
                     
                     var circle = new google.maps.Circle({
                         map: map,
-                        radius: 4828, // 3 miles
-                        fillColor: '#b300b3', // TODO maybe change color
+                        radius: 1414, // 1.5 miles
+                        fillColor: '#b300b3', // maybe change color
                         center: results[ 0].geometry.location
                     });
                     
