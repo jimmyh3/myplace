@@ -94,6 +94,27 @@ $(function() {
         });
     }
     
+//    if($('#ajax_view_all_apartments') !== 0) {
+//        $('#ajax_view_all_apartments').on('click', function( e) {
+//           e.preventDefault();
+//           $.ajax( url + '/home/search')
+//                   .done( function( results) {
+//                       $('#results').html( result);
+//                       
+//                        var userType = getCookie( "myPlace_userType");
+//                        if( parseInt( userType) == 0) { 
+//                            $('.contact-button').each( function() {
+//                                $( this).show();
+//                            });
+//                        } else {
+//                            $('.contact-button').each( function() {
+//                                $( this).hide();
+//                            });
+//                        }
+//                   })
+//        });
+//    }
+    
     if($('#ajax_signup_form') !== 0) {
         $('#ajax_signup_form').on('submit', function( e) {
             e.preventDefault();
@@ -141,7 +162,8 @@ $(function() {
 function logout( ) {
     $.ajax( url + '/home/logout')
                .done( function( results) {
-                   $('#login_logout_button').html( results);
+                   window.location.href = url + 'home';
+//                   $('#login_logout_button').html( results);
            });
 }
 

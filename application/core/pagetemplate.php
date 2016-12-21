@@ -112,7 +112,9 @@ class PageTemplate extends Controller {
                         <div class="ratings">';
             if( isset($_COOKIE["myPlace_userType"]) && $_COOKIE["myPlace_userType"] == 0) {
                 $results .= '<button type="button" class="btn btn-success btn-sm pull-right contact-button" data-toggle="modal" data-target="#contactLandlord'.$i.'">Rent now</button>';
-            }            
+            } else {
+                $results .= '<button type="button" class="btn btn-success btn-sm pull-right contact-button" data-toggle="modal" data-target="#contactLandlord'.$i.'" style="display: none;">Rent now</button>';
+            }
             $results .= '<button type="button" class="btn btn-info btn-sm" data-toggle="modal" data-target="#aptModal'.$i.'" onclick="createMap('.$i.','.$apartment->area_code.')" id="openApt'.$i.'">Details</button>
                             <div class="modal fade" id="aptModal'.$i.'" role="dialog" style="color: #000">
                                 <div class="modal-dialog modal-lg">
@@ -277,6 +279,8 @@ class PageTemplate extends Controller {
                                              
             if( isset($_COOKIE["myPlace_userType"]) && $_COOKIE["myPlace_userType"] == 0) {
                 $results .= '<button type="button" class="btn btn-info btn-sm contact-button" data-toggle="modal" data-target="#contactLandlord'.$i.'">Contact Landlord</button>';
+            } else {
+                $results .= '<button type="button" class="btn btn-info btn-sm contact-button" data-toggle="modal" data-target="#contactLandlord'.$i.'" style="display: none;">Contact Landlord</button>';
             }
                                                     
             $results .= '</p>
@@ -309,12 +313,12 @@ class PageTemplate extends Controller {
                     <input type="hidden" name="messageRecipient" value="' . $apartment->user_id.'"></div>'; 
                      
             $results .= '<input type="submit" class="btn btn-success pull-right" value="Send It!">
-                <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p>                            
-                <button class="btn pull-left" data-dismiss="modal" data-target="#contactLandlord" aria-hidden="true">Cancel</button>';
+                <p class="help-block pull-left text-danger hide" id="form-error">&nbsp; The form is not valid. </p>';
 
             $results .= '</form>
                                         </div>
                                         <div class="modal-footer">
+                                            <button class="btn" data-dismiss="modal" data-target="#contactLandlord" aria-hidden="true">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
