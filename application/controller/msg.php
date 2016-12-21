@@ -82,10 +82,10 @@ class Msg extends Controller
         <thead>
             <tr>
                 <th>Name</th>
-                <th>aid</th>
+                <!--<th>aid</th>
                 <th>idMessages</th>
                 <th>parent_id</th>
-                <th>message_recipient</th>
+                <th>message_recipient</th>-->
                 <th>message</th>
                 <th>email</th>
             </tr>
@@ -98,10 +98,10 @@ class Msg extends Controller
             foreach($users as $user) {
                 $result .= '<tr><td>'.htmlspecialchars($user->name).'</td>';
             }
-            $result .= '<td>'.htmlspecialchars($message->aid).'</td>';
-            $result .= '<td>'.htmlspecialchars($message->idMessages).'</td>';
-            $result .= '<td>'.htmlspecialchars($message->parent_id).'</td>';
-            $result .= '<td>'.htmlspecialchars($message->message_recipient).'</td>';
+            //$result .= '<td>'.htmlspecialchars($message->aid).'</td>';
+            //$result .= '<td>'.htmlspecialchars($message->idMessages).'</td>';
+            //$result .= '<td>'.htmlspecialchars($message->parent_id).'</td>';
+            //$result .= '<td>'.htmlspecialchars($message->message_recipient).'</td>';
             $result .= '<td>'.htmlspecialchars($message->message).'</td>';
 
             foreach($users as $user) {

@@ -24,7 +24,7 @@
     <h2>MyMessages for:</h2>
     <?php 
         $apartment = $this->apartment_db->getApartment( $_GET['apartment_id']); 
-        if( isset($apartmen->title))
+        if( isset($apartment->title))
             echo $apartment->title;
         else
             echo "Apartment id: ".$apartment->id;
