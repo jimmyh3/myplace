@@ -79,6 +79,13 @@ $(function() {
                             $('#login_logout_button').html( results);
                             
                             var userType = getCookie( "myPlace_userType");
+                            
+                            if( parseInt( userType) == 1) { 
+                                $('#mypost-nav').html( '<a href="'+url+'post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a>');
+                            } else {
+                                $('#mypost-nav').html( '<a data-toggle="tooltip" data-placement="bottom" title="MUST BE LANDLORD!"><span class="glyphicon glyphicon-home"></span> myPost</a>');
+                            }
+                            
                             if( parseInt( userType) == 0) { 
                                 $('.contact-button').each( function() {
                                     $( this).show();
@@ -143,6 +150,13 @@ $(function() {
                             $('#login_logout_button').html( results);
                             
                             var userType = getCookie( "myPlace_userType");
+                            
+                            if( parseInt( userType) == 1) { 
+                                $('#mypost-nav').html( '<a href="'+url+'post" data-toggle="tooltip" data-placement="bottom" title="Manage Apartments"><span class="glyphicon glyphicon-home"></span> myPost</a>');
+                            } else {
+                                $('#mypost-nav').html( '<a data-toggle="tooltip" data-placement="bottom" title="MUST BE LANDLORD!"><span class="glyphicon glyphicon-home"></span> myPost</a>');
+                            }
+                            
                             if( parseInt( userType) == 0) { 
                                 $('.contact-button').each( function() {
                                     $( this).show();
