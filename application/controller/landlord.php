@@ -1,4 +1,5 @@
 <?php
+require APP . 'libs/MyPlaceUtils.php';
 
 /**
  * Description of landlord
@@ -173,7 +174,9 @@ class Landlord extends PageTemplate{
             /* Set the Apartment thumbnail to the first image of image files */
             for ($index = 0; $index < count($apartImgFiles); $index++){
                 if (!empty(trim($apartImgFiles[$index]))) {
-                    $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                    $thumbnail_contents = MyPlaceUtils::createThumbnail($apartImgFiles[$index],300,150);
+                    $apartment->setThumbnail($thumbnail_contents);
+                    //$apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
                     break;
                 }
             }
@@ -438,8 +441,11 @@ class Landlord extends PageTemplate{
                 
                 /* If an existing ID is found first, set thumbnail to that image. */
                 if (!empty(trim($apartImgIDs[$index]) && (is_numeric ($apartImgIDs[$index])))) {
+                    /* Check file listing to see if it's an image swap. */
                     if (!empty(trim($apartImgFiles[$index]))){
-                        $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                        $thumbnail_contents = MyPlaceUtils::createThumbnail($apartImgFiles[$index],300,150);
+                        $apartment->setThumbnail($thumbnail_contents);
+                        //$apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
                         break;  //thumbnail is NULL by default.
                     } else {
                         /* Need to get the image since the existing BLOB is not a file */
@@ -451,7 +457,9 @@ class Landlord extends PageTemplate{
                 
                 /* If a newly uploaded image is found first, then thumbnail is set to it. */
                 if (!empty(trim($apartImgFiles[$index]))){
-                    $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                    $thumbnail_contents = MyPlaceUtils::createThumbnail($apartImgFiles[$index],300,150);
+                    $apartment->setThumbnail($thumbnail_contents);
+                    //$apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
                     break;  //thumbnail is NULL by default.
                 }
                 
