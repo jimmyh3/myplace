@@ -1,4 +1,5 @@
 <?php
+require APP . 'libs/MyPlaceUtils.php';
 
 /**
  * Description of landlord
@@ -173,7 +174,9 @@ class Landlord extends PageTemplate{
             /* Set the Apartment thumbnail to the first image of image files */
             for ($index = 0; $index < count($apartImgFiles); $index++){
                 if (!empty(trim($apartImgFiles[$index]))) {
-                    $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                    $thumbnail_contents = MyPlaceUtils::createThumbnail($apartImgFiles[$index],300,150);
+                    $apartment->setThumbnail($thumbnail_contents);
+                    //$apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
                     break;
                 }
             }
@@ -438,8 +441,11 @@ class Landlord extends PageTemplate{
                 
                 /* If an existing ID is found first, set thumbnail to that image. */
                 if (!empty(trim($apartImgIDs[$index]) && (is_numeric ($apartImgIDs[$index])))) {
+                    /* Check file listing to see if it's an image swap. */
                     if (!empty(trim($apartImgFiles[$index]))){
-                        $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                        $thumbnail_contents = MyPlaceUtils::createThumbnail($apartImgFiles[$index],300,150);
+                        $apartment->setThumbnail($thumbnail_contents);
+                        //$apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
                         break;  //thumbnail is NULL by default.
                     } else {
                         /* Need to get the image since the existing BLOB is not a file */
@@ -451,7 +457,9 @@ class Landlord extends PageTemplate{
                 
                 /* If a newly uploaded image is found first, then thumbnail is set to it. */
                 if (!empty(trim($apartImgFiles[$index]))){
-                    $apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                    $thumbnail_contents = MyPlaceUtils::createThumbnail($apartImgFiles[$index],300,150);
+                    $apartment->setThumbnail($thumbnail_contents);
+                    //$apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
                     break;  //thumbnail is NULL by default.
                 }
                 
@@ -545,5 +553,181 @@ class Landlord extends PageTemplate{
         
         return;
     }
+    
+    private function add_edit_form_validation()
+    {
+        $userType = 0;
+        if( isset($_COOKIE["myPlace_userType"]))
+            $userType = $_COOKIE["myPlace_userType"];
+        if( isset($_COOKIE["myPlace_userID"]))
+            $userID = $_COOKIE["myPlace_userID"];
+                
+                
+        /* Variables */
+        $apartForm      = array();          //holds the 'Add Apartment Form' data. 
+        $apartImgNames  = array();          //holds the image names sent from the form.
+        $apartImgFiles  = array();          //holds the images sent from the form.
+        $returnMsgs     = array();          //holds validation response messages.
+        $apartment      = new Apartment();  //Apartment object to add to database.
+        
+        /* Form <input name=""> for quick reference */
+        $name_title         = "Title";
+        $name_bedroom       = "Bedroom";
+        $name_price         = "Price";
+        $name_startTerm     = "StartTerm";
+        $name_endTerm       = "EndTerm";
+        $name_zipcode       = "ZipCode";
+        $name_description   = "Description";
+        $name_petFriendly   = "PetFriendly";
+        $name_parking       = "Parking";
+        $name_laundry       = "Laundry";
+        $name_smoking       = "Smoking";
+        $name_sharedRoom    = "SharedRoom";
+        $name_furnished     = "Furnished";
+        $name_wheelChairAcc = "WheelChairAccess";
+        $name_images        = "images";
+        
+        /* Verify that the User is a landlord (i.e usertype == 1 == landlord.) */
+        if ($userType != 1) {
+            $returnMsgs['Failure'] = "You must be a landlord who's signed in to add a new apartment!";
+            return;
+        }
+        
+        /* Return if no form data was sent over */
+        if ($_POST){ 
+            $apartForm = array_filter($_POST);
+        } else {
+            $returnMsgs['Error']   = "Error: form data was not received!";
+            $returnMsgs['Failure'] = "Failure: cannot add new apartment at this time!";
+            echo json_encode($returnMsgs);
+            return;
+        }
+        
+        /* Have $apartForm['image'] set to image files array passed over */
+        if (isset($_FILES[$name_images]['tmp_name']) && (!empty($_FILES[$name_images]['tmp_name']))) 
+        {
+            $apartImgNames = $_FILES[$name_images]['name'];
+            $apartImgFiles = $_FILES[$name_images]['tmp_name'];
+        }
+        
+        /* Create new Apartment object acccording to the form values */
+        try {
+            
+            /* Set the user ID of this Apartment to this logged in landlord's ID */
+            $apartment->setUserID($userID);
+            
+            /* ---------Set the title of this apartment------------ */
+            if ((isset($apartForm[$name_title]))) {
+                $apartment->setTitle($apartForm[$name_title]);
+            }
+            
+            /* ---------Set number of bedrooms in this Apartment------------ */
+            if ((isset($apartForm[$name_bedroom])) 
+                                    && (is_numeric($apartForm[$name_bedroom])) 
+                                              && !($apartForm[$name_bedroom] < 0)) {
+                $apartment->setBedRoomCount($apartForm[$name_bedroom]);
+            } else {
+                $returnMsgs[$name_bedroom] = "Enter a positive number of bedrooms";
+            }
+
+            /* ----------Set the price of this Apartment--------------------- */
+            $priceRegex = "/^(\d*)\.?\d{0,2}$/";
+            if ((isset($apartForm[$name_price])) 
+                            && (is_numeric($apartForm[$name_price]))
+                            && ($apartForm[$name_price] < 99999999)
+                            && (preg_match($priceRegex, $apartForm[$name_price]))
+                                                   && !($apartForm[$name_price] < 0)) {
+                
+                $apartment->setActualPrice($apartForm[$name_price]);
+            } else {
+                $returnMsgs[$name_price] = "Enter a price following any of these "
+                                        . "number formats: ## or (many #).## or .## "
+                                        . "(AT MOST 8 digits)";
+            }
+
+            /* ---------Set the starting renting term of this Apartment------ */
+            if ((isset($apartForm[$name_startTerm])) 
+                    && DateTime::createFromFormat('Y-m-d', $apartForm[$name_startTerm])) {
+
+                $apartment->setBeginTerm($apartForm[$name_startTerm]);
+            } else {
+                $returnMsgs[$name_startTerm] = "Enter a valid date in the format:"
+                                            . " mm/dd/yyyy";
+            }
+
+            /* ---------Set the end of the renting term of this Apartment---- */
+            if ((isset($apartForm[$name_endTerm])) 
+                        && DateTime::createFromFormat('Y-m-d', $apartForm[$name_endTerm])) {
+
+                $apartment->setEndTerm($apartForm[$name_endTerm]);
+            } else {
+                $returnMsgs[$name_endTerm] = "Enter a valid date in the format:"
+                                          . " mm/dd/yyyy";
+            }
+
+            /* ---------Set the zipcode of this Apartment-------------------- */
+            if ((isset($apartForm[$name_zipcode])) 
+                                    && is_numeric($apartForm[$name_zipcode]) 
+                                             && !($apartForm[$name_zipcode] < 0)
+                                             &&  (strlen($apartForm[$name_zipcode]) == 5)) {
+
+                $apartment->setAreaCode($apartForm[$name_zipcode]);
+            } else {
+                $returnMsgs[$name_zipcode] = "Enter a valid 5 digit zipcode";
+            }
+
+            /* ---------Set the rest of the form data------------------------ */
+            if (isset($apartForm[$name_description]))   { $apartment->setDescription($apartForm[$name_description]);}
+            if (isset($apartForm[$name_petFriendly]))   { $apartment->setPetFriendly($apartForm[$name_petFriendly]);}
+            if (isset($apartForm[$name_parking]))       { $apartment->setParking    ($apartForm[$name_parking]);    }
+            if (isset($apartForm[$name_laundry]))       { $apartment->setLaundry    ($apartForm[$name_laundry]);    }
+            if (isset($apartForm[$name_smoking]))       { $apartment->setSmoking    ($apartForm[$name_smoking]);    }
+            if (isset($apartForm[$name_sharedRoom]))    { $apartment->setSharedRoom ($apartForm[$name_sharedRoom]); }
+            if (isset($apartForm[$name_furnished]))     { $apartment->setFurnished  ($apartForm[$name_furnished]);  }
+            if (isset($apartForm[$name_wheelChairAcc])) { $apartment->setWheelChairAccess($apartForm[$name_wheelChairAcc]); }
+            
+            
+            /* --------- Add the images --------------------------------------*/
+            for ($index = 0; $index < count($apartImgFiles); $index++){
+                if (!empty(trim($apartImgFiles[$index]))){
+                    if ($apartment->getImagesCount() === 10) {
+                        //$errorMsgs[$name_images] = "The number of images exceeded 10";
+                        break;
+                    } else {
+                        $apartment->addImage($apartImgNames[$index],
+                                             file_get_contents($apartImgFiles[$index]));
+                    }
+                }
+            }
+            
+            /* Set the Apartment thumbnail to the first image of image files */
+            for ($index = 0; $index < count($apartImgFiles); $index++){
+                if (!empty(trim($apartImgFiles[$index]))) {
+                    $thumbnail_contents = MyPlaceUtils::createThumbnail($apartImgFiles[$index],300,150);
+                    $apartment->setThumbnail($thumbnail_contents);
+                    //$apartment->setThumbnail(file_get_contents($apartImgFiles[$index]));
+                    break;
+                }
+            }
+            
+            /* If not error messages thus far then add Apartment to database */
+            if (empty($returnMsgs)) {
+                /* Add apartment to Apartment database */
+                $this->apartment_db->addApartment($apartment);
+                $returnMsgs['Success'] = "Apartment has been successfully added!";
+            }
+            
+        } catch (Exception $exception) {
+            $returnMsgs['Error']   = $exception->getMessage();
+            $returnMsgs['Failure'] = "Failure: cannot add new apartment at this time!";
+            echo json_encode($returnMsgs);
+            return;
+        }
+        
+        echo json_encode($returnMsgs);
+        
+        return $apartment;
+    }
+    
     
 }
