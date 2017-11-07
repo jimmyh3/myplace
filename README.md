@@ -16,6 +16,12 @@ MyPlace leverages itself by emphasizing its renting services with SFSU students 
 
 As a team, we adhered to user-centered design methodology to produce MyPlace according to its desired and approved specifications.  We also practiced agile development to adapt to user feedback quickly and to deliver promised functionalities.
 
+# Documentation
+https://drive.google.com/drive/folders/0B7d8m88pxclqbEpHamlTVDQ4ZUU
+* Milestones
+* Use Cases
+* System Diagrams
+* UI Mockups
 
 # Disclaimer
 
