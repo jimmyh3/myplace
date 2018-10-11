@@ -52,13 +52,7 @@ define('URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
  * Configuration for: Database
  * This is the place where you define your database credentials, database type etc.
  */
-//define('DB_TYPE', 'mysql');
-//define('DB_HOST', '127.0.0.1');
-//define('DB_NAME', 'mini');
-//define('DB_USER', 'mini');
-//define('DB_PASS', 'mini');
-//define('DB_CHARSET', 'utf8');
-
+// Local testing credentials
 //define('DB_TYPE', 'mysql');
 //define('DB_HOST', '127.0.0.1');
 //define('DB_NAME', 'f16g14');
@@ -66,9 +60,11 @@ define('URL', URL_PROTOCOL . URL_DOMAIN . URL_SUB_FOLDER);
 //define('DB_PASS', 'sfsuf16swe');
 //define('DB_CHARSET', 'utf8');
 
-define('DB_TYPE', 'mysql');
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'f16g14');
-define('DB_USER', 'root');
-define('DB_PASS', 'root');
+$url = parse_url(getenv("CLEARDB_DATABASE_URL"));
+
+define('DB_TYPE', $url["scheme"]);
+define('DB_USER', $url["user"]);
+define('DB_PASS', $url["pass"]);
+define('DB_HOST', $url["host"]);
+define('DB_NAME', substr($url["path"], 1));
 define('DB_CHARSET', 'utf8');
